@@ -237,7 +237,7 @@ export default function Home() {
 
           {categoriesData.borderline_a_grades && (
             <CategoryPreview
-              title="Borderline 'A' Grade Restaurants"
+              title="Borderline A's"
               restaurants={categoriesData.borderline_a_grades}
             />
           )}
@@ -246,7 +246,7 @@ export default function Home() {
 
           {categoriesData.cleanest_a_grades && (
             <CategoryPreview
-              title="Cleanest 'A' Grade Restaurants"
+              title="Cleanest A's"
               restaurants={categoriesData.cleanest_a_grades}
             />
           )}
