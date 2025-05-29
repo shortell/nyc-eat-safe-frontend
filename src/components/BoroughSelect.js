@@ -1,4 +1,4 @@
-// import React, { useContext } from 'react';
+// import React from 'react';
 // import OutlinedInput from '@mui/material/OutlinedInput';
 // import InputLabel from '@mui/material/InputLabel';
 // import MenuItem from '@mui/material/MenuItem';
@@ -6,20 +6,16 @@
 // import ListItemText from '@mui/material/ListItemText';
 // import Select from '@mui/material/Select';
 // import Checkbox from '@mui/material/Checkbox';
-// import { BoroughContext } from '../context/BoroughContext'; // Import the context
 
 // const boroughs = [
 //     { label: 'Manhattan', value: 'Manhattan' },
 //     { label: 'Brooklyn', value: 'Brooklyn' },
 //     { label: 'Queens', value: 'Queens' },
 //     { label: 'The Bronx', value: 'Bronx' },
-//     { label: 'Staten Island', value: 'Staten Island' }
+//     { label: 'Staten Island', value: 'Staten Island' },
 // ];
 
-// const BoroughSelect = () => {
-//     // Use the global state from the context
-//     const { selectedBoroughs, setSelectedBoroughs } = useContext(BoroughContext);
-
+// const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs }) => {
 //     const handleChange = (event) => {
 //         const {
 //             target: { value },
@@ -31,11 +27,14 @@
 
 //     return (
 //         <div>
-//             <FormControl sx={{ m: 1, width: 300 }}>
+//             <FormControl sx={{ width: '100%' }}>
 //                 <InputLabel>Borough</InputLabel>
 //                 <Select
 //                     multiple
-//                     value={selectedBoroughs} // Use global state
+//                     sx={{
+//                         backgroundColor: '#F0F8FF',
+//                     }}
+//                     value={selectedBoroughs}
 //                     onChange={handleChange}
 //                     input={<OutlinedInput label="Borough" />}
 //                     renderValue={(selected) =>
@@ -74,7 +73,7 @@ const boroughs = [
     { label: 'Staten Island', value: 'Staten Island' },
 ];
 
-const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs }) => {
+const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs, onClose }) => {
     const handleChange = (event) => {
         const {
             target: { value },
@@ -95,6 +94,7 @@ const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs }) => {
                     }}
                     value={selectedBoroughs}
                     onChange={handleChange}
+                    onClose={() => onClose && onClose(selectedBoroughs)}
                     input={<OutlinedInput label="Borough" />}
                     renderValue={(selected) =>
                         selected
