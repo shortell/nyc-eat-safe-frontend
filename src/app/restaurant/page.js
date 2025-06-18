@@ -16,7 +16,7 @@ const RestaurantDetail = () => {
       setLoading(true);
       try {
         const baseUrl =
-          process.env.NEXT_PUBLIC_BASE_URL || "http://127.0.0.1:8000";
+          process.env.NEXT_PUBLIC_BASE_URL || "https://nyc-eat-safe-production.up.railway.app";
         const res = await fetch(
           `${baseUrl}/restaurant/${parseInt(camis, 10)}`
         );

@@ -12,6 +12,9 @@ export default function SearchChainsByParamsPage() {
   useEffect(() => {
     setDba(searchParams.get('dba'));
     setBoroughFilter(searchParams.get('borough_filter'));
+    
+    console.log('Borough Filter:', searchParams.get('borough_filter'));
+    console.log('Datatype of Borough Filter:', typeof searchParams.get('borough_filter')); // Print datatype
   }, [searchParams]);
 
   if (dba === null || boroughFilter === null) {
@@ -27,7 +30,10 @@ export default function SearchChainsByParamsPage() {
     <DynamicRestaurantPage
       title={dba ? `${dba} Locations` : "Restaurant Chains"}
       endpoint="/search-chains"
-      extraParams={{ dba, borough_filter: boroughFilter }}
+      extraParams={{
+        dba: dba,
+        borough_filter: boroughFilter
+      }}
     />
   );
 }

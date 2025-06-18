@@ -10,6 +10,10 @@ const DynamicRestaurantPage = ({ title, endpoint, extraParams }) => {
 
     // Fetch restaurants whenever offset changes
     useEffect(() => {
+        let isActive = true; // Flag to track if the effect is still active
+
+        console.log('Current offset:', offset);
+        console.log("Extra Params:", extraParams);
         const fetchRestaurants = async () => {
             if (!hasMore) return;
             setIsLoading(true);
@@ -32,23 +36,34 @@ const DynamicRestaurantPage = ({ title, endpoint, extraParams }) => {
                 }
 
                 const newData = await res.json();
-                // Parse newData into an array
-                const newRestaurants = Array.isArray(newData)
-                    ? newData
-                    : (newData.restaurants || []);
 
-                if (newRestaurants.length < 10) {
-                    setHasMore(false);
+                if (isActive) { // Only process and set state if the effect is still active
+                    // Parse newData into an array
+                    const newRestaurants = Array.isArray(newData)
+                        ? newData
+                        : (newData.restaurants || []);
+
+                    if (newRestaurants.length < 10) {
+                        setHasMore(false);
+                    }
+                    setRestaurants(prev => [...prev, ...newRestaurants]);
                 }
-                setRestaurants(prev => [...prev, ...newRestaurants]);
             } catch (err) {
-                setError(err.message);
+                if (isActive) { // Only set error if active
+                    setError(err.message);
+                }
             } finally {
-                setIsLoading(false);
+                if (isActive) { // Only set loading if active
+                    setIsLoading(false);
+                }
             }
         };
 
         fetchRestaurants();
+
+        return () => {
+            isActive = false; // Cleanup function: mark effect as inactive
+        };
     }, [offset, endpoint, extraParams, hasMore]);
 
     // Use an IntersectionObserver to trigger loading more when the sentinel is visible.
@@ -65,8 +80,8 @@ const DynamicRestaurantPage = ({ title, endpoint, extraParams }) => {
     }, [isLoading, hasMore]);
 
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">{title}</h1>
+        <div className="p-4 bg-[#f5f2fa]">
+            <h1 className="bg-gradient-to-b from-[#2A3E83] via-[#1655A0] to-[#016CCE] bg-gradient-to-b from-[0%] via-[90%] to-[98%] text-white p-3 rounded-md text-2xl font-bold mb-4">{title}</h1>
             <RestaurantList restaurants={restaurants} />
             {isLoading && <p className="py-4">Loading more…</p>}
             {error && <p className="text-red-500">{error}</p>}
