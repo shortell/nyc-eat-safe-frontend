@@ -20,7 +20,7 @@ const DynamicRestaurantPage = ({ title, endpoint, extraParams }) => {
             setError(null);
             try {
                 const body = { limit: 10, offset, ...extraParams };
-                const fullEndpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}${endpoint}`;
+                const fullEndpoint = `https://nyc-eat-safe-production.up.railway.app${endpoint}`;
                 const res = await fetch(fullEndpoint, {
                     method: 'POST',
                     headers: {
