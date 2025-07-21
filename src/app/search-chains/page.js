@@ -1,10 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import DynamicRestaurantPage from '../../components/DynamicRestaurantPage';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import DynamicRestaurantPage from '../../components/DynamicRestaurantPage';
 
 export default function SearchChainsByParamsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchChainsByParamsContent />
+    </Suspense>
+  );
+}
+
+function SearchChainsByParamsContent() {
   const searchParams = useSearchParams();
   const [dba, setDba] = useState(null);
   const [boroughFilter, setBoroughFilter] = useState(null);
@@ -12,9 +20,6 @@ export default function SearchChainsByParamsPage() {
   useEffect(() => {
     setDba(searchParams.get('dba'));
     setBoroughFilter(searchParams.get('borough_filter'));
-    
-    console.log('Borough Filter:', searchParams.get('borough_filter'));
-    console.log('Datatype of Borough Filter:', typeof searchParams.get('borough_filter')); // Print datatype
   }, [searchParams]);
 
   if (dba === null || boroughFilter === null) {

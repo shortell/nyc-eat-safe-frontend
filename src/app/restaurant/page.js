@@ -1,8 +1,16 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-const RestaurantDetail = () => {
+export default function RestaurantDetail() {
+  return (
+    <Suspense fallback={<div>Loading…</div>}>
+      <RestaurantContent />
+    </Suspense>
+  );
+}
+
+function RestaurantContent() {
   const searchParams = useSearchParams();
   const camis = searchParams.get('camis');
 
@@ -16,7 +24,8 @@ const RestaurantDetail = () => {
       setLoading(true);
       try {
         const baseUrl =
-          process.env.NEXT_PUBLIC_BASE_URL || "https://nyc-eat-safe-production.up.railway.app";
+          process.env.NEXT_PUBLIC_BASE_URL ||
+          "https://nyc-eat-safe-production.up.railway.app";
         const res = await fetch(
           `${baseUrl}/restaurant/${parseInt(camis, 10)}`
         );
@@ -83,6 +92,4 @@ const RestaurantDetail = () => {
       ))}
     </div>
   );
-};
-
-export default RestaurantDetail;
+}
