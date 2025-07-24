@@ -3,10 +3,10 @@ import Link from 'next/link';
 
 // Anchor scores with their corresponding hex colors
 const anchors = [
-  { score: 0,   hex: '#22c55e' },  // green-500
-  { score: 14,  hex: '#eab308' },  // yellow-500
-  { score: 28,  hex: '#ef4444' },  // red-500
-  { score: 42,  hex: '#991b1b' },  // red-800
+  { score: 0, hex: '#22c55e' },  // green-500
+  { score: 14, hex: '#eab308' },  // yellow-500
+  { score: 28, hex: '#ef4444' },  // red-500
+  { score: 42, hex: '#991b1b' },  // red-800
 ];
 
 // Convert hex string to RGB object
@@ -59,6 +59,8 @@ export function getScoreColor(score) {
 
 // Utility: convert score to percentage (0 -> best, 41 -> worst)
 export const convertScoreToPercentage = (score) => {
+
+  if (score >= 42) return 0;
   const percentage = (1 - score / 41) * 100;
   return Math.round(percentage);
 };
@@ -79,7 +81,7 @@ const RestaurantList = ({ restaurants }) => (
         <li className="bg-[#F0F8FF] p-4 flex items-center shadow-md rounded-lg cursor-pointer hover:bg-[#E6EEF7]">
           <div
             className="w-16 h-16 flex items-center justify-center text-white font-bold text-2xl rounded-md"
-            style={{ 
+            style={{
               backgroundColor: getScoreColor(restaurant.score),
               boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.35)'
             }}
