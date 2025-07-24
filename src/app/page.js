@@ -72,6 +72,7 @@
 
 import { useState, useEffect } from 'react'
 import CategoryPreview from '@/components/CategoryPreview'
+// import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   const [categoriesData, setCategoriesData] = useState(null)
@@ -114,7 +115,11 @@ export default function Home() {
     )
 
   return (
-    <div className="w-full max-w-full mx-auto px-4 py-6 space-y-8 bg-[#f5f2fa]">
+    <div className="w-full max-w-full mx-auto px-4 pt-1 pb-6 space-y-6 bg-[#f5f2fa]">
+      <p className="text-xs text-gray-600 text-center mt-1 mb-2">
+        Data is publicly available from the NYC Dept. of Health
+      </p>
+
       {categoriesData?.borderline_a_grades && (
         <CategoryPreview
           title="Borderline A Restaurants"
@@ -132,4 +137,5 @@ export default function Home() {
       {/* etc… */}
     </div>
   )
+
 }

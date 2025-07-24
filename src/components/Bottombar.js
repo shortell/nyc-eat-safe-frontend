@@ -1,34 +1,3 @@
-// "use client";
-
-// import React, { useState } from 'react';
-// import Box from '@mui/material/Box';
-// import BottomNavigation from '@mui/material/BottomNavigation';
-// import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-// import HomeIcon from '@mui/icons-material/Home';
-// import LocationOnIcon from '@mui/icons-material/LocationOn';
-// import RateReviewIcon from '@mui/icons-material/RateReview';
-
-// const Bottombar = () => {
-//     const [value, setValue] = useState(0);
-
-//     return (
-//         <Box sx={{ width: '100%' }}>
-//             <BottomNavigation
-//                 showLabels
-//                 value={value}
-//                 onChange={(event, newValue) => {
-//                     setValue(newValue);
-//                 }}
-//             >
-//                 <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-//                 <BottomNavigationAction label="Near Me" icon={<LocationOnIcon />} />
-//                 <BottomNavigationAction label="Feedback" icon={<RateReviewIcon />} />
-//             </BottomNavigation>
-//         </Box>
-//     );
-// };
-
-// export default Bottombar;
 "use client";
 
 import React, { useState } from 'react';

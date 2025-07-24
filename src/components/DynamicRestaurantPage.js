@@ -12,8 +12,8 @@ const DynamicRestaurantPage = ({ title, endpoint, extraParams }) => {
     useEffect(() => {
         let isActive = true; // Flag to track if the effect is still active
 
-        console.log('Current offset:', offset);
-        console.log("Extra Params:", extraParams);
+        // console.log('Current offset:', offset);
+        // console.log("Extra Params:", extraParams);
         const fetchRestaurants = async () => {
             if (!hasMore) return;
             setIsLoading(true);
