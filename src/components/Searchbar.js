@@ -204,7 +204,9 @@ const HeadBar = ({ selectedBoroughs }) => {
 
     // Handle option selection
     const handleOptionSelect = (event, selectedOption) => {
-        if (!selectedOption) return;
+        // If user entered a freeSolo string (not an object), just ignore
+        if (!selectedOption || typeof selectedOption !== "object") return;
+
         if (selectedOption.quantity > 1) {
             const boroughFilter = Array.isArray(selectedBoroughs)
                 ? selectedBoroughs.join(',')
