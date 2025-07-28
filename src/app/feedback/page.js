@@ -43,8 +43,8 @@ export default function FeedbackPage() {
       <div className="flex justify-center items-start min-h-[70vh] mt-0">
         <div className="flex flex-col gap-4 max-w-md w-full bg-white rounded-lg shadow-md p-8">
           <p className="text-gray-700 mb-2">
-            Thank you for using my website!
-            Let me know what you like and don`t like about it so I can make it better.
+            Thank you for using our website!
+            Let us know what you like and don`t like about it so we can make it better.
           </p>
           {status && (
             <p className={`text-center text-sm ${isSuccess ? 'text-gray-700' : 'text-red-600'}`}>

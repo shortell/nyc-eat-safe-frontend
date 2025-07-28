@@ -11,7 +11,7 @@ export const metadata = {
     default: "NYC Eat Safe",
     template: "%s | NYC Eat Safe",
   },
-  description: "NYC restaurant health inspection data, simplified.",
+  description: "An A isn't always an A",
   metadataBase: new URL("https://nyceatsafe.com"), // ✅ This is the key line that fixes the warning
   icons: {
     icon: [
@@ -22,7 +22,7 @@ export const metadata = {
   },
   openGraph: {
     title: "NYC Eat Safe",
-    description: "NYC restaurant health inspection data, simplified.",
+    description: "An A isn't always an A",
     url: "https://nyceatsafe.com",
     siteName: "NYC Eat Safe",
     images: ["/og-image.png"], // 1200x630
@@ -31,7 +31,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "NYC Eat Safe",
-    description: "NYC restaurant health inspection data, simplified.",
+    description: "An A isn't always an A",
     images: ["/og-image.png"],
   },
 };
