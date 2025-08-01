@@ -120,11 +120,11 @@ export default function Home() {
         Data is publicly available from the NYC Dept. of Health
       </p>
 
-      {categoriesData?.borderline_a_grades && (
+      {categoriesData?.risky_a_grades && (
         <CategoryPreview
           title="Borderline A Restaurants"
-          endpoint="/borderline-a-grades"
-          restaurants={categoriesData.borderline_a_grades}
+          endpoint="/risky-a-grades"
+          restaurants={categoriesData.risky_a_grades}
         />
       )}
       {categoriesData?.cleanest_a_grades && (
