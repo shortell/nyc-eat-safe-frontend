@@ -79,7 +79,7 @@ export default function GradeLetter({ grade }) {
         className="w-16 h-16 border border-gray-200 rounded-md shadow-sm flex items-center justify-center"
         style={{ backgroundColor }}
       >
-        <span className="text-3xl font-bold text-white">
+        <span className="text-[2.5rem] text-white">
           {grade}
         </span>
       </div>

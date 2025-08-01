@@ -127,11 +127,11 @@ export default function Home() {
           restaurants={categoriesData.risky_a_grades}
         />
       )}
-      {categoriesData?.cleanest_a_grades && (
+      {categoriesData?.goldstar_a_grades && (
         <CategoryPreview
-          title="Cleanest Restaurants"
-          endpoint="/cleanest-a-grades"
-          restaurants={categoriesData.cleanest_a_grades}
+          title="Goldstar Restaurants"
+          endpoint="/goldstar-a-grades"
+          restaurants={categoriesData.goldstar_a_grades}
         />
       )}
       {/* etc… */}
