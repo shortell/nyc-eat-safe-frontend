@@ -76,7 +76,10 @@ const RestaurantCard = ({ restaurant }) => {
 
   return (
     <Link href={`/restaurant?camis=${camis}`} legacyBehavior>
-      <li className="bg-white p-4 rounded-2xl shadow-md hover:shadow-lg transition-all cursor-pointer w-full max-w-xl">
+      <li className="bg-white p-5 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-200 border border-gray-200 w-full max-w-lg mx-auto">
+
+
+
         {/* Top: Restaurant Name + Address */}
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-black">{capitalizeWords(dba)}</h3>

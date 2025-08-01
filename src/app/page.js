@@ -120,20 +120,28 @@ export default function Home() {
         Data is publicly available from the NYC Dept. of Health
       </p>
 
-      {categoriesData?.risky_a_grades && (
-        <CategoryPreview
-          title="Borderline A Restaurants"
-          endpoint="/risky-a-grades"
-          restaurants={categoriesData.risky_a_grades}
-        />
-      )}
-      {categoriesData?.goldstar_a_grades && (
-        <CategoryPreview
-          title="Goldstar Restaurants"
-          endpoint="/goldstar-a-grades"
-          restaurants={categoriesData.goldstar_a_grades}
-        />
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex justify-center">
+          <div className="w-[660px]">
+            <CategoryPreview
+              title="Borderline A Restaurants"
+              endpoint="/risky-a-grades"
+              restaurants={categoriesData.risky_a_grades}
+              bgColor="bg-red-50"
+            />
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <div className="w-[660px]">
+            <CategoryPreview
+              title="Goldstar Restaurants"
+              endpoint="/goldstar-a-grades"
+              restaurants={categoriesData.goldstar_a_grades}
+              bgColor="bg-green-50"
+            />
+          </div>
+        </div>
+      </div>
       {/* etc… */}
     </div>
   )
