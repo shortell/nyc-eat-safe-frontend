@@ -274,22 +274,31 @@ function RestaurantContent() {
                     </tr>
                   </thead>
                   <tbody>
-                    {insp.violations.map((v, i) => (
-                      <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-[#f6f4fa]"}>
-                        <td
-                          className={`border px-3 py-2 font-bold text-base ${
-                            v.critical_flag === "Critical"
-                              ? "text-[#ab224e]"
-                              : "text-[#2a3d83]"
-                          }`}
-                        >
-                          {v.critical_flag}
-                        </td>
-                        <td className="border px-3 py-2 text-gray-800 text-base leading-snug">
-                          {v.violation_description}
-                        </td>
-                      </tr>
-                    ))}
+                    {[...insp.violations]
+                      .sort((a, b) => {
+                        const priority = (v) =>
+                          v.critical_flag === 'Pest Critical'
+                            ? 0
+                            : v.critical_flag === 'Critical'
+                              ? 1
+                              : 2;
+                        return priority(a) - priority(b);
+                      })
+                      .map((v, i) => (
+                        <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#f6f4fa]'}>
+                          <td
+                            className={`border px-3 py-2 font-bold text-base ${v.critical_flag === 'Pest Critical' || v.critical_flag === 'Critical'
+                                ? 'text-[#ab224e]'
+                                : 'text-[#2a3d83]'
+                              }`}
+                          >
+                            {v.critical_flag === 'Pest Critical' ? 'Critical' : v.critical_flag}
+                          </td>
+                          <td className="border px-3 py-2 text-gray-800 text-base leading-snug">
+                            {v.violation_description}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>

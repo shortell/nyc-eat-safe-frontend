@@ -127,7 +127,7 @@ export default function Home() {
               title="Borderline A Restaurants"
               endpoint="/risky-a-grades"
               restaurants={categoriesData.risky_a_grades}
-              bgColor="bg-red-50"
+              bgColor="bg-red-100"
             />
           </div>
         </div>

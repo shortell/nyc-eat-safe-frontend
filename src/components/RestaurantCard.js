@@ -33,6 +33,86 @@
 // };
 
 // export default RestaurantCard;
+
+// import React from 'react';
+// import Link from 'next/link';
+// import { capitalizeWords } from '../utils/scoreUtils';
+// import GradeLetter from './GradeLetter';
+
+// const RestaurantCard = ({ restaurant }) => {
+//   const {
+//     camis,
+//     dba,
+//     street,
+//     borough,
+//     building,
+//     grade,
+//     has_mice,
+//     has_rats,
+//     has_roaches,
+//     critical_count
+//   } = restaurant;
+
+//   // Format pests using Oxford comma rules
+//   const pestLabels = [];
+//   if (has_mice) pestLabels.push('Mice');
+//   if (has_rats) pestLabels.push('Rats');
+//   if (has_roaches) pestLabels.push('Roaches');
+
+//   function formatWithOxfordComma(arr) {
+//     if (arr.length === 0) return '';
+//     if (arr.length === 1) return arr[0];
+//     if (arr.length === 2) return `${arr[0]} and ${arr[1]}`;
+//     return `${arr.slice(0, -1).join(', ')}, and ${arr[arr.length - 1]}`;
+//   }
+
+//   const finePrint = [];
+//   const pests = formatWithOxfordComma(pestLabels);
+//   if (pests) finePrint.push(pests);
+
+//   if (critical_count > 0) {
+//     finePrint.push(`${critical_count} Critical Violation${critical_count > 1 ? 's' : ''}`);
+//   }
+
+
+//   return (
+//     <Link href={`/restaurant?camis=${camis}`} legacyBehavior>
+//       <li className="bg-white p-5 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-200 border border-gray-200 w-full max-w-lg mx-auto">
+
+
+
+//         {/* Top: Restaurant Name + Address */}
+//         <div className="mb-4">
+//           <h3 className="text-lg font-semibold text-black">{capitalizeWords(dba)}</h3>
+//           <p className="text-gray-700">{capitalizeWords(street)}, {capitalizeWords(borough)}</p>
+//           <p className="text-sm text-gray-500">Building: {building}</p>
+//         </div>
+
+//         {/* Bottom Grid: Grade + Fine Print */}
+//         <div className="grid grid-cols-[auto_1fr] gap-8 items-start">
+//           {/* Grade */}
+//           <div className="justify-self-start">
+//             <GradeLetter grade={grade || 'N'} />
+//           </div>
+
+//           {/* Fine Print */}
+//           <div className="justify-self-end text-left">
+//             <p className="font-semibold mb-1 text-black">Fine Print</p>
+//             <ul className="list-disc pl-5 text-sm">
+//               {finePrint.map((item, index) => (
+//                 <li key={index} className={item.includes('Critical') ? 'text-orange-600' : 'text-red-600'}>
+//                   {item}
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+//         </div>
+//       </li>
+//     </Link>
+//   );
+// };
+
+// export default RestaurantCard;
 import React from 'react';
 import Link from 'next/link';
 import { capitalizeWords } from '../utils/scoreUtils';
@@ -49,10 +129,9 @@ const RestaurantCard = ({ restaurant }) => {
     has_mice,
     has_rats,
     has_roaches,
-    critical_count
+    critical_count,
   } = restaurant;
 
-  // Format pests using Oxford comma rules
   const pestLabels = [];
   if (has_mice) pestLabels.push('Mice');
   if (has_rats) pestLabels.push('Rats');
@@ -68,38 +147,37 @@ const RestaurantCard = ({ restaurant }) => {
   const finePrint = [];
   const pests = formatWithOxfordComma(pestLabels);
   if (pests) finePrint.push(pests);
-
   if (critical_count > 0) {
     finePrint.push(`${critical_count} Critical Violation${critical_count > 1 ? 's' : ''}`);
   }
 
-
   return (
     <Link href={`/restaurant?camis=${camis}`} legacyBehavior>
-      <li className="bg-white p-5 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-200 border border-gray-200 w-full max-w-lg mx-auto">
+      <li className="bg-white px-6 py-5 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-200 w-full max-w-md mx-auto space-y-4">
 
-
-
-        {/* Top: Restaurant Name + Address */}
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-black">{capitalizeWords(dba)}</h3>
+        {/* Header */}
+        <div className="space-y-1 border-b border-gray-200 pb-3">
+          <h3 className="text-lg font-bold text-[#222222]">{capitalizeWords(dba)}</h3>
           <p className="text-gray-700">{capitalizeWords(street)}, {capitalizeWords(borough)}</p>
           <p className="text-sm text-gray-500">Building: {building}</p>
         </div>
 
-        {/* Bottom Grid: Grade + Fine Print */}
-        <div className="grid grid-cols-[auto_1fr] gap-8 items-start">
+        {/* Grade & Fine Print Section */}
+        <div className="grid grid-cols-[auto_1fr] gap-6 items-start">
           {/* Grade */}
-          <div className="justify-self-start">
+          <div className="border border-gray-200 rounded-md p-2 bg-gray-50">
             <GradeLetter grade={grade || 'N'} />
           </div>
 
           {/* Fine Print */}
-          <div className="ml-16 justify-self-end text-left">
+          <div className="border border-gray-200 rounded-md p-3 bg-gray-50">
             <p className="font-semibold mb-1 text-black">Fine Print</p>
-            <ul className="list-disc pl-5 text-sm">
+            <ul className="list-disc pl-5 space-y-1 text-sm">
               {finePrint.map((item, index) => (
-                <li key={index} className={item.includes('Critical') ? 'text-orange-600' : 'text-red-600'}>
+                <li
+                  key={index}
+                  className={item.includes('Critical') ? 'text-orange-600' : 'text-red-600'}
+                >
                   {item}
                 </li>
               ))}
@@ -112,4 +190,5 @@ const RestaurantCard = ({ restaurant }) => {
 };
 
 export default RestaurantCard;
+
 
