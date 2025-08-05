@@ -123,42 +123,51 @@ const RestaurantCard = ({ restaurant }) => {
   }
 
   return (
-    <div className="bg-white px-6 py-5 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-200 w-full
-                  max-w-2xl md:max-w-3xl mx-auto space-y-4">
+    <div className="bg-white font-inter text-base antialiased rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-200 border border-gray-100 w-full max-w-2xl md:max-w-3xl mx-auto p-6 space-y-4">
       {/* Header */}
-      <div className="space-y-1 border-b border-gray-200 pb-3">
-        <h3 className="text-lg font-bold text-[#222222]">{capitalizeWords(dba)}</h3>
-        <div className="flex flex-wrap text-sm text-gray-700 gap-x-1">
+      <div className="space-y-1 border-b-2 border-gray-300 pb-3">
+        <h3 className="text-xl font-semibold text-[#232323] tracking-tight">{capitalizeWords(dba)}</h3>
+        <div className="flex flex-wrap items-center text-sm font-medium text-gray-700 gap-x-1">
           {building && <span>{building}</span>}
           <span className="truncate max-w-[160px]">{capitalizeWords(street)},</span>
           <span>{capitalizeWords(borough)}</span>
           {distance_miles !== undefined && (
-            <span className="text-gray-500">&nbsp;| {distance_miles.toFixed(2)} miles away</span>
+            <span className="text-gray-400 ml-2 text-xs font-normal">&bull; {distance_miles.toFixed(2)} mi</span>
           )}
         </div>
       </div>
 
-
-
       {/* Grade & Fine Print */}
-      <div className="grid grid-cols-1 md:grid-cols-[96px_minmax(0,1fr)] gap-4 md:gap-5 items-start">
-        {/* Grade */}
-        <div className="border border-gray-200 rounded-md p-2 bg-gray-50">
+      <div className="flex flex-row gap-4 md:gap-5 items-stretch">
+        {/* Grade Panel */}
+        <div
+          className="
+      border border-gray-100 rounded-xl 
+      p-2 bg-gray-50 shadow-sm 
+      flex flex-col items-center justify-start 
+      min-w-[96px] h-full
+    "
+        >
           <GradeLetter grade={grade || 'N'} />
         </div>
 
-        {/* Fine Print */}
-        <div className="border border-gray-200 rounded-md p-3 md:pr-6 bg-gray-50 w-full">
-          <p className="font-semibold mb-1 text-black">
-            {grade === 'A' ? 'Behind the "A"' : 'Red Flags'}
+        {/* Fine Print Panel */}
+        <div
+          className="
+      border border-gray-100 rounded-xl 
+      p-4 md:pr-6 bg-gray-50 shadow-sm 
+      flex-1 flex flex-col items-start justify-start 
+      h-full
+    "
+        >
+          <p className="font-semibold text-[#222222] tracking-wide">
+            {grade === 'A' ? "Behind the 'A'" : 'Red Flags'}
           </p>
-
-          {/* ✅ This is the internal list (keep it) */}
-          <ul className="list-disc pl-4 space-y-2 text-sm">
+          <ul className="list-none pl-0 space-y-1 text-[15px]">
             {finePrint.map((item, index) => (
               <li
                 key={index}
-                className={`break-words leading-tight ${item.includes('Critical') ? 'text-orange-600' : 'text-red-600'
+                className={`break-words leading-snug ${item.includes('Critical') ? 'text-orange-600' : 'text-red-600'
                   }`}
               >
                 {item}
@@ -168,6 +177,7 @@ const RestaurantCard = ({ restaurant }) => {
         </div>
       </div>
     </div>
+
   );
 };
 
