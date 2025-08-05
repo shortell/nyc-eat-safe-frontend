@@ -71,10 +71,10 @@ export default function Home() {
           <div className="flex justify-center md:justify-end">
             <div className="w-full max-w-[420px]">
               <CategoryPreview
-                title="Borderline A Restaurants"
+                title="Is This an A to You?"
                 endpoint="/risky-a-grades"
                 restaurants={categoriesData.risky_a_grades}
-                bgColor="bg-red-50"
+                bgColor="bg-red-100"
                 className="rounded-2xl shadow-xl border border-red-100 transition hover:scale-[1.015] duration-150"
               />
             </div>
@@ -82,10 +82,10 @@ export default function Home() {
           <div className="flex justify-center md:justify-start">
             <div className="w-full max-w-[420px]">
               <CategoryPreview
-                title="Goldstar Restaurants"
+                title="Gold Star Restaurants"
                 endpoint="/goldstar-a-grades"
                 restaurants={categoriesData.goldstar_a_grades}
-                bgColor="bg-green-50"
+                bgColor="bg-green-100"
                 className="rounded-2xl shadow-xl border border-green-100 transition hover:scale-[1.015] duration-150"
               />
             </div>
@@ -93,9 +93,6 @@ export default function Home() {
         </div>
         {/* You can add more categories here if needed */}
       </section>
-      <footer className="mt-16 mb-4 text-xs text-gray-400 text-center">
-        &copy; {new Date().getFullYear()} NYC Eat Safe Data updates daily
-      </footer>
     </main>
   );
 }
