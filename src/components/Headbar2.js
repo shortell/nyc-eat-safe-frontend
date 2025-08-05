@@ -17,9 +17,12 @@ const HeadBar2 = () => {
     return (
         <div className="bg-gradient-to-b from-[#2A3E83] via-[#1655A0] to-[#016CCE] bg-gradient-to-b from-[0%] via-[90%] to-[98%] text-white p-6">
             <h1 className="text-center text-4xl font-bold mb-2 font-mono">NYC Eat Safe</h1>
-            <p className="text-center text-base font-light italic tracking-wide text-gray-200 antialiased mb-4">
-  An A isn’t always an A
-</p>
+            <p className="text-center text-base font-light italic tracking-wide text-blue-100 antialiased mb-4">
+                An A isn’t always an A
+            </p>
+
+
+
 
             {/* Container for Searchbar (2/3) and BoroughSelect (1/3) */}
             <div className="flex w-full gap-4">

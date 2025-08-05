@@ -99,7 +99,9 @@ const RestaurantCard = ({ restaurant }) => {
     has_rats,
     has_roaches,
     critical_count,
+    distance_miles, // <-- Added
   } = restaurant;
+
 
   const pestLabels = [];
   if (has_mice) pestLabels.push('Mice');
@@ -126,10 +128,17 @@ const RestaurantCard = ({ restaurant }) => {
       {/* Header */}
       <div className="space-y-1 border-b border-gray-200 pb-3">
         <h3 className="text-lg font-bold text-[#222222]">{capitalizeWords(dba)}</h3>
-        <p className="text-gray-700 truncate">
-          {building && `${building} `}{capitalizeWords(street)}, {capitalizeWords(borough)}
-        </p>
+        <div className="flex flex-wrap text-sm text-gray-700 gap-x-1">
+          {building && <span>{building}</span>}
+          <span className="truncate max-w-[160px]">{capitalizeWords(street)},</span>
+          <span>{capitalizeWords(borough)}</span>
+          {distance_miles !== undefined && (
+            <span className="text-gray-500">&nbsp;| {distance_miles.toFixed(2)} miles away</span>
+          )}
+        </div>
       </div>
+
+
 
       {/* Grade & Fine Print */}
       <div className="grid grid-cols-1 md:grid-cols-[96px_minmax(0,1fr)] gap-4 md:gap-5 items-start">
