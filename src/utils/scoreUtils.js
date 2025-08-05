@@ -61,3 +61,20 @@ export function capitalizeWords(text) {
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(' ');
 }
+export function coerceFiniteNumber(v) {
+  if (typeof v === 'number') return Number.isFinite(v) ? v : NaN;
+  if (typeof v === 'string') {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : NaN;
+  }
+  return NaN;
+}
+
+/**
+ * Format miles with fixed fraction digits. Returns null when not a finite number.
+ * Example: formatMiles(1.234) -> "1.23 mi"
+ */
+export function formatMiles(v, fractionDigits = 2) {
+  const n = coerceFiniteNumber(v);
+  return Number.isFinite(n) ? `${n.toFixed(fractionDigits)} mi` : null;
+}
