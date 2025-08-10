@@ -23,17 +23,27 @@ Disallow: /
 User-agent: SemrushBot
 Disallow: /
 
-# Disallow all bots by default
-User-agent: *
-Disallow: /
-
-# Allow major search engines (whitelist approach)
+# Allow Google Search & inspection tools
 User-agent: Googlebot
 Allow: /
 
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Google-InspectionTool
+Allow: /
+
+# Allow Bing
 User-agent: Bingbot
 Allow: /
 Crawl-delay: 5
+
+# Block everything else
+User-agent: *
+Disallow: /
 
 # Sitemap location
 Sitemap: https://www.nyceatsafe.com/sitemap.xml
