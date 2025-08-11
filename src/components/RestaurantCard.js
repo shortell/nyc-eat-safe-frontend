@@ -87,7 +87,7 @@ const RestaurantCard = ({ restaurant }) => {
         {/* Fine Print Panel */}
         <div className="border border-gray-100 rounded-xl p-4 md:pr-6 bg-gray-50 shadow-sm flex-1 flex flex-col items-start justify-start h-full">
           <p className="font-semibold text-[#222222] tracking-wide">
-            {grade === 'A' ? "Behind the 'A'" : 'Red Flags'}
+            Red Flags
           </p>
 
           <ul className="list-none pl-0 space-y-1 text-[15px]">
