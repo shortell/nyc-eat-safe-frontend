@@ -291,12 +291,10 @@ function RestaurantContent({ camis }) {
                 {header.building} {header.street}, {header.borough}
               </p>
             </div>
-
-
           </div>
 
           {/* Inspections */}
-          <div className="space-y-8">
+          <div className="space-y-10">
             {restaurant_profile.map((insp, idx) => (
               <InspectionCard key={idx} inspection={insp} />
             ))}
@@ -307,6 +305,7 @@ function RestaurantContent({ camis }) {
   );
 }
 
+/** --- UPDATED: Clipboard-styled InspectionCard --- */
 function InspectionCard({ inspection }) {
   const sortedViolations = [...inspection.violations].sort((a, b) => {
     const priority = (v) =>
@@ -322,34 +321,79 @@ function InspectionCard({ inspection }) {
     });
 
   return (
-    <section className="bg-[#f9f7fc] rounded-xl shadow border p-2">
-      {/* Centered date */}
-      <div className="mb-4 pb-1 border-b border-gray-200 w-full flex justify-center">
-        <h2 className="text-xl font-semibold text-center" style={{ color: '#1a1a1a' }}>
-          {formatDate(inspection.inspection_date)}
-        </h2>
-      </div>
-
-      {/* Centered score + grade */}
-      <div className="w-full flex justify-center gap-8 mb-8">
-        <div className="flex flex-col items-center scale-110"> {/* 10% bigger */}
-          <GradeLetter grade={inspection.grade} />
+    <div className="relative mx-auto max-w-2xl">
+      {/* Clipboard board (wood) */}
+      <div
+        className="
+          relative rounded-2xl border border-amber-700/30 shadow-xl
+          p-3 pb-6
+          bg-gradient-to-b from-amber-200 via-amber-100 to-amber-200
+          dark:from-amber-300 dark:via-amber-200 dark:to-amber-300
+        "
+        style={{
+          backgroundImage:
+            'linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.02)), repeating-linear-gradient(90deg, rgba(120,53,15,0.06) 0 12px, transparent 12px 24px)',
+        }}
+      >
+        {/* Metal clip */}
+        <div
+          className="
+            absolute -top-5 left-1/2 -translate-x-1/2
+            w-44 h-10 rounded-b-xl border border-slate-400
+            bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400
+            shadow-[0_8px_16px_rgba(0,0,0,0.25)]
+          "
+        >
+          <div className="absolute inset-x-3 top-1 h-1.5 rounded bg-white/60" />
+          <div className="absolute left-3 top-2 w-2.5 h-2.5 rounded-full bg-slate-500/70 shadow-inner" />
+          <div className="absolute right-3 top-2 w-2.5 h-2.5 rounded-full bg-slate-500/70 shadow-inner" />
         </div>
-        <div className="flex flex-col items-center scale-110"> {/* 10% bigger */}
-          <ScoreBox score={inspection.score} />
-        </div>
+
+        {/* Paper sheet */}
+        <section
+          className="
+            relative mt-6 rounded-xl border border-gray-200
+            bg-white shadow-md
+            p-3 sm:p-4
+          "
+          style={{
+            backgroundImage:
+              'linear-gradient(white, white), repeating-linear-gradient(180deg, rgba(0,0,0,0.02) 0 34px, transparent 34px 68px)',
+            backgroundBlendMode: 'multiply',
+          }}
+        >
+          {/* Paper top punch holes (decorative) */}
+          <div className="absolute -top-2 left-8 w-3 h-3 rounded-full bg-gray-300/70 shadow-inner" />
+          <div className="absolute -top-2 right-8 w-3 h-3 rounded-full bg-gray-300/70 shadow-inner" />
+
+          {/* Centered date */}
+          <div className="mb-4 pb-2 border-b border-gray-200 w-full bg-blue-50 py-2">
+            <h2 className="text-xl font-semibold text-center text-neutral-900">
+              {formatDate(inspection.inspection_date)}
+            </h2>
+          </div>
+
+
+
+
+          {/* Centered score + grade */}
+          <div className="w-full flex justify-center gap-8 mb-6">
+            <div className="flex flex-col items-center scale-110">
+              <GradeLetter grade={inspection.grade} />
+            </div>
+            <div className="flex flex-col items-center scale-110">
+              <ScoreBox score={inspection.score} />
+            </div>
+          </div>
+
+          {/* Violations table */}
+          <ViolationsTable violations={sortedViolations} />
+        </section>
       </div>
-
-
-      <ViolationsTable violations={sortedViolations} />
-    </section>
+    </div>
   );
 }
-
-
-
-
-
+/** --- /UPDATED --- */
 
 function LoadingFallback() {
   return (
@@ -421,3 +465,4 @@ function SEOHead({ camis, name, address, score }) {
     </Head>
   );
 }
+

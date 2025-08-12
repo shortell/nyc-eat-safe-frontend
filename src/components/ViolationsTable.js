@@ -104,7 +104,7 @@ export default function ViolationsTable({ violations }) {
                                 paddingY: '6px', // Less vertical space
                             }}
                         >
-                            Description
+                            Violations
                         </TableCell>
                     </TableRow>
                 </TableHead>
