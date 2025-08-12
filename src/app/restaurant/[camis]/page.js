@@ -59,7 +59,6 @@
 //         name={header.dba}
 //         address={`${header.building} ${header.street}, ${header.borough} ${header.zipcode}`}
 //         score={mostRecentScore}
-//         reviewCount={restaurant_profile.length}
 //       />
 //       <div className="w-full min-h-screen bg-[#f5f2fa] py-8 px-2">
 //         <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
@@ -135,7 +134,7 @@
 //                   {v.critical_flag === 'Pest Critical' ? 'Critical' : v.critical_flag}
 //                 </td>
 //                 <td className="border px-3 py-2 text-gray-800 text-base leading-snug">
-//                   {v.violation_description}
+//                   {v.violation_summary}
 //                 </td>
 //               </tr>
 //             ))}
@@ -173,7 +172,7 @@
 //   );
 // }
 
-// function SEOHead({ camis, name, address, score, reviewCount }) {
+// function SEOHead({ camis, name, address, score }) {
 //   const canonicalUrl = `https://www.nyceatsafe.com/restaurant/${camis}`;
 //   const description = `See NYC health inspection scores and violations for ${name}, located at ${address}.`;
 
@@ -193,7 +192,6 @@
 //       aggregateRating: {
 //         "@type": "AggregateRating",
 //         "ratingValue": score,
-//         "reviewCount": reviewCount,
 //       },
 //     }),
 //   };
@@ -223,6 +221,8 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useParams } from 'next/navigation';
 import Head from 'next/head';
 import ScoreBox from '@/components/ScoreBox';
+import GradeLetter from '@/components/GradeLetter';
+import ViolationsTable from '@/components/ViolationsTable'; // ✅ New import
 
 export default function RestaurantPage() {
   const params = useParams();
@@ -284,16 +284,15 @@ function RestaurantContent({ camis }) {
           {/* Header */}
           <div className="mb-6 border-b pb-4 flex items-center">
             <div>
-              <h1 className="text-3xl font-bold text-[#2a3d83]">{header.dba}</h1>
+              <h1 className="text-3xl font-bold" style={{ color: '#1a1a1a' }}>
+                {header.dba}
+              </h1>
               <p className="text-gray-700 mt-1 font-medium">
-                {header.street}, {header.borough} {header.zipcode}
+                {header.building} {header.street}, {header.borough}
               </p>
             </div>
-            {mostRecentScore !== null && (
-              <div className="ml-auto">
-                <ScoreBox score={mostRecentScore} />
-              </div>
-            )}
+
+
           </div>
 
           {/* Inspections */}
@@ -315,54 +314,42 @@ function InspectionCard({ inspection }) {
     return priority(a) - priority(b);
   });
 
+  const formatDate = (dateStr) =>
+    new Date(dateStr).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    });
+
   return (
-    <section className="bg-[#f9f7fc] rounded-xl shadow border p-5">
-      <div className="flex flex-wrap items-center gap-4 mb-2">
-        <h2 className="text-lg font-semibold text-[#2a3d83]">
-          {inspection.inspection_type}
+    <section className="bg-[#f9f7fc] rounded-xl shadow border p-2">
+      {/* Centered date */}
+      <div className="mb-4 pb-1 border-b border-gray-200 w-full flex justify-center">
+        <h2 className="text-xl font-semibold text-center" style={{ color: '#1a1a1a' }}>
+          {formatDate(inspection.inspection_date)}
         </h2>
-        <span className="text-gray-500">{inspection.inspection_date}</span>
-        <div className="ml-auto flex items-center gap-3">
-          <span className="inline-block bg-[#e4eaff] text-[#2a3d83] px-3 py-1 rounded-full font-bold">
-            Score: {inspection.score}
-          </span>
-          <span className="inline-block bg-[#f7d6e0] text-[#ab224e] px-3 py-1 rounded-full font-bold">
-            Grade: {inspection.grade}
-          </span>
+      </div>
+
+      {/* Centered score + grade */}
+      <div className="w-full flex justify-center gap-8 mb-8">
+        <div className="flex flex-col items-center scale-110"> {/* 10% bigger */}
+          <GradeLetter grade={inspection.grade} />
+        </div>
+        <div className="flex flex-col items-center scale-110"> {/* 10% bigger */}
+          <ScoreBox score={inspection.score} />
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full mt-3 table-auto border-collapse rounded-xl overflow-hidden">
-          <thead>
-            <tr className="bg-[#e9e7f5] text-[#2a3d83]">
-              <th className="border px-3 py-2 font-semibold w-32">Critical?</th>
-              <th className="border px-3 py-2 font-semibold">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedViolations.map((v, i) => (
-              <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#f6f4fa]'}>
-                <td
-                  className={`border px-3 py-2 font-bold text-base ${
-                    v.critical_flag === 'Pest Critical' || v.critical_flag === 'Critical'
-                      ? 'text-[#ab224e]'
-                      : 'text-[#2a3d83]'
-                  }`}
-                >
-                  {v.critical_flag === 'Pest Critical' ? 'Critical' : v.critical_flag}
-                </td>
-                <td className="border px-3 py-2 text-gray-800 text-base leading-snug">
-                  {v.violation_summary}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+
+      <ViolationsTable violations={sortedViolations} />
     </section>
   );
 }
+
+
+
+
+
 
 function LoadingFallback() {
   return (
@@ -434,5 +421,3 @@ function SEOHead({ camis, name, address, score }) {
     </Head>
   );
 }
-
-

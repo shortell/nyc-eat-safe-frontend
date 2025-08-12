@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@fontsource/roboto": "^5.2.5",
     "@mui/icons-material": "^7.0.1",
-    "@mui/material": "^7.0.1",
+    "@mui/material": "^7.3.1",
     "next": "15.2.4",
     "nyc-eat-safe-frontend": "file:",
     "react": "^19.0.0",
