@@ -74,40 +74,38 @@ import Paper from '@mui/material/Paper';
 export default function ViolationsTable({ violations }) {
     return (
         <TableContainer component={Paper} sx={{ width: '100%' }}>
-            <Table sx={{ width: '100%', tableLayout: 'fixed' }}>
+            <Table sx={{ width: '100%' }}>
                 <TableHead>
-                    <TableRow
-                        sx={{
-                            backgroundColor: '#2f448f',
-                        }}
-                    >
+                    <TableRow sx={{ backgroundColor: '#2f448f' }}>
                         <TableCell
                             sx={{
-                                width: 120,
+                                width: '20%', // narrower column
                                 whiteSpace: 'nowrap',
                                 fontWeight: 700,
                                 fontSize: '1rem',
                                 color: '#fff',
-                                paddingY: '6px', // Less vertical space
+                                py: '6px',
                             }}
                         >
                             Flag
                         </TableCell>
                         <TableCell
                             sx={{
+                                width: '80%', // wider column
                                 whiteSpace: 'normal',
                                 wordBreak: 'break-word',
                                 overflowWrap: 'anywhere',
                                 fontWeight: 700,
                                 fontSize: '1rem',
                                 color: '#fff',
-                                paddingY: '6px', // Less vertical space
+                                py: '6px',
                             }}
                         >
                             Violations
                         </TableCell>
                     </TableRow>
                 </TableHead>
+
                 <TableBody>
                     {violations.map((v, i) => (
                         <TableRow
@@ -118,6 +116,7 @@ export default function ViolationsTable({ violations }) {
                         >
                             <TableCell
                                 sx={{
+                                    width: '20%', // match header
                                     whiteSpace: 'nowrap',
                                     fontWeight: 600,
                                     color:
@@ -130,6 +129,7 @@ export default function ViolationsTable({ violations }) {
                             </TableCell>
                             <TableCell
                                 sx={{
+                                    width: '80%', // match header
                                     whiteSpace: 'normal',
                                     wordBreak: 'break-word',
                                     overflowWrap: 'anywhere',
@@ -144,6 +144,7 @@ export default function ViolationsTable({ violations }) {
                 </TableBody>
             </Table>
         </TableContainer>
+
     );
 }
 
