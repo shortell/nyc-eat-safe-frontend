@@ -7,7 +7,7 @@ export async function GET() {
   const restaurants = await response.json(); // [{ camis: "123" }, { camis: "456" }, ...]
 
   // 2. Static pages
-  const staticRoutes = ['', '/about', '/near-me', '/feedback'];
+  const staticRoutes = ['/', '/about', '/near-me', '/feedback'];
   const staticUrls = staticRoutes.map(
     (path) => `
       <url>
