@@ -197,22 +197,25 @@ const RestaurantCard = ({ restaurant }) => {
         {/* Fine Print Panel */}
         <div className="border border-gray-100 rounded-xl p-4 md:pr-6 bg-gray-50 shadow-sm flex-1 flex flex-col items-start justify-start h-full">
           <p className="font-semibold text-[#222222] tracking-wide">
-            Red Flags
+            {finePrint.length > 0 ? "Red Flags" : "Eat Safe"}
           </p>
 
-          <ul className="list-none pl-0 space-y-1 text-[15px]">
-            {finePrint.map((item, index) => (
-              <li
-                key={index}
-                className={`break-words leading-snug ${
-                  item.includes('Critical') ? 'text-orange-600' : 'text-red-600'
-                }`}
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
+          {finePrint.length > 0 && (
+            <ul className="list-none pl-0 space-y-1 text-[15px]">
+              {finePrint.map((item, index) => (
+                <li
+                  key={index}
+                  className={`break-words leading-snug ${item.includes("Critical") ? "text-orange-600" : "text-red-600"
+                    }`}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
+
+
       </div>
     </div>
   );

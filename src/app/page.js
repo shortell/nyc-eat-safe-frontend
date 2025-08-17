@@ -59,7 +59,7 @@ export default function Home() {
       <div className="flex justify-center md:justify-end">
         <div className="w-full max-w-[420px]">
           <CategoryPreview
-            title="Is This an A to You?"
+            title="Questionable A Grades"
             endpoint="/risky-a-grades"
             restaurants={categoriesData.risky_a_grades}
             bgColor="bg-red-100"
