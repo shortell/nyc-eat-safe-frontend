@@ -42,45 +42,49 @@
 //   });
 // }
 // app/sitemap.xml/route.js (or app/sitemap/route.js if you prefer)
-export const revalidate = 60 * 60; // 1h; adjust as you like
+// app/sitemap.xml/route.js
+
+// Revalidate once per hour (3600 seconds)
+export const revalidate = 3600;
 
 export async function GET() {
   const baseUrl = 'https://www.nyceatsafe.com';
-  // YYYY-MM-DD (Bing is pickier; keep it simple)
+  // Use YYYY-MM-DD format (Bing prefers it simple)
   const today = new Date().toISOString().split('T')[0];
 
-  // 1) Fetch IDs safely
+  // 1) Fetch restaurant IDs safely
   let restaurants = [];
   try {
     const resp = await fetch('https://nyc-eat-safe-production.up.railway.app/sitemap-ids', {
-      // avoid being blocked by WAFs
       headers: { 'User-Agent': 'SitemapGenerator/1.0 (+https://www.nyceatsafe.com)' },
       cache: 'no-store',
     });
     if (!resp.ok) throw new Error(`Upstream ${resp.status}`);
     restaurants = await resp.json(); // [{ camis: "123" }, ...]
   } catch (e) {
-    // Fail closed: still return a valid sitemap with static URLs
+    // On error, just serve static URLs
     restaurants = [];
   }
 
   // 2) Static URLs
   const staticRoutes = ['/', '/about', '/near-me', '/feedback'];
   const staticUrls = staticRoutes.map(
-    (p) => `<url><loc>${baseUrl}${p}</loc><lastmod>${today}</lastmod></url>`
+    (p) =>
+      `<url><loc>${baseUrl}${p}</loc><lastmod>${today}</lastmod></url>`
   );
 
-  // 3) Dynamic URLs
+  // 3) Dynamic restaurant URLs
   const dynamicUrls = restaurants.map(
-    ({ camis }) => `<url><loc>${baseUrl}/restaurant/${camis}</loc><lastmod>${today}</lastmod></url>`
+    ({ camis }) =>
+      `<url><loc>${baseUrl}/restaurant/${camis}</loc><lastmod>${today}</lastmod></url>`
   );
 
-  // 4) XML (no leading whitespace/newline before the declaration!)
+  // 4) Build XML (no whitespace before the XML declaration!)
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?>` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` +
-      staticUrls.join('') +
-      dynamicUrls.join('') +
+    staticUrls.join('') +
+    dynamicUrls.join('') +
     `</urlset>`;
 
   return new Response(xml, {
