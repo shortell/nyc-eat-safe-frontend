@@ -114,12 +114,14 @@
 // app/about/page.js
 import ScoreHistogram from "@/components/ScoreHistogram";
 
-export const revalidate = 60 * 60; // Revalidate the page every 1 hour
+export const revalidate = 3600; // Revalidate the page every 1 hour
+
 
 async function getBins() {
     const res = await fetch("https://nyc-eat-safe-production.up.railway.app/about", {
-        next: { revalidate: 60 * 60 },
+        next: { revalidate: 3600 },
     });
+
     if (!res.ok) throw new Error(`Failed to fetch histogram: ${res.status}`);
     return res.json(); // [{ bin_value, count }, ...]
 }
