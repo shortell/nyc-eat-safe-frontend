@@ -32,10 +32,8 @@
 //     distance_miles,
 //   } = restaurant;
 
-//   // Distance text (null when not renderable)
 //   const distanceText = formatMiles(distance_miles);
 
-//   // Pest label generation
 //   const pestLabels = [];
 //   if (has_mice) pestLabels.push('Mice');
 //   if (has_rats) pestLabels.push('Rats');
@@ -68,7 +66,6 @@
 //           <span className="truncate max-w-[160px]">{capitalizeWords(street)},</span>
 //           <span>{capitalizeWords(borough)}</span>
 
-//           {/* Distance (only when finite) */}
 //           {distanceText && (
 //             <span className="text-gray-400 ml-2 text-xs font-normal">
 //               &bull; {distanceText}
@@ -81,35 +78,38 @@
 //       <div className="flex flex-row gap-4 md:gap-5 items-stretch">
 //         {/* Grade Panel */}
 //         <div className="border border-gray-100 rounded-xl p-2 bg-gray-50 shadow-sm flex flex-col items-center justify-start min-w-[96px] h-full">
+//           <p className="font-semibold text-black whitespace-nowrap mb-1">City Grade</p>
 //           <GradeLetter grade={grade || 'N'} />
 //         </div>
 
 //         {/* Fine Print Panel */}
 //         <div className="border border-gray-100 rounded-xl p-4 md:pr-6 bg-gray-50 shadow-sm flex-1 flex flex-col items-start justify-start h-full">
 //           <p className="font-semibold text-[#222222] tracking-wide">
-//             Red Flags
+//             {finePrint.length > 0 ? "Red Flags" : "Eat Safe"}
 //           </p>
 
-//           <ul className="list-none pl-0 space-y-1 text-[15px]">
-//             {finePrint.map((item, index) => (
-//               <li
-//                 key={index}
-//                 className={`break-words leading-snug ${
-//                   item.includes('Critical') ? 'text-orange-600' : 'text-red-600'
-//                 }`}
-//               >
-//                 {item}
-//               </li>
-//             ))}
-//           </ul>
+//           {finePrint.length > 0 && (
+//             <ul className="list-none pl-0 space-y-1 text-[15px]">
+//               {finePrint.map((item, index) => (
+//                 <li
+//                   key={index}
+//                   className={`break-words leading-snug ${item.includes("Critical") ? "text-orange-600" : "text-red-600"
+//                     }`}
+//                 >
+//                   {item}
+//                 </li>
+//               ))}
+//             </ul>
+//           )}
 //         </div>
+
+
 //       </div>
 //     </div>
 //   );
 // };
 
 // export default RestaurantCard;
-
 import React from 'react';
 import { capitalizeWords, formatMiles } from '../utils/scoreUtils';
 import GradeLetter from './GradeLetter';
@@ -160,9 +160,16 @@ const RestaurantCard = ({ restaurant }) => {
 
   const finePrint = [];
   const pests = formatWithOxfordComma(pestLabels);
+
+  // Push pests first (if any)
   if (pests) finePrint.push(pests);
+
+  // If there is at least one pest AND at least 1 critical violation,
+  // prefix the critical text with '+' (no space). Otherwise, no '+'.
+  const hasAnyPest = Boolean(has_mice || has_rats || has_roaches);
   if (critical_count > 0) {
-    finePrint.push(`${critical_count} Critical Violation${critical_count > 1 ? 's' : ''}`);
+    const critBase = `${critical_count} Critical Violation${critical_count > 1 ? 's' : ''}`;
+    finePrint.push(hasAnyPest ? `+${critBase}` : critBase);
   }
 
   return (
@@ -175,8 +182,13 @@ const RestaurantCard = ({ restaurant }) => {
 
         <div className="flex flex-wrap items-center text-sm font-medium text-gray-700 gap-x-1">
           {building && <span>{building}</span>}
-          <span className="truncate max-w-[160px]">{capitalizeWords(street)},</span>
-          <span>{capitalizeWords(borough)}</span>
+          {street && (
+            <span className="truncate max-w-[160px]">
+              {capitalizeWords(street)}
+              {borough ? ',' : ''}
+            </span>
+          )}
+          {borough && <span>{capitalizeWords(borough)}</span>}
 
           {distanceText && (
             <span className="text-gray-400 ml-2 text-xs font-normal">
@@ -197,28 +209,31 @@ const RestaurantCard = ({ restaurant }) => {
         {/* Fine Print Panel */}
         <div className="border border-gray-100 rounded-xl p-4 md:pr-6 bg-gray-50 shadow-sm flex-1 flex flex-col items-start justify-start h-full">
           <p className="font-semibold text-[#222222] tracking-wide">
-            {finePrint.length > 0 ? "Red Flags" : "Eat Safe"}
+            {finePrint.length > 0 ? 'Red Flags' : 'Eat Safe'}
           </p>
 
           {finePrint.length > 0 && (
             <ul className="list-none pl-0 space-y-1 text-[15px]">
-              {finePrint.map((item, index) => (
-                <li
-                  key={index}
-                  className={`break-words leading-snug ${item.includes("Critical") ? "text-orange-600" : "text-red-600"
+              {finePrint.map((item, index) => {
+                const isCritical = item.includes('Critical');
+                return (
+                  <li
+                    key={index}
+                    className={`break-words leading-snug ${
+                      isCritical ? 'text-orange-600 whitespace-nowrap' : 'text-red-600'
                     }`}
-                >
-                  {item}
-                </li>
-              ))}
+                  >
+                    {item}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
-
-
       </div>
     </div>
   );
 };
 
 export default RestaurantCard;
+
