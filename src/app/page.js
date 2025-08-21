@@ -45,44 +45,44 @@ export default function Home() {
 
   return (
     <main className="min-h-screen w-full flex flex-col items-center bg-[#f6f3fa] px-2 pb-8">
-  {/* Header */}
-  <div className="w-full max-w-5xl mx-auto px-3 my-1">
-    <p className="text-sm text-center text-gray-500">
-      Public data from the NYC Dept. of Health.
-    </p>
-  </div>
-
-  {/* Category Previews */}
-  <section className="w-full max-w-5xl mx-auto flex flex-col pb-8">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 md:gap-y-0 md:gap-x-3 px-2">
-      {/* Risky A */}
-      <div className="flex justify-center md:justify-end">
-        <div className="w-full max-w-[420px]">
-          <CategoryPreview
-            title="Questionable A Grades"
-            endpoint="/risky-a-grades"
-            restaurants={categoriesData.risky_a_grades}
-            bgColor="bg-red-100"
-            className="rounded-2xl shadow-xl border border-red-100 transition hover:scale-[1.015] duration-150"
-          />
-        </div>
+      {/* Header */}
+      <div className="w-full max-w-5xl mx-auto px-3 my-1">
+        <p className="text-sm text-center text-gray-500">
+          Public data from the NYC Dept. of Health.
+        </p>
       </div>
 
-      {/* Gold Star */}
-      <div className="flex justify-center md:justify-start">
-        <div className="w-full max-w-[420px]">
-          <CategoryPreview
-            title="Gold Star Restaurants"
-            endpoint="/goldstar-a-grades"
-            restaurants={categoriesData.goldstar_a_grades}
-            bgColor="bg-green-100"
-            className="rounded-2xl shadow-xl border border-green-100 transition hover:scale-[1.015] duration-150"
-          />
+      {/* Category Previews */}
+      <section className="w-full max-w-5xl mx-auto flex flex-col pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 md:gap-y-0 md:gap-x-3 px-2">
+          {/* Risky A */}
+          <div className="flex justify-center md:justify-end">
+            <div className="w-full max-w-[420px]">
+              <CategoryPreview
+                title="Questionable A Grades"
+                endpoint="/risky-a-grades"
+                restaurants={categoriesData.risky_a_grades}
+                bgColor="bg-red-100"
+                className="rounded-2xl shadow-xl border border-red-100 transition hover:scale-[1.015] duration-150"
+              />
+            </div>
+          </div>
+
+          {/* Gold Star */}
+          <div className="flex justify-center md:justify-start">
+            <div className="w-full max-w-[420px]">
+              <CategoryPreview
+                title="Gold Star Restaurants"
+                endpoint="/goldstar-a-grades"
+                restaurants={categoriesData.goldstar_a_grades}
+                bgColor="bg-green-100"
+                className="rounded-2xl shadow-xl border border-green-100 transition hover:scale-[1.015] duration-150"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-</main>
+      </section>
+    </main>
 
   );
 }
