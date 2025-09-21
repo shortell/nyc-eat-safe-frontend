@@ -287,7 +287,7 @@ export default async function RestaurantPage({ params }) {
               />
             </svg>
             <p className="text-sm leading-6">
-              <span className="font-semibold">Disclaimer: </span>
+              <span className="font-semibold">Note: </span>
               Critical violations are those most likely to contribute to food-borne illness
             </p>
           </div>
