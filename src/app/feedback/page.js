@@ -15,7 +15,7 @@ export default function FeedbackPage() {
     const payload = { email, message };
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/feedback`, {
+      const res = await fetch(`https://nyc-eat-safe-dev-production.up.railway.app/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

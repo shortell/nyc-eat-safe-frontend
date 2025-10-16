@@ -118,7 +118,8 @@ export const revalidate = 3600; // Revalidate the page every 1 hour
 
 
 async function getBins() {
-    const res = await fetch("https://nyc-eat-safe-production.up.railway.app/about", {
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_RAILWAY_BACKEND_ENDPOINT}/about`, {
         next: { revalidate: 3600 },
     });
 

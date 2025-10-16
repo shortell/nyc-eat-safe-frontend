@@ -15,7 +15,8 @@ const HeadBar = ({ selectedBoroughs }) => {
     const performSearch = React.useCallback(async (query) => {
         if (query.trim() !== "") {
             try {
-                const response = await fetch('https://nyc-eat-safe-production.up.railway.app/search', {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_RAILWAY_BACKEND_ENDPOINT}/search`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

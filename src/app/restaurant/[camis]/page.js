@@ -211,7 +211,7 @@ import ViolationsTable from "@/components/ViolationsTable";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://nyc-eat-safe-production.up.railway.app";
+  "https://nyc-eat-safe-dev-production.up.railway.app";
 
 async function getRestaurant(camis) {
   const res = await fetch(`${BASE_URL}/restaurant/${parseInt(camis, 10)}`, {

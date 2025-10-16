@@ -11,8 +11,10 @@ export default function Home() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
+        console.log("ENV:", process.env.NEXT_PUBLIC_RAILWAY_BACKEND_ENDPOINT);
+
         const res = await fetch(
-          "https://nyc-eat-safe-production.up.railway.app/home"
+          `${process.env.NEXT_PUBLIC_RAILWAY_BACKEND_ENDPOINT}/home`
         );
         if (!res.ok) throw new Error("Failed to fetch home data");
         setCategoriesData(await res.json());
