@@ -5,7 +5,7 @@
 
 // const BASE_URL =
 //   process.env.NEXT_PUBLIC_BASE_URL ||
-//   "https://nyc-eat-safe-production.up.railway.app";
+//   "https://nyc-eat-safe-dev-production.up.railway.app";
 
 // async function getRestaurant(camis) {
 //   const res = await fetch(`${BASE_URL}/restaurant/${parseInt(camis, 10)}`, {
@@ -59,6 +59,30 @@
 //             <h1 className="text-3xl font-bold text-[#1a1a1a]">{header.dba}</h1>
 //             <p className="text-gray-700 mt-1 font-medium">
 //               {header.building} {header.street}, {header.borough}
+//             </p>
+//           </div>
+//         </div>
+
+//         {/* Disclaimer */}
+//         <div className="mb-8">
+//           <div
+//             role="note"
+//             aria-label="Disclaimer"
+//             className="flex items-start gap-3 rounded-xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-amber-900"
+//           >
+//             <svg
+//               aria-hidden="true"
+//               viewBox="0 0 24 24"
+//               className="mt-0.5 h-5 w-5 flex-none"
+//             >
+//               <path
+//                 d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm0 5.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zm-1.25 4h2.5a.75.75 0 0 1 .75.75v6a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75v-6a.75.75 0 0 1 .75-.75z"
+//                 fill="currentColor"
+//               />
+//             </svg>
+//             <p className="text-sm leading-6">
+//               <span className="font-semibold">Note: </span>
+//               Critical violations are those most likely to contribute to food-borne illness
 //             </p>
 //           </div>
 //         </div>
@@ -204,6 +228,7 @@
 //     </div>
 //   );
 // }
+
 import { notFound } from "next/navigation";
 import GradeLetter from "@/components/GradeLetter";
 import ScoreBox from "@/components/ScoreBox";
@@ -224,7 +249,7 @@ async function getRestaurant(camis) {
 }
 
 export async function generateMetadata({ params }) {
-  const { camis } = await params; // <-- await params
+  const { camis } = await params;
   const data = await getRestaurant(camis);
   const header = data.restaurant_details?.[0] || {};
   const profile = data.restaurant_profile || [];
@@ -232,15 +257,24 @@ export async function generateMetadata({ params }) {
   const grade = profile[0]?.grade ?? "N";
 
   const name = header.dba || "Restaurant";
-  const address = `${header.building} ${header.street}, ${header.borough} ${header.zipcode}`;
+  const address = `${header.building || ""} ${header.street || ""}`.trim();
+  const fullAddress = `${address}, ${header.borough || ""} ${header.zipcode || ""}`.trim();
   const canonical = `https://www.nyceatsafe.com/restaurant/${camis}`;
-  const description = `See NYC health inspection details for ${name} at ${address}. Grade: ${grade}${score != null ? `, Score: ${score}` : ""}.`;
+  const description = `See NYC health inspection details for ${name} at ${fullAddress}. Grade: ${grade}${score != null ? `, Score: ${score}` : ""}.`;
 
   return {
     title: `${name} | NYC Health Grade | NYC Eat Safe`,
     description,
     alternates: { canonical },
-    keywords: [name, "NYC Eat Safe", "NYC health inspection", header.borough, header.zipcode, grade, String(score ?? "")].filter(Boolean),
+    keywords: [
+      name,
+      "NYC Eat Safe",
+      "NYC health inspection",
+      header.borough,
+      header.zipcode,
+      grade,
+      String(score ?? "")
+    ].filter(Boolean),
     openGraph: {
       title: `${name} | NYC Health Grade`,
       description,
@@ -251,106 +285,115 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function RestaurantPage({ params }) {
-  const { camis } = await params; // <-- await params
+  const { camis } = await params;
   const data = await getRestaurant(camis);
   const header = data.restaurant_details[0];
   const profile = data.restaurant_profile || [];
 
+  // Build structured data safely
+  const restaurantSchema = {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    name: header.dba || "Restaurant",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: `${header.building || ""} ${header.street || ""}`.trim(),
+      addressLocality: header.borough || "",
+      addressRegion: "NY",
+      postalCode: header.zipcode || "",
+      addressCountry: "US",
+    },
+    url: `https://www.nyceatsafe.com/restaurant/${camis}`,
+  };
+
+  // Add description if we have sufficient data
+  if (header.dba && (header.building || header.street)) {
+    restaurantSchema.description = `NYC health inspection information for ${header.dba} at ${header.building || ""} ${header.street || ""}, ${header.borough || ""} ${header.zipcode || ""}`.trim();
+  }
+
+  // Build additionalProperty array safely
+  const additionalProperties = [];
+
+  if (profile?.[0]?.grade) {
+    additionalProperties.push({
+      "@type": "PropertyValue",
+      name: "NYC Inspection Grade",
+      value: String(profile[0].grade),
+    });
+  }
+
+  if (profile?.[0]?.score != null && !isNaN(profile[0].score)) {
+    additionalProperties.push({
+      "@type": "PropertyValue",
+      name: "NYC Inspection Score",
+      value: String(profile[0].score),
+    });
+  }
+
+  // Only add additionalProperty if we have data
+  if (additionalProperties.length > 0) {
+    restaurantSchema.additionalProperty = additionalProperties;
+  }
+
   return (
-    <div className="w-full min-h-screen bg-[#f5f2fa] py-8 px-2">
-      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
-        {/* Header */}
-        <div className="mb-6 border-b pb-4 flex items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-[#1a1a1a]">{header.dba}</h1>
-            <p className="text-gray-700 mt-1 font-medium">
-              {header.building} {header.street}, {header.borough}
-            </p>
+    <>
+      <div className="w-full min-h-screen bg-[#f5f2fa] py-8 px-2">
+        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+          {/* Header */}
+          <div className="mb-6 border-b pb-4 flex items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-[#1a1a1a]">{header.dba}</h1>
+              <p className="text-gray-700 mt-1 font-medium">
+                {header.building} {header.street}, {header.borough}
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Disclaimer */}
-        <div className="mb-8">
-          <div
-            role="note"
-            aria-label="Disclaimer"
-            className="flex items-start gap-3 rounded-xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-amber-900"
-          >
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              className="mt-0.5 h-5 w-5 flex-none"
+          {/* Disclaimer */}
+          <div className="mb-8">
+            <div
+              role="note"
+              aria-label="Disclaimer"
+              className="flex items-start gap-3 rounded-xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-amber-900"
             >
-              <path
-                d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm0 5.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zm-1.25 4h2.5a.75.75 0 0 1 .75.75v6a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75v-6a.75.75 0 0 1 .75-.75z"
-                fill="currentColor"
-              />
-            </svg>
-            <p className="text-sm leading-6">
-              <span className="font-semibold">Note: </span>
-              Critical violations are those most likely to contribute to food-borne illness
-            </p>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="mt-0.5 h-5 w-5 flex-none"
+              >
+                <path
+                  d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm0 5.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zm-1.25 4h2.5a.75.75 0 0 1 .75.75v6a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75v-6a.75.75 0 0 1 .75-.75z"
+                  fill="currentColor"
+                />
+              </svg>
+              <p className="text-sm leading-6">
+                <span className="font-semibold">Note: </span>
+                Critical violations are those most likely to contribute to food-borne illness
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Inspections */}
-        <div className="space-y-10">
-          {profile.map((insp, idx) => (
-            <InspectionCard key={idx} inspection={insp} />
-          ))}
+          {/* Inspections */}
+          <div className="space-y-10">
+            {profile.map((insp, idx) => (
+              <InspectionCard key={idx} inspection={insp} />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Structured data (no AggregateRating) */}
+      {/* Structured data with proper validation */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Restaurant",
-            name: header.dba,
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: `${header.building} ${header.street}`,
-              addressLocality: header.borough,
-              addressRegion: "NY",
-              postalCode: header.zipcode,
-              addressCountry: "US",
-            },
-            url: `https://www.nyceatsafe.com/restaurant/${camis}`,
-            description: `NYC health inspection information for ${header.dba} at ${header.building} ${header.street}, ${header.borough} ${header.zipcode}.`,
-            ...(profile?.[0] && (profile[0].grade || profile[0].score != null)
-              ? {
-                  additionalProperty: [
-                    ...(profile[0].grade
-                      ? [
-                          {
-                            "@type": "PropertyValue",
-                            name: "NYC Inspection Grade",
-                            value: profile[0].grade,
-                          },
-                        ]
-                      : []),
-                    ...(profile[0].score != null
-                      ? [
-                          {
-                            "@type": "PropertyValue",
-                            name: "NYC Inspection Score",
-                            value: String(profile[0].score),
-                          },
-                        ]
-                      : []),
-                  ],
-                }
-              : {}),
-          }),
+          __html: JSON.stringify(restaurantSchema),
         }}
       />
-    </div>
+    </>
   );
 }
 
-/** --- Inline clipboard-styled InspectionCard (server) --- */
+/** Inline clipboard-styled InspectionCard */
 function InspectionCard({ inspection }) {
   const sortedViolations = [...(inspection.violations || [])].sort((a, b) => {
     const pr = (v) =>
@@ -434,4 +477,3 @@ function InspectionCard({ inspection }) {
     </div>
   );
 }
-
