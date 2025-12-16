@@ -1,66 +1,3 @@
-// 'use client';
-
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import Paper from '@mui/material/Paper';
-
-// export default function ViolationsTable({ violations }) {
-//     return (
-//         <TableContainer component={Paper} sx={{ width: '100%' }}>
-//             <Table sx={{ width: '100%', tableLayout: 'fixed' }}>
-//                 <TableHead>
-//                     <TableRow>
-//                         <TableCell sx={{ width: 120, whiteSpace: 'nowrap', fontWeight: 'bold' }}>
-//                             Flag
-//                         </TableCell>
-//                         <TableCell
-//                             sx={{
-//                                 whiteSpace: 'normal',
-//                                 wordBreak: 'break-word',
-//                                 overflowWrap: 'anywhere',
-//                                 fontWeight: 'bold',
-//                             }}
-//                         >
-//                             Description
-//                         </TableCell>
-//                     </TableRow>
-//                 </TableHead>
-//                 <TableBody>
-//                     {violations.map((v, i) => (
-//                         <TableRow key={i}>
-//                             <TableCell
-//                                 sx={{
-//                                     whiteSpace: 'nowrap',
-//                                     fontWeight: 'bold',
-//                                     color:
-//                                         v.critical_flag === 'Pest Critical' || v.critical_flag === 'Critical'
-//                                             ? '#ab224e'
-//                                             : '#2a3d83',
-//                                 }}
-//                             >
-//                                 {v.critical_flag === 'Pest Critical' ? 'Critical' : v.critical_flag}
-//                             </TableCell>
-//                             <TableCell
-//                                 sx={{
-//                                     whiteSpace: 'normal',
-//                                     wordBreak: 'break-word',
-//                                     overflowWrap: 'anywhere',
-//                                 }}
-//                             >
-//                                 {v.violation_summary}
-//                             </TableCell>
-//                         </TableRow>
-//                     ))}
-//                 </TableBody>
-//             </Table>
-//         </TableContainer>
-//     );
-// }
-
 'use client';
 
 import Table from '@mui/material/Table';
@@ -69,36 +6,32 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import Chip from '@mui/material/Chip';
 
 export default function ViolationsTable({ violations }) {
     return (
-        <TableContainer component={Paper} sx={{ width: '100%' }}>
+        <TableContainer sx={{ width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
             <Table sx={{ width: '100%' }}>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: '#2f448f' }}>
                         <TableCell
                             sx={{
-                                width: '20%', // narrower column
-                                whiteSpace: 'nowrap',
+                                width: '140px',
                                 fontWeight: 700,
-                                fontSize: '1rem',
+                                fontSize: '0.95rem',
                                 color: '#fff',
-                                py: '6px',
+                                py: '12px',
+                                textAlign: 'center',
                             }}
                         >
-                            Flag
+                            Status
                         </TableCell>
                         <TableCell
                             sx={{
-                                width: '80%', // wider column
-                                whiteSpace: 'normal',
-                                wordBreak: 'break-word',
-                                overflowWrap: 'anywhere',
                                 fontWeight: 700,
-                                fontSize: '1rem',
+                                fontSize: '0.95rem',
                                 color: '#fff',
-                                py: '6px',
+                                py: '12px',
                             }}
                         >
                             Violations
@@ -107,50 +40,72 @@ export default function ViolationsTable({ violations }) {
                 </TableHead>
 
                 <TableBody>
-                    {violations.map((v, i) => (
-                        <TableRow
-                            key={i}
-                            sx={{
-                                borderBottom: '2px solid #ddd',
-                            }}
-                        >
-                            <TableCell
+                    {violations.map((v, i) => {
+                        const isCritical = v.critical_flag === 'Pest Critical' || v.critical_flag === 'Critical';
+                        // Simplify label if needed, otherwise use full flag text
+                        const statusLabel = v.critical_flag === 'Pest Critical' ? 'Critical' : v.critical_flag;
+
+                        return (
+                            <TableRow
+                                key={i}
                                 sx={{
-                                    width: '20%', // match header
-                                    whiteSpace: 'nowrap',
-                                    fontWeight: 600,
-                                    color:
-                                        v.critical_flag === 'Pest Critical' || v.critical_flag === 'Critical'
-                                            ? '#ab224e'
-                                            : '#2a3d83',
+                                    '&:last-child td, &:last-child th': { border: 0 },
+                                    transition: 'background-color 0.2s',
+                                    '&:hover': { backgroundColor: '#f8fafc' },
                                 }}
                             >
-                                {v.critical_flag === 'Pest Critical' ? 'Critical' : v.critical_flag}
-                            </TableCell>
-                            <TableCell
-                                sx={{
-                                    width: '80%', // match header
-                                    whiteSpace: 'normal',
-                                    wordBreak: 'break-word',
-                                    overflowWrap: 'anywhere',
-                                    fontFamily: "'Roboto', sans-serif",
-                                    fontSize: '0.95rem',
-                                }}
-                            >
-                                {v.violation_summary}
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                                <TableCell
+                                    sx={{
+                                        verticalAlign: 'middle',
+                                        textAlign: 'center',
+                                        py: 2,
+                                        borderBottom: '1px solid #f1f5f9',
+                                    }}
+                                >
+                                    <Chip
+                                        label={statusLabel}
+                                        sx={{
+                                            fontWeight: 700,
+                                            fontSize: '0.8rem',
+                                            height: '28px',
+                                            px: 0.5,
+                                            // "Brighter but more muted" -> Soft Matte colors
+                                            backgroundColor: isCritical ? '#e15241' : '#555555',
+                                            color: '#ffffff',
+                                            '& .MuiChip-label': {
+                                                paddingLeft: '8px',
+                                                paddingRight: '8px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                height: '100%',
+                                            }
+                                        }}
+                                    />
+                                </TableCell>
+                                <TableCell
+                                    sx={{
+                                        width: 'auto',
+                                        whiteSpace: 'normal',
+                                        wordBreak: 'break-word',
+                                        overflowWrap: 'anywhere',
+                                        fontFamily: "inherit",
+                                        fontSize: '0.95rem',
+                                        fontWeight: 500, // Medium weight for better readability
+                                        color: '#334155', // slate-700
+                                        lineHeight: 1.6,
+                                        verticalAlign: 'top',
+                                        py: 2,
+                                        borderBottom: '1px solid #f1f5f9',
+                                    }}
+                                >
+                                    {v.violation_summary}
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>
-
     );
 }
-
-
-
-
-
-
-

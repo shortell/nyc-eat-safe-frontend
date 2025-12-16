@@ -12,7 +12,7 @@ export default function Home() {
     const fetchHomeData = async () => {
       try {
         const res = await fetch(
-          "https://nyc-eat-safe-production.up.railway.app/home"
+          `${process.env.NEXT_PUBLIC_BASE_URL}/home`
         );
         if (!res.ok) throw new Error("Failed to fetch home data");
         setCategoriesData(await res.json());
@@ -44,42 +44,32 @@ export default function Home() {
     );
 
   return (
-    <main className="min-h-screen w-full flex flex-col items-center bg-[#f6f3fa] px-2 pb-8">
+    <main className="min-h-screen w-full flex flex-col items-center bg-[#f6f3fa] px-0 pb-12">
       {/* Header */}
-      <div className="w-full max-w-5xl mx-auto px-3 my-1">
+      <div className="w-full max-w-5xl mx-auto px-4 mt-4 mb-2">
         <p className="text-sm text-center text-gray-500">
           Public data from the NYC Dept. of Health.
         </p>
       </div>
 
       {/* Category Previews */}
-      <section className="w-full max-w-5xl mx-auto flex flex-col pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 md:gap-y-0 md:gap-x-3 px-2">
-          {/* Risky A */}
-          <div className="flex justify-center md:justify-end">
-            <div className="w-full max-w-[420px]">
-              <CategoryPreview
-                title="Questionable A Grades"
-                endpoint="/risky-a-grades"
-                restaurants={categoriesData.risky_a_grades}
-                bgColor="bg-red-100"
-                className="rounded-2xl shadow-xl border border-red-100 transition hover:scale-[1.015] duration-150"
-              />
-            </div>
-          </div>
+      <section className="w-full max-w-[1600px] mx-auto flex flex-col gap-y-8 px-4 md:px-8 lg:px-12">
+        {/* Risky A */}
+        <div className="w-full">
+          <CategoryPreview
+            title="Questionable A Grades"
+            endpoint="/risky-a-grades"
+            restaurants={categoriesData.risky_a_grades}
+          />
+        </div>
 
-          {/* Gold Star */}
-          <div className="flex justify-center md:justify-start">
-            <div className="w-full max-w-[420px]">
-              <CategoryPreview
-                title="Gold Star Restaurants"
-                endpoint="/goldstar-a-grades"
-                restaurants={categoriesData.goldstar_a_grades}
-                bgColor="bg-green-100"
-                className="rounded-2xl shadow-xl border border-green-100 transition hover:scale-[1.015] duration-150"
-              />
-            </div>
-          </div>
+        {/* Gold Star */}
+        <div className="w-full">
+          <CategoryPreview
+            title="Gold Star Restaurants"
+            endpoint="/goldstar-a-grades"
+            restaurants={categoriesData.goldstar_a_grades}
+          />
         </div>
       </section>
     </main>

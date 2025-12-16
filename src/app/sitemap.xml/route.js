@@ -55,12 +55,12 @@ export async function GET() {
 
   let restaurants = [];
   try {
-    const resp = await fetch('https://nyc-eat-safe-production.up.railway.app/sitemap-ids', {
+    const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/sitemap-ids`, {
       headers: { 'User-Agent': 'SitemapGenerator/1.0 (+https://www.nyceatsafe.com)' },
       cache: 'no-store',
     });
     if (resp.ok) restaurants = await resp.json();
-  } catch {}
+  } catch { }
 
   const staticRoutes = ['/', '/about', '/near-me', '/feedback'];
   const staticUrls = staticRoutes.map(

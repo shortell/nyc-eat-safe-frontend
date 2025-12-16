@@ -14,7 +14,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
  */
 export default function ScoreHistogram({
   bins,
-  dataUrl = "https://nyc-eat-safe-production.up.railway.app/about",
+  dataUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/about`,
   height = 300,
 }) {
   const [fetched, setFetched] = useState(null);

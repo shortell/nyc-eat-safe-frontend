@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import RestaurantList from './RestaurantList';
+import RestaurantCard from './RestaurantCard';
 // import RestaurantCarousel from './RestaurantCarousel';
 
-export default function CategoryPreview({ title, endpoint, restaurants, bgColor = "bg-white" }) {
+export default function CategoryPreview({ title, endpoint, restaurants }) {
   const href =
     '/category?' +
     new URLSearchParams({
@@ -12,33 +12,33 @@ export default function CategoryPreview({ title, endpoint, restaurants, bgColor 
     }).toString();
 
   return (
-    <div className={`w-full max-w-[600px] ${bgColor} rounded-xl shadow-lg ring-1 ring-gray-200 overflow-hidden group`}>
-      {/* Header wrapped in <Link> */}
-      <Link href={href} className="block cursor-pointer">
-        <h2 className="
-          relative
-          bg-gradient-to-b
-          from-[#2A3E83] via-[#1655A0] to-[#016CCE]
-          text-white px-4 py-3
-          text-2xl font-bold
-          pr-10
-          group-hover:opacity-90
-          transition-opacity
-        ">
+    <div className="w-full flex flex-col space-y-3">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
           {title}
-          <span className="
-            absolute right-4 top-1/2 -translate-y-1/2
-            w-0 h-0
-            border-l-[8px] border-l-white
-            border-t-[6px] border-t-transparent
-            border-b-[6px] border-b-transparent
-          " />
         </h2>
-      </Link>
+        <Link
+          href={href}
+          className="text-sm font-semibold text-gray-900 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full transition-colors shadow-sm border border-gray-200"
+        >
+          See all
+        </Link>
+      </div>
 
-      {/* Restaurant list */}
-      <div className="p-4">
-        <RestaurantList restaurants={restaurants} />
+      {/* Horizontal Scroll Container */}
+      <div className="flex overflow-x-auto gap-5 pb-6 px-1 snap-x scroll-pl-1 hide-scrollbar pt-1">
+        {restaurants.map((restaurant) => (
+          <Link
+            key={restaurant.camis}
+            href={`/restaurant/${restaurant.camis}`}
+            className="min-w-[320px] w-[320px] md:min-w-[360px] md:w-[360px] snap-start"
+          >
+            <div className="h-full">
+              <RestaurantCard restaurant={restaurant} compact />
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

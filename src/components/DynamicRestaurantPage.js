@@ -111,7 +111,7 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams }) 
     const fetchRestaurants = useCallback(async (start) => {
         try {
             setIsLoading(true);
-            const fullEndpoint = `https://nyc-eat-safe-production.up.railway.app${endpoint}`;
+            const fullEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`;
             const res = await fetch(fullEndpoint, {
                 method: 'POST',
                 headers: {

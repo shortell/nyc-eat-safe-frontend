@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/navigation';
 
 const HeadBar = ({ selectedBoroughs }) => {
@@ -15,7 +18,7 @@ const HeadBar = ({ selectedBoroughs }) => {
     const performSearch = React.useCallback(async (query) => {
         if (query.trim() !== "") {
             try {
-                const response = await fetch('https://nyc-eat-safe-production.up.railway.app/search', {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/search`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -29,6 +32,7 @@ const HeadBar = ({ selectedBoroughs }) => {
                 if (!response.ok) throw new Error("Network response was not ok");
 
                 const data = await response.json();
+                console.log(data);
                 setResults(data);
             } catch (error) {
                 setResults([]);
@@ -120,10 +124,61 @@ const HeadBar = ({ selectedBoroughs }) => {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Restaurant"
+                        label="Search"
+                        placeholder="Restaurant"
                         sx={{
-                            backgroundColor: '#F0F8FF',
+                            backgroundColor: '#FFFFFF',
+                            borderRadius: '50px',
                             width: '100%',
+                            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: '50px',
+                                paddingRight: '8px !important',
+                                '& fieldset': {
+                                    border: 'none',
+                                },
+                                '&:hover fieldset': {
+                                    border: 'none',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    border: 'none',
+                                },
+                            },
+                            '& .MuiInputLabel-root': {
+                                marginLeft: '12px',
+                                '&.Mui-focused': {
+                                    color: '#1655A0',
+                                }
+                            }
+                        }}
+                        InputProps={{
+                            ...params.InputProps,
+                            endAdornment: (
+                                <React.Fragment>
+                                    {params.InputProps.endAdornment}
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            type="submit"
+                                            edge="end"
+                                            sx={{
+                                                backgroundColor: '#1655A0',
+                                                color: 'white',
+                                                borderRadius: '50%',
+                                                width: '40px',
+                                                height: '40px',
+                                                padding: '8px',
+                                                mr: 0.5,
+                                                transition: 'background-color 0.2s ease',
+                                                '&:hover': {
+                                                    backgroundColor: '#134685',
+                                                },
+                                            }}
+                                        >
+                                            <SearchIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                </React.Fragment>
+                            ),
                         }}
                     />
                 )}

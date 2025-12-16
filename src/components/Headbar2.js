@@ -15,7 +15,7 @@ const HeadBar2 = () => {
     };
 
     return (
-        <div className="bg-gradient-to-b from-[#2A3E83] via-[#1655A0] to-[#016CCE] bg-gradient-to-b from-[0%] via-[90%] to-[98%] text-white p-6">
+        <div className="bg-gradient-to-b from-[#2A3E83] via-[#1655A0] to-[#016CCE] bg-gradient-to-b from-[0%] via-[90%] to-[98%] text-white py-6">
             <h1 className="text-center text-4xl font-bold mb-2 font-mono">NYC Eat Safe</h1>
             <p className="text-center text-base font-light italic tracking-wide text-blue-100 antialiased mb-4">
                 An A isn’t always an A
@@ -25,8 +25,8 @@ const HeadBar2 = () => {
 
 
             {/* Container for Searchbar (2/3) and BoroughSelect (1/3) */}
-            <div className="flex w-full gap-4">
-                <div className="w-5/9 bg-[#F0F8FF] rounded-lg pt-2 pr-2 pl-2 pb-2">
+            <div className="flex w-full max-w-[1600px] mx-auto gap-4 px-4 md:px-8 lg:px-12">
+                <div className="w-5/9 bg-[#F0F8FF] rounded-[50px] pt-2 pr-2 pl-2 pb-2">
                     <Searchbar selectedBoroughs={selectedBoroughs} />
                 </div>
                 <div className="w-4/9 bg-[#F0F8FF] rounded-lg pt-2 pr-2 pl-2 pb-2">
