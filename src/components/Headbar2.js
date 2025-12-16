@@ -25,11 +25,12 @@ const HeadBar2 = () => {
 
 
             {/* Container for Searchbar (2/3) and BoroughSelect (1/3) */}
-            <div className="flex w-full max-w-[1600px] mx-auto gap-4 px-4 md:px-8 lg:px-12">
-                <div className="w-5/9 bg-[#F0F8FF] rounded-[50px] pt-2 pr-2 pl-2 pb-2">
+            {/* Container for Searchbar and BoroughSelect */}
+            <div className="flex w-full max-w-[1600px] mx-auto gap-4 px-4 md:px-8 lg:px-12 items-center">
+                <div className="flex-grow bg-[#F0F8FF] rounded-[50px] p-2">
                     <Searchbar selectedBoroughs={selectedBoroughs} />
                 </div>
-                <div className="w-4/9 bg-[#F0F8FF] rounded-lg pt-2 pr-2 pl-2 pb-2">
+                <div className="flex-none bg-[#F0F8FF] rounded-full p-2">
                     <BoroughSelect
                         selectedBoroughs={selectedBoroughs}
                         setSelectedBoroughs={setSelectedBoroughs}

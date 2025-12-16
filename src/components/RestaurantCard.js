@@ -67,8 +67,9 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
         bg-white font-inter text-base antialiased 
         rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 
         border border-gray-100 
-        w-full relative
-        ${compact ? 'p-4 pb-8 h-full flex flex-col' : 'max-w-2xl md:max-w-3xl mx-auto p-6 pb-8 space-y-4'}
+        w-full relative mx-auto
+        max-w-[320px] md:max-w-[360px]
+        ${compact ? 'p-4 pb-8 h-full flex flex-col' : 'p-6 pb-8 space-y-4'}
       `}
     >
       {/* Header */}

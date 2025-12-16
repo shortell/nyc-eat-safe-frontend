@@ -96,6 +96,7 @@
 'use client';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import RestaurantList from '../components/RestaurantList';
+import SkeletonCard from './SkeletonCard';
 
 const PAGE_SIZE = 10;
 
@@ -165,19 +166,40 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams }) 
     }, [offset, isLoading, hasMore, fetchRestaurants]);
 
     return (
-        <div className="p-4 bg-[#f5f2fa]">
-            <h1 className="bg-gradient-to-b from-[#2A3E83] via-[#1655A0] to-[#016CCE] text-white p-3 rounded-md text-2xl font-bold mb-4">
-                {title}
-            </h1>
+        <div className="min-h-screen bg-[#f5f2fa]">
+            <div className="max-w-7xl mx-auto px-4 py-8">
+                <div className="mb-8">
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                        {title}
+                    </h1>
+                    <div className="h-1 w-20 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full"></div>
+                </div>
 
-            <RestaurantList restaurants={restaurants} />
+                <RestaurantList restaurants={restaurants} />
 
-            {isLoading && <p className="py-4">Loading more…</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {!hasMore && <p className="py-4">No more restaurants</p>}
+                {isLoading && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        {[...Array(6)].map((_, i) => (
+                            <SkeletonCard key={i} />
+                        ))}
+                    </div>
+                )}
 
-            {/* Sentinel triggers next page load */}
-            <div ref={sentinelRef} style={{ height: '1px' }} />
+                {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mt-6 text-center">
+                        {error}
+                    </div>
+                )}
+
+                {!hasMore && restaurants.length > 0 && (
+                    <p className="py-12 text-center text-gray-500 font-medium">
+                        You've reached the end of the list
+                    </p>
+                )}
+
+                {/* Sentinel triggers next page load */}
+                <div ref={sentinelRef} className="h-4" />
+            </div>
         </div>
     );
 }

@@ -134,7 +134,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full" style={{ scrollBehavior: 'smooth' }} data-scroll-behavior="smooth">
       <body
         className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}
       >

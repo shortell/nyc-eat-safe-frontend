@@ -46,14 +46,14 @@ export default function Home() {
   return (
     <main className="min-h-screen w-full flex flex-col items-center bg-[#f6f3fa] px-0 pb-12">
       {/* Header */}
-      <div className="w-full max-w-5xl mx-auto px-4 mt-4 mb-2">
+      <div className="w-full max-w-5xl mx-auto px-4 mt-2 mb-1">
         <p className="text-sm text-center text-gray-500">
           Public data from the NYC Dept. of Health.
         </p>
       </div>
 
       {/* Category Previews */}
-      <section className="w-full max-w-[1600px] mx-auto flex flex-col gap-y-8 px-4 md:px-8 lg:px-12">
+      <section className="w-full max-w-[1600px] mx-auto flex flex-col gap-y-2 px-4 md:px-8 lg:px-12">
         {/* Risky A */}
         <div className="w-full">
           <CategoryPreview
