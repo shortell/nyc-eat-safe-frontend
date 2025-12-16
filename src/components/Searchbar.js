@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useId } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -90,9 +90,12 @@ const HeadBar = ({ selectedBoroughs }) => {
             .join(' ');
     };
 
+    const id = useId();
+
     return (
         <form onSubmit={handleFormSubmit}>
             <Autocomplete
+                id={id}
                 freeSolo
                 options={results || []}
                 getOptionLabel={(option) => option?.dba || ""}
