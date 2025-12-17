@@ -36,50 +36,77 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="p-4 bg-[#f5f2fa]">
-      <h1 className="bg-gradient-to-b from-[#2A3E83] via-[#1655A0] to-[#016CCE] text-white p-3 rounded-md text-2xl font-bold mb-2">
-        Feedback
-      </h1>
-      <div className="flex justify-center items-start min-h-[70vh] mt-0">
-        <div className="flex flex-col gap-4 max-w-md w-full bg-white rounded-lg shadow-md p-8">
-          <p className="text-gray-700 mb-2">
-            Thank you for using our website!
-            Let us know what you like and don`t like about it so we can make it better.
-          </p>
-          {status && (
-            <p className={`text-center text-sm ${isSuccess ? 'text-gray-700' : 'text-red-600'}`}>
-              {status}
-            </p>
-          )}
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <TextField
-              label="Email (optional)"
-              variant="outlined"
-              type="email"
-              fullWidth
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              label="Message"
-              variant="outlined"
-              multiline
-              rows={4}
-              required
-              fullWidth
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              className="w-1/2 self-center"
-            >
-              Submit
-            </Button>
-          </form>
-        </div>
+    <div className="min-h-screen w-full flex flex-col items-center bg-[#f6f3fa] px-4 py-12">
+      <div className="w-full max-w-lg bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-8 md:p-10">
+        <h1 className="text-3xl md:text-4xl font-bold text-[#2A3E83] text-center mb-6">
+          Feedback
+        </h1>
+
+        <p className="text-gray-600 text-center mb-8 text-lg leading-relaxed">
+          Thank you for using <strong>NYC Eat Safe</strong>. Every piece of feedback helps.
+        </p>
+
+        {status && (
+          <div className={`mb-6 p-4 rounded-lg text-center ${isSuccess ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+            <p className="font-medium">{status}</p>
+          </div>
+        )}
+
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+          <TextField
+            label="Email (optional)"
+            variant="outlined"
+            type="email"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px',
+                '&.Mui-focused fieldset': {
+                  borderColor: '#2A3E83',
+                },
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#2A3E83',
+              },
+            }}
+          />
+          <TextField
+            label="Message"
+            variant="outlined"
+            multiline
+            rows={4}
+            required
+            fullWidth
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px',
+                '&.Mui-focused fieldset': {
+                  borderColor: '#2A3E83',
+                },
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#2A3E83',
+              },
+            }}
+          />
+          <Button
+            variant="contained"
+            type="submit"
+            className="self-center px-10 font-bold"
+            sx={{
+              backgroundColor: '#2A3E83',
+              '&:hover': {
+                backgroundColor: '#1E2D60',
+              },
+            }}
+          >
+            Submit
+          </Button>
+        </form>
       </div>
     </div>
   );

@@ -65,16 +65,16 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
     <div
       className={`
         bg-white font-inter text-base antialiased 
-        rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 
+        rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-200 
         border border-gray-100 
-        w-full relative mx-auto
+        w-full relative scale-[0.9] origin-top-left
         max-w-[320px] md:max-w-[360px]
         ${compact ? 'p-4 pb-8 h-full flex flex-col' : 'p-6 pb-8 space-y-4'}
       `}
     >
       {/* Header */}
       <div className={`space-y-1 border-b-2 border-gray-300 pb-3 ${compact ? 'flex-1' : ''}`}>
-        <h3 className="text-xl font-semibold text-[#232323] tracking-tight">
+        <h3 className="text-xl font-semibold text-[#232323] tracking-tight truncate">
           {capitalizeWords(dba)}
         </h3>
 
@@ -99,7 +99,7 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
       {/* Grade & Fine Print */}
       <div className={`flex flex-row gap-4 md:gap-5 items-stretch ${compact ? 'mt-auto pt-3' : ''}`}>
         {/* Grade Panel */}
-        <div className="border border-gray-100 rounded-xl p-4 pb-6 bg-gray-50 shadow-sm flex flex-col items-center justify-start min-w-[90px]">
+        <div className="border border-gray-100 rounded-xl p-4 pb-6 bg-gray-50 shadow flex flex-col items-center justify-start min-w-[90px]">
           <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 text-center">
             City Grade
           </p>
@@ -109,7 +109,7 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
         </div>
 
         {/* Fine Print Panel */}
-        <div className="border border-gray-100 rounded-xl p-4 bg-gray-50 shadow-sm flex-1 flex flex-col items-start justify-start">
+        <div className="border border-gray-100 rounded-xl p-4 bg-gray-50 shadow flex-1 flex flex-col items-start justify-start">
           <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">
             {finePrint.length > 0 ? 'Red Flags' : 'Eat Safe'}
           </p>
@@ -139,7 +139,7 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
         </div>
       </div>
 
-      <div className="absolute bottom-1 right-4">
+      <div className="absolute bottom-1.5 right-4">
         <span className="text-xs text-gray-400 font-medium hover:text-gray-600 transition-colors">
           View more
         </span>

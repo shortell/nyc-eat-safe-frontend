@@ -41,8 +41,8 @@ export default function ScoreHistogram({
   // Stable raw data source
   const rawData = useMemo(() => (bins && bins.length ? bins : fetched ?? []), [bins, fetched]);
 
-  // X categories 0..17 inclusive
-  const categories = useMemo(() => Array.from({ length: 18 }, (_, i) => i), []);
+  // X categories 0..16 inclusive (numbers)
+  const categories = useMemo(() => Array.from({ length: 17 }, (_, i) => i), []);
 
   // Map incoming bins -> dense 0..17 counts (no negatives)
   const counts = useMemo(() => {
@@ -50,7 +50,7 @@ export default function ScoreHistogram({
     for (const row of rawData) {
       const b = Number(row?.bin_value);
       const c = Number(row?.count);
-      if (Number.isInteger(b) && b >= 0 && b <= 17) map.set(b, c > 0 ? c : 0);
+      if (Number.isInteger(b) && b >= 0 && b <= 16) map.set(b, c > 0 ? c : 0);
     }
     return categories.map((b) => map.get(b) ?? 0);
   }, [rawData, categories]);
@@ -99,20 +99,27 @@ export default function ScoreHistogram({
       },
       dataLabels: { enabled: false },
       xaxis: {
-        categories,
+        type: 'numeric',
+        tickAmount: 18, // intervals = 18 for range -1 to 17
+        min: -1,
+        max: 17,
         title: {
           text: "Scores Given",
-          style: { fontSize: "12px", fontWeight: 400 } // thinner text
+          style: { fontSize: "12px", fontWeight: 400 }
         },
-        tickPlacement: "on",
         labels: {
-          rotate: 0,
           style: { fontSize: "11px", fontWeight: 400 },
-          formatter: (val) => `${val}`,   // show all ticks 0,1,2,3...
-          hideOverlappingLabels: true,
-          trim: true,
+          trim: false,
+          hideOverlappingLabels: false, // Force all labels to show
+          rotate: -45, // Rotate if tight on mobile
+          rotateAlways: false,
+          formatter: (val) => {
+            const v = Math.round(Number(val));
+            if (v < 0 || v > 16) return "";
+            return v.toString();
+          }
         },
-
+        // axisBorder/Ticks can remain
         axisBorder: { color: "#e5e7eb" },
         axisTicks: { color: "#e5e7eb" },
       },
@@ -122,7 +129,7 @@ export default function ScoreHistogram({
         tickAmount,
         title: {
           text: "# of Restaurants",
-          style: { fontSize: "12px", fontWeight: 400 } // thinner text
+          style: { fontSize: "12px", fontWeight: 400 }
         },
         labels: {
           style: { fontSize: "11px", fontWeight: 400 },
@@ -136,12 +143,8 @@ export default function ScoreHistogram({
         intersect: false,
         fillSeriesColor: false,
         custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-          const catLabels = w?.globals?.categoryLabels || [];
-          const xRaw = catLabels[dataPointIndex];
-          const x =
-            typeof xRaw === "number" || typeof xRaw === "string"
-              ? xRaw
-              : categories[dataPointIndex] ?? "?";
+          // dataPointIndex correlates with our filtered categories
+          const x = categories[dataPointIndex];
           const y = series?.[seriesIndex]?.[dataPointIndex] ?? 0;
           const yText = Number(y).toLocaleString();
           const dotColor = Number(x) <= 13 ? "#2a3d83" : "#58944c";
@@ -177,11 +180,40 @@ export default function ScoreHistogram({
         active: { filter: { type: "darken", value: 0.08 } },
       },
       colors,
+      annotations: {
+        xaxis: [
+          {
+            x: 13.5,
+            strokeDashArray: 4,
+            borderColor: "#EF4444", // red-500
+            borderWidth: 2,
+            label: {
+              borderColor: "#EF4444",
+              style: {
+                color: "#fff",
+                background: "#EF4444",
+                fontSize: "12px",
+                fontWeight: 600,
+                padding: { left: 8, right: 8, top: 4, bottom: 4 },
+              },
+              text: ["Notice the steep drop", "off right at the cut", "off from A to B"],
+              orientation: "horizontal",
+              offsetY: -15,
+              offsetX: -70,
+            },
+          },
+        ],
+      },
     }),
     [categories, yMax, tickAmount, colors]
   );
 
-  const series = useMemo(() => [{ name: "Restaurants", data: counts }], [counts]);
+  const series = useMemo(() => [
+    {
+      name: "Restaurants",
+      data: categories.map((cat, i) => ({ x: cat, y: counts[i] }))
+    }
+  ], [categories, counts]);
 
   // Full-width, no padding wrapper for maximum space (especially on mobile)
   return (
