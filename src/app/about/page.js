@@ -126,7 +126,7 @@ export default async function AboutPage() {
                 <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
                     <div className="mb-6">
                         <h2 className="text-xl font-bold text-slate-900">Score Distribution</h2>
-                        <p className="text-slate-500 text-sm">Scores from each restaurant's latest inspection (0-17 range)</p>
+                        <p className="text-slate-500 text-sm">Scores from each restaurant's latest inspection (0-16 range)</p>
                     </div>
 
                     <div className="w-full">

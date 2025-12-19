@@ -91,8 +91,7 @@ export const metadata = {
       "Find inspection grades, scores, and violations for NYC restaurants.",
     images: [
       {
-        // Place a 1200x630 image in /public/preview.png (or change to your file)
-        url: "/preview.png",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "NYC Eat Safe preview",
@@ -106,17 +105,15 @@ export const metadata = {
     title: "NYC Eat Safe – Restaurant Health Inspection Records",
     description:
       "Find inspection grades, scores, and violations for NYC restaurants.",
-    images: ["/preview.png"],
+    images: ["/opengraph-image.png"],
   },
 
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-32x32.png", type: "image/png" },
     ],
-    apple: [{ url: "/apple-touch-icon.png" }],
-    shortcut: ["/favicon.ico"],
+    apple: "/apple-touch-icon.png",
   },
 
   robots: {

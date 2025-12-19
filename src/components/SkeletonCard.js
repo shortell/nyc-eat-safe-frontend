@@ -2,7 +2,7 @@ import React from 'react';
 
 const SkeletonCard = () => {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 pb-8 h-full flex flex-col space-y-4 animate-pulse">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 pb-8 h-full flex flex-col space-y-4 animate-pulse max-w-[320px] md:max-w-[360px] mx-auto md:mx-0">
             {/* Header Skeleton */}
             <div className="space-y-2 border-b-2 border-gray-100 pb-3">
                 <div className="h-6 bg-gray-200 rounded w-3/4"></div>

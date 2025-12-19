@@ -87,7 +87,7 @@ export default function ScoreHistogram({
       grid: {
         borderColor: "#e5e7eb",
         strokeDashArray: 3,
-        padding: { left: 0, right: 0, top: 0, bottom: 0 }, // tight to edges
+        padding: { left: 20, right: 20, top: 0, bottom: 0 }, // add padding to prevent clipping
       },
       plotOptions: {
         bar: {
@@ -100,9 +100,9 @@ export default function ScoreHistogram({
       dataLabels: { enabled: false },
       xaxis: {
         type: 'numeric',
-        tickAmount: 18, // intervals = 18 for range -1 to 17
-        min: -1,
-        max: 17,
+        tickAmount: 16, // intervals = 16 for range 0 to 16
+        min: 0,
+        max: 16,
         title: {
           text: "Scores Given",
           style: { fontSize: "12px", fontWeight: 400 }

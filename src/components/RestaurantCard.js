@@ -89,8 +89,8 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
           {borough && <span>{capitalizeWords(borough)}</span>}
 
           {distanceText && (
-            <span className="text-gray-400 ml-2 text-xs font-normal">
-              &bull; {distanceText}
+            <span className="ml-2 px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold border border-slate-200">
+              {distanceText}
             </span>
           )}
         </div>

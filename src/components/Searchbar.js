@@ -91,6 +91,15 @@ const HeadBar = ({ selectedBoroughs }) => {
     };
 
     const id = useId();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null;
+    }
 
     return (
         <form onSubmit={handleFormSubmit}>
