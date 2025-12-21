@@ -67,29 +67,27 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
         bg-white font-inter text-base antialiased 
         rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-200 
         border border-gray-100 
-        w-full relative scale-[0.9] origin-top-left
-        max-w-[320px] md:max-w-[360px]
-        ${compact ? 'p-4 pb-8 h-full flex flex-col' : 'p-6 pb-8 space-y-4'}
+        w-full relative
+        max-w-[320px] md:max-w-[320px]
+        min-w-[290px]
+        ${compact ? 'p-4 pb-2 flex flex-col' : 'p-6 pb-2 space-y-4'}
       `}
     >
       {/* Header */}
-      <div className={`space-y-1 border-b-2 border-gray-300 pb-3 ${compact ? 'flex-1' : ''}`}>
+      <div className="space-y-1 border-b-2 border-gray-300 pb-3">
         <h3 className="text-xl font-semibold text-[#232323] tracking-tight truncate">
           {capitalizeWords(dba)}
         </h3>
 
-        <div className="flex flex-wrap items-center text-sm font-medium text-gray-700 gap-x-1">
-          {building && <span>{building}</span>}
-          {street && (
-            <span className="truncate max-w-[160px]">
-              {capitalizeWords(street)}
-              {borough ? ',' : ''}
-            </span>
-          )}
-          {borough && <span>{capitalizeWords(borough)}</span>}
+        <div className="flex items-center w-full text-sm font-medium text-gray-700 gap-2">
+          <span className="truncate flex-1 min-w-0">
+            {building && `${building} `}
+            {street && capitalizeWords(street)}
+            {borough && `, ${borough.toLowerCase() === 'bronx' ? 'THE Bronx' : capitalizeWords(borough)}`}
+          </span>
 
           {distanceText && (
-            <span className="ml-2 px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold border border-slate-200">
+            <span className="flex-shrink-0 px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold border border-slate-200">
               {distanceText}
             </span>
           )}
@@ -97,25 +95,25 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
       </div>
 
       {/* Grade & Fine Print */}
-      <div className={`flex flex-row gap-4 md:gap-5 items-stretch ${compact ? 'mt-auto pt-3' : ''}`}>
+      <div className={`flex flex-row gap-2 md:gap-3 items-stretch ${compact ? 'pt-3' : ''}`}>
         {/* Grade Panel */}
-        <div className="border border-gray-100 rounded-xl p-4 pb-6 bg-gray-50 shadow flex flex-col items-center justify-start min-w-[90px]">
-          <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 text-center">
+        <div className="border border-gray-100 rounded-xl p-3 pb-5 bg-gray-50 shadow flex flex-col items-center justify-start min-w-[70px]">
+          <p className="text-xs sm:text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 text-center">
             City Grade
           </p>
-          <div className="scale-125">
+          <div className="scale-110">
             <GradeLetter grade={grade || 'N'} />
           </div>
         </div>
 
         {/* Fine Print Panel */}
-        <div className="border border-gray-100 rounded-xl p-4 bg-gray-50 shadow flex-1 flex flex-col items-start justify-start">
-          <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">
+        <div className="border border-gray-100 rounded-xl p-3 bg-gray-50 shadow flex-1 flex flex-col items-start justify-start min-w-0">
+          <p className="text-xs sm:text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
             {finePrint.length > 0 ? 'Red Flags' : 'Eat Safe'}
           </p>
 
           {finePrint.length > 0 ? (
-            <ul className="list-none pl-0 space-y-1 text-sm font-medium text-slate-600">
+            <ul className="list-none pl-0 space-y-1 text-sm font-medium text-slate-600 w-full">
               {finePrint.map((item, index) => {
                 const isCritical = item.includes('Critical');
                 const isPest = item.includes('Mice') || item.includes('Rats') || item.includes('Roaches');
@@ -123,8 +121,8 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
                 return (
                   <li
                     key={index}
-                    className={`break-words leading-relaxed ${isPest ? 'text-red-600' : isCritical ? 'text-orange-600' : 'text-slate-600'
-                      }`}
+                    className={`leading-relaxed ${isPest ? 'text-red-600' : isCritical ? 'text-orange-600' : 'text-slate-600'
+                      } ${item.includes('Critical Violation') ? 'whitespace-nowrap' : 'break-words'}`}
                   >
                     {item}
                   </li>
@@ -139,9 +137,9 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
         </div>
       </div>
 
-      <div className="absolute bottom-1.5 right-4">
+      <div className="flex justify-end mt-2">
         <span className="text-xs text-gray-400 font-medium hover:text-gray-600 transition-colors">
-          View more
+          More Info
         </span>
       </div>
     </div >

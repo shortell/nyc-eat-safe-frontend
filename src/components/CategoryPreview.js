@@ -3,7 +3,7 @@ import Link from 'next/link';
 import RestaurantCard from './RestaurantCard';
 // import RestaurantCarousel from './RestaurantCarousel';
 
-export default function CategoryPreview({ title, endpoint, restaurants }) {
+export default function CategoryPreview({ title, endpoint, restaurants = [] }) {
   const [page, setPage] = React.useState(0);
   const href =
     '/category?' +
@@ -12,11 +12,56 @@ export default function CategoryPreview({ title, endpoint, restaurants }) {
       category_endpoint: endpoint,
     }).toString();
 
-  const maxPages = 3;
-  const itemsPerPage = 4;
-  // Ensure we have a stable set of items for desktop, max 12
-  const desktopRestaurants = restaurants.slice(0, maxPages * itemsPerPage);
-  const currentItems = desktopRestaurants.slice(
+  const containerRef = React.useRef(null);
+  const [itemsPerPage, setItemsPerPage] = React.useState(4);
+
+  React.useEffect(() => {
+    if (!containerRef.current) return;
+
+    const updateItemsPerPage = () => {
+      const width = containerRef.current.offsetWidth;
+
+      // Calculate items per page based on specific breakpoints
+      // Requirements:
+      // Small: 1 card
+      // Wider: 2 cards
+      // Medium: 3 cards
+      // Max: 4 cards
+      // Constants: Card Min Width ~320px, Gap 40px
+      // 2 cards: 640 + 40 = 680
+      // 3 cards: 960 + 80 = 1040
+      // 4 cards: 1280 + 120 = 1400
+
+      if (width >= 1400) {
+        setItemsPerPage(4);
+      } else if (width >= 1040) {
+        setItemsPerPage(3);
+      } else if (width >= 680) {
+        setItemsPerPage(2);
+      } else {
+        setItemsPerPage(1);
+      }
+    };
+
+    // Initial calculation
+    updateItemsPerPage();
+
+    const observer = new ResizeObserver(updateItemsPerPage);
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const maxPages = Math.ceil(restaurants.length / itemsPerPage);
+
+  // Reset page if it exceeds maxPages after resize
+  React.useEffect(() => {
+    if (page >= maxPages && maxPages > 0) {
+      setPage(Math.max(0, maxPages - 1));
+    }
+  }, [maxPages, page]);
+
+  const currentItems = restaurants.slice(
     page * itemsPerPage,
     (page + 1) * itemsPerPage
   );
@@ -73,31 +118,29 @@ export default function CategoryPreview({ title, endpoint, restaurants }) {
           </button>
 
           {/* Grid Items */}
-          <div className="grid grid-cols-4 gap-4 flex-1">
+          <div
+            ref={containerRef}
+            className="grid gap-10 flex-1"
+            style={{ gridTemplateColumns: `repeat(${itemsPerPage}, minmax(0, 1fr))` }}
+          >
             {currentItems.map((restaurant) => (
               <Link
                 key={restaurant.camis}
                 href={`/restaurant/${restaurant.camis}`}
                 className="w-full"
               >
-                <div className="w-full h-full">
+                <div className="w-full h-full flex justify-center">
                   <RestaurantCard restaurant={restaurant} compact />
                 </div>
               </Link>
             ))}
-            {/* Fill empty slots if less than 4 items on last page to maintain layout */}
-            {Array.from({ length: Math.max(0, 4 - currentItems.length) }).map(
-              (_, i) => (
-                <div key={`empty-${i}`} className="w-full" />
-              )
-            )}
           </div>
 
           {/* Right Arrow */}
           <button
             onClick={nextPage}
-            disabled={page === maxPages - 1}
-            className={`ml-2 p-1 transition-all duration-200 focus:outline-none ${page === maxPages - 1
+            disabled={page >= maxPages - 1}
+            className={`ml-2 p-1 transition-all duration-200 focus:outline-none ${page >= maxPages - 1
               ? 'opacity-20 cursor-not-allowed text-gray-300'
               : 'text-gray-400 hover:text-gray-900 hover:scale-110'
               }`}
@@ -141,9 +184,9 @@ export default function CategoryPreview({ title, endpoint, restaurants }) {
           <Link
             key={restaurant.camis}
             href={`/restaurant/${restaurant.camis}`}
-            className="min-w-[288px] w-[288px] snap-start"
+            className="min-w-[320px] w-[320px] snap-start"
           >
-            <div className="w-[320px] h-full">
+            <div className="w-full h-full">
               <RestaurantCard restaurant={restaurant} compact />
             </div>
           </Link>

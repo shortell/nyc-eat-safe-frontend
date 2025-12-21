@@ -101,10 +101,10 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
                 <RestaurantList restaurants={restaurants} />
 
                 {isLoading && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 justify-items-center md:justify-items-start">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 justify-items-center">
                         {[...Array(12)].map((_, i) => (
-                            <div key={i} className="min-w-[288px] w-[288px] md:min-w-[324px] md:w-[324px]">
-                                <div className="w-[320px] md:w-[360px] h-full origin-top-left scale-[0.9]">
+                            <div key={i} className="w-full max-w-[320px] flex justify-center">
+                                <div className="w-full h-full origin-top-left">
                                     <SkeletonCard />
                                 </div>
                             </div>

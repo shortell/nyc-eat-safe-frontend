@@ -73,6 +73,13 @@ const Bottombar = () => {
   const pathname = usePathname();
   const currentTabIndex = navigationItems.findIndex(item => item.path === pathname);
 
+  const handleScrollTop = () => {
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+      mainContent.scrollTop = 0;
+    }
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
       <BottomNavigation
@@ -94,6 +101,7 @@ const Bottombar = () => {
             icon={item.icon}
             component={Link}
             href={item.path}
+            onClick={handleScrollTop}
           />
         ))}
       </BottomNavigation>

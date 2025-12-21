@@ -76,18 +76,20 @@ export default function NearMePage() {
             <div className="h-1 w-20 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full"></div>
           </div>
 
-          <div className="md:ml-4">
-            <TextField
-              id="zipcode-input"
-              label="Zipcode"
-              variant="outlined"
-              size="small"
-              value={zipcode}
-              onChange={handleZipcodeChange}
-              sx={{ backgroundColor: 'white' }}
-              placeholder="Enter Zipcode"
-            />
-          </div>
+          {locationStatus !== 'found' && (
+            <div className="md:ml-4">
+              <TextField
+                id="zipcode-input"
+                label="Zipcode"
+                variant="outlined"
+                size="small"
+                value={zipcode}
+                onChange={handleZipcodeChange}
+                sx={{ backgroundColor: 'white' }}
+                placeholder="Enter Zipcode"
+              />
+            </div>
+          )}
         </div>
 
         {/* Content Area */}

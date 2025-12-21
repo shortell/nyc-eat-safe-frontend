@@ -25,7 +25,8 @@ export async function generateMetadata({ params }) {
   const grade = profile[0]?.grade ?? "N";
 
   const name = header.dba || "Restaurant";
-  const address = `${header.building} ${header.street}, ${header.borough} ${header.zipcode}`;
+  const displayBorough = header.borough?.toLowerCase() === 'bronx' ? 'THE Bronx' : header.borough;
+  const address = `${header.building} ${header.street}, ${displayBorough} ${header.zipcode}`;
   const canonical = `https://www.nyceatsafe.com/restaurant/${camis}`;
   const description = `See NYC health inspection details for ${name} at ${address}. Grade: ${grade}${score != null ? `, Score: ${score}` : ""}.`;
 
@@ -57,7 +58,7 @@ export default async function RestaurantPage({ params }) {
           <div>
             <h1 className="text-3xl font-bold text-[#1a1a1a]">{header.dba}</h1>
             <p className="text-gray-700 mt-1 font-medium">
-              {header.building} {header.street}, {header.borough}
+              {header.building} {header.street}, {header.borough?.toLowerCase() === 'bronx' ? 'THE Bronx' : header.borough}
             </p>
           </div>
         </div>
