@@ -3,8 +3,14 @@ import Paper from '@mui/material/Paper';
 import GradeLetter from "@/components/GradeLetter";
 import ScoreBox from "@/components/ScoreBox";
 import ViolationsTable from "@/components/ViolationsTable";
+import ShareButtons from "@/components/ShareButtons";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+function toTitleCase(str) {
+  if (!str) return "";
+  return str.toLowerCase().replace(/(?:^|\s)\w/g, (match) => match.toUpperCase());
+}
 
 async function getRestaurant(camis) {
   const res = await fetch(`${BASE_URL}/restaurant/${parseInt(camis, 10)}`, {
@@ -24,9 +30,10 @@ export async function generateMetadata({ params }) {
   const score = profile[0]?.score;
   const grade = profile[0]?.grade ?? "N";
 
-  const name = header.dba || "Restaurant";
+  const name = toTitleCase(header.dba) || "Restaurant";
   const displayBorough = header.borough?.toLowerCase() === 'bronx' ? 'THE Bronx' : header.borough;
-  const address = `${header.building} ${header.street}, ${displayBorough} ${header.zipcode}`;
+  const street = toTitleCase(header.street);
+  const address = `${header.building} ${street}, ${displayBorough} ${header.zipcode}`;
   const canonical = `https://www.nyceatsafe.com/restaurant/${camis}`;
   const description = `See NYC health inspection details for ${name} at ${address}. Grade: ${grade}${score != null ? `, Score: ${score}` : ""}.`;
 
@@ -50,17 +57,24 @@ export default async function RestaurantPage({ params }) {
   const header = data.restaurant_details[0];
   const profile = data.restaurant_profile || [];
 
+  const restaurantName = toTitleCase(header.dba);
+  const streetName = toTitleCase(header.street);
+
   return (
     <div className="w-full min-h-screen bg-[#f5f2fa] py-8 px-2">
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-3 sm:p-8">
         {/* Header */}
-        <div className="mb-6 border-b pb-4 flex items-center">
+        <div className="mb-6 border-b pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[#1a1a1a]">{header.dba}</h1>
+            <h1 className="text-3xl font-bold text-[#1a1a1a]">{restaurantName}</h1>
             <p className="text-gray-700 mt-1 font-medium">
-              {header.building} {header.street}, {header.borough?.toLowerCase() === 'bronx' ? 'THE Bronx' : header.borough}
+              {header.building} {streetName}, {header.borough?.toLowerCase() === 'bronx' ? 'THE Bronx' : header.borough}
             </p>
           </div>
+          <ShareButtons
+            url={`https://www.nyceatsafe.com/restaurant/${camis}`}
+            title={`Check out ${restaurantName}'s health inspection results on NYC Eat Safe!`}
+          />
         </div>
 
         {/* Disclaimer */}

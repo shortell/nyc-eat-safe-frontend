@@ -60,6 +60,7 @@ export default function HomeClient() {
                         title="Is This an A to You?"
                         endpoint="/risky-a-grades"
                         restaurants={categoriesData.risky_a_grades}
+                        count={categoriesData.risky_count}
                     />
                 </div>
 
@@ -69,6 +70,7 @@ export default function HomeClient() {
                         title="Spotless Kitchens"
                         endpoint="/goldstar-a-grades"
                         restaurants={categoriesData.goldstar_a_grades}
+                        count={categoriesData.goldstar_count}
                     />
                 </div>
             </section>

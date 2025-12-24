@@ -153,18 +153,15 @@ export default async function AboutPage() {
                     <CategoryCard
                         title="Special Categories"
                         items={[
-                            <><strong>Gold Star:</strong> Perfect score—no violations at the last inspection.</>,
-                            <><strong>Questionable A Grades:</strong> A-grade restaurants cited with two or more critical violations.</>
+                            <><strong>Spotless Kitchen:</strong> No violations at the last inspection up to two non-critical violations.</>,
+                            <><strong>Is This an A to You?:</strong> A-grade restaurants cited with two or more critical violations.</>
                         ]}
                     />
 
                     <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 flex flex-col justify-center">
-                        <p className="text-sm text-slate-600">
+                        <p className="text-sm text-slate-600 leading-relaxed">
                             <strong>Data Source:</strong><br />
-                            NYC Open Data / NYC Department of Health and Mental Hygiene (DOHMH).
-                        </p>
-                        <p className="text-sm text-slate-400 mt-2">
-                            Last updated: {new Date().toLocaleDateString()}
+                            This application uses the <a href="https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j/about_data" target="_blank" rel="noopener noreferrer" className="text-[#1655A0] hover:underline font-medium">DOHMH New York City Restaurant Inspection Results</a> dataset, provided by NYC Open Data and updated daily.
                         </p>
                     </div>
                 </div>

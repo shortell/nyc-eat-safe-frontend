@@ -70,7 +70,7 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
         w-full relative
         max-w-[320px] md:max-w-[320px]
         min-w-[290px]
-        ${compact ? 'p-4 pb-2 flex flex-col' : 'p-6 pb-2 space-y-4'}
+        ${compact ? 'p-4 pb-1 flex flex-col' : 'p-6 pb-1 space-y-4'}
       `}
     >
       {/* Header */}
@@ -137,9 +137,10 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
         </div>
       </div>
 
-      <div className="flex justify-end mt-2">
+      <div className="flex items-center !mt-1 gap-2">
+        <div className="flex-1 border-b-2 border-gray-300"></div>
         <span className="text-xs text-gray-400 font-medium hover:text-gray-600 transition-colors">
-          More Info
+          Details
         </span>
       </div>
     </div >
