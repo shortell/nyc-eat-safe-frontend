@@ -8,7 +8,6 @@ export async function GET() {
   try {
     const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/sitemap-ids`, {
       headers: { 'User-Agent': 'SitemapGenerator/1.0 (+https://www.nyceatsafe.com)' },
-      cache: 'no-store',
     });
 
     if (!resp.ok) {

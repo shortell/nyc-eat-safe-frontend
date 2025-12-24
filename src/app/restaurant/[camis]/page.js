@@ -14,7 +14,7 @@ function toTitleCase(str) {
 
 async function getRestaurant(camis) {
   const res = await fetch(`${BASE_URL}/restaurant/${parseInt(camis, 10)}`, {
-    next: { revalidate: 21600 }, // ISR every 6h
+    next: { revalidate: 60 }, // ISR every 1m
   });
   if (!res.ok) notFound();
   const json = await res.json();
