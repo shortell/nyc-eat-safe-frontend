@@ -23,6 +23,7 @@ function mixRgb(a, b, t) {
 }
 
 export function getScoreColor(score) {
+  if (score == null) return '#9ca3af'; // Gray for null/undefined
   const clamped = Math.max(0, score);
   let lower = anchors[0];
   let upper = anchors[anchors.length - 1];

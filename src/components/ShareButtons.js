@@ -11,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import XIcon from '@mui/icons-material/X';
 import FacebookIcon from '@mui/icons-material/FacebookRounded';
 import RedditIcon from '@mui/icons-material/Reddit';
-import InstagramIcon from '@mui/icons-material/Instagram';
+
 import SmsIcon from '@mui/icons-material/SmsRounded';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
@@ -35,21 +35,12 @@ export default function ShareButtons({ url, title }) {
             case 'reddit':
                 shareUrl = `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`;
                 break;
-            case 'instagram':
-                // Instagram doesn't have a direct share URL for web.
-                // We'll copy the link to clipboard.
-                navigator.clipboard.writeText(url).then(() => {
-                    setSnackbarMessage("Link copied! Ready to paste on Instagram.");
-                    setOpenSnackbar(true);
-                }).catch((err) => {
-                    console.error("Failed to copy: ", err);
-                    setSnackbarMessage("Failed to copy link.");
-                    setOpenSnackbar(true);
-                });
-                return;
+
             case 'sms':
                 // SMS sharing
-                window.location.href = `sms:?body=${encodedTitle} ${encodedUrl}`;
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                const separator = isIOS ? '&' : '?';
+                window.location.href = `sms:${separator}body=${encodedTitle} ${encodedUrl}`;
                 return;
             default:
                 return;
@@ -88,11 +79,7 @@ export default function ShareButtons({ url, title }) {
                     </IconButton>
                 </Tooltip>
 
-                <Tooltip title="Copy Link for Instagram">
-                    <IconButton onClick={() => handleShare('instagram')} aria-label="Copy Link for Instagram" sx={{ color: '#E4405F', bgcolor: '#fcecf2', '&:hover': { bgcolor: '#faddel' } }}>
-                        <InstagramIcon />
-                    </IconButton>
-                </Tooltip>
+
 
                 <Tooltip title="Share via SMS">
                     <IconButton onClick={() => handleShare('sms')} aria-label="Share via SMS" sx={{ color: '#34B7F1', bgcolor: '#e0f7fa', '&:hover': { bgcolor: '#b2ebf2' } }}>

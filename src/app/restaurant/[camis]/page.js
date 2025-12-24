@@ -166,11 +166,15 @@ function InspectionCard({ inspection }) {
     return pr(a) - pr(b);
   });
 
-  const date = new Date(inspection.inspection_date).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const isPlaceholderDate = inspection.inspection_date && String(inspection.inspection_date).startsWith('1900-01-01');
+
+  const date = isPlaceholderDate
+    ? "Restaurant Has Never Been Inspected"
+    : new Date(inspection.inspection_date).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
 
   return (
     <div className="relative mx-auto max-w-2xl w-full">
@@ -239,7 +243,7 @@ function InspectionCard({ inspection }) {
           {/* Header Area */}
           <div className="flex flex-col items-center border-b-2 border-slate-100 pb-6 mb-6">
             <h2 className="text-sm font-bold tracking-widest text-slate-400 uppercase mb-2">Inspection Results</h2>
-            <div className="font-mono text-2xl font-bold text-slate-800">{date}</div>
+            <div className={`font-mono font-bold text-slate-800 ${isPlaceholderDate ? "text-lg text-center leading-tight" : "text-2xl"}`}>{date}</div>
           </div>
 
           {/* Grades - Unified Horizontal Design */}
