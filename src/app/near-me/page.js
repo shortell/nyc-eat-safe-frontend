@@ -7,6 +7,8 @@ import Slider from '@mui/material/Slider';
 import Chip from '@mui/material/Chip';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
+import Button from '@mui/material/Button';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 
 export default function NearMePage() {
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
@@ -21,7 +23,7 @@ export default function NearMePage() {
   const [distanceDir, setDistanceDir] = useState('ASC'); // 'ASC' or 'DESC'
   const [scoreDir, setScoreDir] = useState('ASC'); // 'ASC' or 'DESC'
 
-  useEffect(() => {
+  const handleUseLocation = () => {
     setLocationStatus('finding');
     if (typeof window !== 'undefined' && "geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -31,6 +33,7 @@ export default function NearMePage() {
             longitude: position.coords.longitude
           });
           setLocationStatus('found');
+          setSubmittedZipcode(null);
         },
         (error) => {
           console.error("Geolocation error:", error.message);
@@ -41,7 +44,7 @@ export default function NearMePage() {
     } else {
       setLocationStatus('error');
     }
-  }, []);
+  };
 
   // Debounce radius changes
   useEffect(() => {
@@ -126,7 +129,7 @@ export default function NearMePage() {
             </div>
 
             {locationStatus !== 'found' && (
-              <div className="w-full md:w-auto">
+              <div className="flex flex-col sm:flex-row gap-4 items-center w-full md:w-auto">
                 <TextField
                   id="zipcode-input"
                   label="Zipcode"
@@ -137,13 +140,29 @@ export default function NearMePage() {
                   sx={{ backgroundColor: 'white', width: { xs: '100%', md: '200px' } }}
                   placeholder="Enter Zipcode"
                 />
+                <span className="text-gray-500 font-medium">OR</span>
+                <Button
+                  variant="contained"
+                  onClick={handleUseLocation}
+                  startIcon={<MyLocationIcon />}
+                  sx={{
+                    backgroundColor: '#2563eb',
+                    textTransform: 'none',
+                    whiteSpace: 'nowrap',
+                    '&:hover': {
+                      backgroundColor: '#1d4ed8'
+                    }
+                  }}
+                >
+                  Use My Location
+                </Button>
               </div>
             )}
           </div>
 
           {/* Controls Area (Radius & Sorting) */}
-          {/* Show when we have a valid endpoint (meaning location found or zipcode entered) */}
-          {endpoint && (
+          {/* Show when we have a valid endpoint, but HIDE if in zipcode mode */}
+          {(endpoint && !submittedZipcode) && (
             <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
 
               {/* Radius Slider */}
@@ -152,16 +171,17 @@ export default function NearMePage() {
                   Search Radius (Miles)
                 </span>
                 <Slider
-                  value={radius || 0}
-                  onChange={(e, val) => setRadius(val === 0 ? null : val)}
-                  min={0}
-                  max={5}
-                  step={0.5}
+                  value={radius || 11}
+                  onChange={(e, val) => setRadius(val === 11 ? null : val)}
+                  min={1}
+                  max={11}
+                  step={1}
                   marks={[
-                    { value: 0, label: 'None' },
-                    { value: 5, label: '5' }
+                    { value: 1, label: '1 Mile' },
+                    { value: 11, label: <span className="mr-3">Citywide</span> }
                   ]}
                   valueLabelDisplay="auto"
+                  valueLabelFormat={(val) => val === 11 ? 'Citywide' : val}
                   sx={{ width: '92%', mx: 'auto' }}
                 />
               </div>
@@ -212,7 +232,7 @@ export default function NearMePage() {
                 <p>Locating...</p>
               </div>
             ) : (
-              <p>Enter a valid 5-digit zipcode to search for restaurants.</p>
+              <p>Enter a zipcode or use your location to find restaurants.</p>
             )}
           </div>
         )}
