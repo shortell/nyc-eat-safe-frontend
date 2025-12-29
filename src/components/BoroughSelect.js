@@ -12,7 +12,7 @@ const boroughs = [
     { label: 'Manhattan', value: 'Manhattan' },
     { label: 'Brooklyn', value: 'Brooklyn' },
     { label: 'Queens', value: 'Queens' },
-    { label: 'The Bronx', value: 'Bronx' },
+    { label: 'THE Bronx', value: 'Bronx' },
     { label: 'Staten Island', value: 'Staten Island' },
 ];
 

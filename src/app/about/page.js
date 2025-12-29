@@ -63,7 +63,7 @@ export default async function AboutPage() {
                         </p>
                         <div className="mt-4 pt-4 border-t border-slate-100">
                             <p className="text-slate-500 text-sm italic">
-                                <strong>Disclaimer:</strong> This is an independent project and is not affiliated with the NYC Department of Health and Mental Hygiene (DOHMH).
+                                <strong>Disclaimer:</strong> This is an independent project and is not affiliated with the NYC Department of Health and Mental Hygiene (DOHMH). We use the <a href="https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j/about_data" target="_blank" rel="noopener noreferrer" className="text-[#1655A0] hover:underline">publicly available data they publish</a>.
                             </p>
                         </div>
                     </div>
@@ -158,12 +158,7 @@ export default async function AboutPage() {
                         ]}
                     />
 
-                    <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 flex flex-col justify-center">
-                        <p className="text-sm text-slate-600 leading-relaxed">
-                            <strong>Data Source:</strong><br />
-                            This application uses the <a href="https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j/about_data" target="_blank" rel="noopener noreferrer" className="text-[#1655A0] hover:underline font-medium">DOHMH New York City Restaurant Inspection Results</a> dataset, provided by NYC Open Data and updated daily.
-                        </p>
-                    </div>
+
                 </div>
 
             </div>

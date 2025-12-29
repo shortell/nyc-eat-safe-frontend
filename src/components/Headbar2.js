@@ -4,6 +4,8 @@ import Searchbar from './Searchbar';
 import BoroughSelect from './BoroughSelect';
 
 
+import Link from 'next/link';
+
 const HeadBar2 = () => {
     const [selectedBoroughs, setSelectedBoroughs] = useState([]);
 
@@ -16,7 +18,9 @@ const HeadBar2 = () => {
 
     return (
         <div className="bg-gradient-to-b from-[#2A3E83] via-[#1655A0] to-[#016CCE] bg-gradient-to-b from-[0%] via-[90%] to-[98%] text-white py-6">
-            <h1 className="text-center text-4xl font-bold mb-2 font-mono">NYC Eat Safe</h1>
+            <Link href="/">
+                <h1 className="text-center text-4xl font-bold mb-2 font-mono cursor-pointer transition-opacity hover:opacity-90">NYC Eat Safe</h1>
+            </Link>
             <p className="text-center text-base font-light italic tracking-wide text-blue-100 antialiased mb-4">
                 An A isn’t always an A
             </p>
