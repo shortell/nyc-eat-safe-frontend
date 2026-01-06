@@ -1,7 +1,7 @@
 // app/layout.js
 import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import Headbar2 from "@/components/Headbar2";
 import Bottombar from "@/components/Bottombar";
 
@@ -87,20 +87,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}
       >
-        {/* Google tag (gtag.js) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-NL8KLQVYEH');
-          `}
-        </Script>
+        <GoogleAnalytics gaId="G-NL8KLQVYEH" />
         <Headbar2 />
         <main id="main-content" className="flex-1 overflow-y-auto">{children}</main>
         <Bottombar />
