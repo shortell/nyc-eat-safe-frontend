@@ -26,14 +26,7 @@ export default function FeedbackPage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (showInfoAlert) {
-      const timer = setTimeout(() => {
-        setShowInfoAlert(false);
-      }, 6000);
-      return () => clearTimeout(timer);
-    }
-  }, [showInfoAlert]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
