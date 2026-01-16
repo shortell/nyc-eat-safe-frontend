@@ -176,6 +176,16 @@ function InspectionCard({ inspection }) {
       year: "numeric",
     });
 
+  const currentGrade = inspection.grade ?? "N";
+
+  let projectedGrade = null;
+  if (currentGrade === 'N' && inspection.score !== null && inspection.score !== undefined) {
+    const s = inspection.score;
+    if (s <= 13) projectedGrade = 'A';
+    else if (s <= 27) projectedGrade = 'B';
+    else projectedGrade = 'C';
+  }
+
   return (
     <div className="relative mx-auto max-w-2xl w-full">
       {/* 
@@ -247,22 +257,34 @@ function InspectionCard({ inspection }) {
           </div>
 
           {/* Grades - Unified Horizontal Design */}
-          <div className="flex flex-row justify-center items-center gap-4 sm:gap-12 mb-8 py-6 border-y border-dashed border-slate-200">
-            <div className="flex flex-col items-center">
-              <span className="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-widest mb-2">City Grade</span>
+          <div className="flex flex-wrap sm:flex-nowrap justify-center items-center gap-4 w-full mb-8 py-6 border-y border-dashed border-slate-200">
+            <div className="flex flex-col items-center sm:flex-1 sm:basis-0">
+              <span className="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-widest mb-2 whitespace-nowrap text-center">City Grade</span>
               <div className="scale-110">
-                <GradeLetter grade={inspection.grade ?? "N"} />
+                <GradeLetter grade={currentGrade} />
               </div>
             </div>
 
-            <div className="w-px h-12 bg-slate-200" />
+            <div className="w-px h-12 bg-slate-200 flex-none" />
 
-            <div className="flex flex-col items-center">
-              <span className="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-widest mb-2">Violation Score</span>
+            <div className="flex flex-col items-center sm:flex-1 sm:basis-0">
+              <span className="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-widest mb-2 whitespace-nowrap text-center">Violation Score</span>
               <div className="scale-110">
                 <ScoreBox score={inspection.score} />
               </div>
             </div>
+
+            {projectedGrade && (
+              <>
+                <div className="hidden sm:block w-px h-12 bg-slate-200 flex-none" />
+                <div className="flex flex-col items-center basis-full sm:flex-1 sm:basis-0">
+                  <span className="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-widest mb-2 whitespace-nowrap text-center">Projected Grade</span>
+                  <div className="scale-110">
+                    <GradeLetter grade={projectedGrade} />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Violations Mobile Scroll Wrapper */}
