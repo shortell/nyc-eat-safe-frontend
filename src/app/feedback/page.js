@@ -80,7 +80,7 @@ export default function FeedbackPage() {
         </div>
       )}
       <div className="w-full max-w-7xl flex flex-col md:flex-row gap-8 items-start">
-        <div className="w-full md:w-[420px] shrink-0 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-8 md:p-10 md:sticky md:top-8">
+        <div className="w-full md:w-[420px] shrink-0 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-8 md:p-10 md:sticky md:top-8 order-last md:order-first">
           <h1 className="text-3xl md:text-4xl font-bold text-[#2A3E83] text-center mb-6">
             Let us know!
           </h1>

@@ -17,8 +17,8 @@ export default function NearMePage() {
   const [submittedZipcode, setSubmittedZipcode] = useState(null);
 
   // New state for NearMeRequest
-  const [radius, setRadius] = useState(1); // radius in miles, default 1
-  const [debouncedRadius, setDebouncedRadius] = useState(1); // Debounced radius for API calls
+  const [radius, setRadius] = useState(null); // radius in miles, default null (Citywide)
+  const [debouncedRadius, setDebouncedRadius] = useState(null); // Debounced radius for API calls
   const [primarySort, setPrimarySort] = useState('distance'); // 'distance' or 'score'
   const [distanceDir, setDistanceDir] = useState('ASC'); // 'ASC' or 'DESC'
   const [scoreDir, setScoreDir] = useState('ASC'); // 'ASC' or 'DESC'
