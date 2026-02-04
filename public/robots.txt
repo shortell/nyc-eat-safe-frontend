@@ -36,6 +36,12 @@ Allow: /
 User-agent: Google-InspectionTool
 Allow: /
 
+User-agent: MediavineMetadataParser
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
 # Allow Bing
 User-agent: Bingbot
 Allow: /
