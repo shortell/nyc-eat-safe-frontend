@@ -87,6 +87,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}
       >
+        <div id="hide-grow-widget"></div>
         {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
