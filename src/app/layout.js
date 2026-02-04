@@ -101,6 +101,11 @@ export default function RootLayout({ children }) {
             gtag('config', 'G-NL8KLQVYEH');
           `}
         </Script>
+        <Script id="mediavine-journey" strategy="afterInteractive">
+          {`
+            !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
+          `}
+        </Script>
         <Headbar2 />
         <main id="main-content" className="flex-1 overflow-y-auto">{children}</main>
         <Bottombar />
