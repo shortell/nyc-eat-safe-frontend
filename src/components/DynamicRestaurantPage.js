@@ -13,10 +13,36 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
     const [error, setError] = useState(null);
     const observerRef = useRef(null);
 
+    const lastFetchTime = useRef(0);
+    const isFetchingRef = useRef(false);
+    const MIN_LOAD_TIME = 300; // REDUCED: Show spinner for less time to feel snappier
+    const FETCH_THROTTLE_MS = 500; // REDUCED: Allow ~2 requests/sec to prevent "sticking"
+
     // ✅ Fetch page of restaurants
     const fetchRestaurants = useCallback(async (start) => {
+        // Strict lock to prevent parallel or rapid-fire requests
+        if (isFetchingRef.current) return;
+
+        const now = Date.now();
+        // Throttle rapid repeated calls (except the very first one)
+        if (start > 0 && now - lastFetchTime.current < FETCH_THROTTLE_MS) {
+            return;
+        }
+
         try {
+            isFetchingRef.current = true;
             setIsLoading(true);
+
+            // PHYSICAL LOCK: Kill inertia immediately on the SCROLL CONTAINER
+            const scrollContainer = document.getElementById('main-content');
+            if (scrollContainer) {
+                scrollContainer.style.overflow = 'hidden';
+            }
+
+            lastFetchTime.current = Date.now();
+
+            const loadStartTime = Date.now();
+
             const isGet = (extraParams.method === 'GET' || endpoint.startsWith('/zipcode/'));
 
             let fullEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`;
@@ -47,6 +73,12 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
             const json = await res.json();
             const newData = Array.isArray(json) ? json : json.restaurants || [];
 
+            // Enforce minimum loading time for smoothness
+            const elapsed = Date.now() - loadStartTime;
+            if (elapsed < MIN_LOAD_TIME) {
+                await new Promise(resolve => setTimeout(resolve, MIN_LOAD_TIME - elapsed));
+            }
+
             // ✅ Deduplicate by camis
             setRestaurants(prev => {
                 const seen = new Set(prev.map(r => r.camis));
@@ -56,9 +88,17 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
 
             if (newData.length < PAGE_SIZE) setHasMore(false);
         } catch (err) {
+            console.error("Fetch error:", err);
             setError(err.message);
         } finally {
             setIsLoading(false);
+            // UNLOCK: Restore scrolling on the container
+            const scrollContainer = document.getElementById('main-content');
+            if (scrollContainer) {
+                scrollContainer.style.overflow = ''; // Resets to CSS default (overflow-y-auto)
+            }
+            // Only release lock AFTER everything is done
+            isFetchingRef.current = false;
         }
     }, [endpoint, extraParams]);
 
@@ -67,6 +107,9 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
         setRestaurants([]);
         setOffset(0);
         setHasMore(true);
+        // Reset locks for fresh load
+        isFetchingRef.current = false;
+        lastFetchTime.current = 0;
         fetchRestaurants(0);
     }, [endpoint, extraParams, fetchRestaurants]);
 
@@ -76,11 +119,14 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
         if (observerRef.current) observerRef.current.disconnect();
 
         observerRef.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {
+            // Check lock immediately. If locked, do NOTHING (Stop user).
+            if (entries[0].isIntersecting && !isFetchingRef.current) {
                 const nextOffset = offset + PAGE_SIZE;
                 setOffset(nextOffset);
                 fetchRestaurants(nextOffset);
             }
+        }, {
+            rootMargin: '400px', // Fetch earlier for smoother normal scrolling
         });
 
         if (node) observerRef.current.observe(node);
@@ -120,7 +166,7 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
 
                 {!hasMore && restaurants.length > 0 && (
                     <p className="py-12 text-center text-gray-500 font-medium">
-                        You've reached the end of the list
+                        You&apos;ve reached the end of the list
                     </p>
                 )}
 

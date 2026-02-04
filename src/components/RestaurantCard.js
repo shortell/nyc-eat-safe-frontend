@@ -147,5 +147,5 @@ const RestaurantCard = ({ restaurant, compact = false }) => {
   );
 };
 
-export default RestaurantCard;
+export default React.memo(RestaurantCard);
 

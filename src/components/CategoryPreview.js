@@ -19,6 +19,7 @@ export default function CategoryPreview({ title, endpoint, restaurants = [], cou
     if (!containerRef.current) return;
 
     const updateItemsPerPage = () => {
+      if (!containerRef.current) return;
       const width = containerRef.current.offsetWidth;
 
       // Calculate items per page based on specific breakpoints

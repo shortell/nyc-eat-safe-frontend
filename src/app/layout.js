@@ -90,9 +90,9 @@ export default function RootLayout({ children }) {
         {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -101,7 +101,7 @@ export default function RootLayout({ children }) {
             gtag('config', 'G-NL8KLQVYEH');
           `}
         </Script>
-        <Script id="mediavine-journey" strategy="afterInteractive">
+        <Script id="mediavine-journey" strategy="lazyOnload">
           {`
             !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
           `}

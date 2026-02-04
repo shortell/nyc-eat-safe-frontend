@@ -110,13 +110,13 @@ export default async function AboutPage() {
 
                     {/* N Restaurants */}
                     <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
-                        <h2 className="text-xl font-bold text-slate-900 mb-4">What is Grade "N"?</h2>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4">What is Grade &quot;N&quot;?</h2>
                         <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                            An <strong>N</strong> grade means a letter grade hasn’t been issued yet (e.g. pending). Over <strong>20%</strong> of restaurants fall into this category.
+                            An <strong>N</strong> grade means a letter grade hasn&apos;t been issued yet (e.g. pending). Over <strong>20%</strong> of restaurants fall into this category.
                         </p>
                         <div className="bg-amber-50 border border-amber-100 rounded-lg p-4">
                             <p className="text-amber-800 text-sm font-medium">
-                                More than <strong>80%</strong> of "N" restaurants have too many violations to earn an A.
+                                More than <strong>80%</strong> of &quot;N&quot; restaurants have too many violations to earn an A.
                             </p>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ export default async function AboutPage() {
                 <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
                     <div className="mb-6">
                         <h2 className="text-xl font-bold text-slate-900">Score Distribution</h2>
-                        <p className="text-slate-500 text-sm">Scores from each restaurant's latest inspection (0-16 range)</p>
+                        <p className="text-slate-500 text-sm">Scores from each restaurant&apos;s latest inspection (0-16 range)</p>
                     </div>
 
                     <div className="w-full">
@@ -141,7 +141,7 @@ export default async function AboutPage() {
                     <div className="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-100 text-sm text-slate-600 space-y-2">
                         <p className="font-semibold text-slate-800">Observation:</p>
                         <p>
-                            Restaurants heavily cluster towards the bottom of the 'A' range.
+                            Restaurants heavily cluster towards the bottom of the &apos;A&apos; range.
                             There’s a sharp drop from <strong>13 points</strong> ({count13.toLocaleString()} restaurants)
                             to <strong>14 points</strong> ({count14.toLocaleString()} restaurants).
                         </p>

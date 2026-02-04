@@ -3,28 +3,30 @@
 import { useState, useEffect } from "react";
 import CategoryPreview from "@/components/CategoryPreview";
 
-export default function HomeClient() {
-    const [categoriesData, setCategoriesData] = useState(null);
-    const [loading, setLoading] = useState(true);
+export default function HomeClient({ initialData }) {
+    const [categoriesData, setCategoriesData] = useState(initialData);
+    const [loading, setLoading] = useState(!initialData);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchHomeData = async () => {
-            try {
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/home`
-                );
-                if (!res.ok) throw new Error("Failed to fetch home data");
-                setCategoriesData(await res.json());
-            } catch (err) {
-                console.error(err);
-                setError("Failed to load data.");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchHomeData();
-    }, []);
+        if (!initialData) {
+            const fetchHomeData = async () => {
+                try {
+                    const res = await fetch(
+                        `${process.env.NEXT_PUBLIC_BASE_URL}/home`
+                    );
+                    if (!res.ok) throw new Error("Failed to fetch home data");
+                    setCategoriesData(await res.json());
+                } catch (err) {
+                    console.error(err);
+                    setError("Failed to load data.");
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchHomeData();
+        }
+    }, [initialData]);
 
     if (loading)
         return (
