@@ -29,15 +29,21 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
             return;
         }
 
+        let lockTimeout = null;
+
         try {
             isFetchingRef.current = true;
             setIsLoading(true);
 
-            // PHYSICAL LOCK: Kill inertia immediately on the SCROLL CONTAINER
-            const scrollContainer = document.getElementById('main-content');
-            if (scrollContainer) {
-                scrollContainer.style.overflow = 'hidden';
-            }
+            // PHYSICAL LOCK: Stop scrolling (inertia kill) - DELAYED
+            // CSS 'scrollbar-gutter: stable' prevents the layout shift.
+            // DELAY: 150ms allows a bit of "slide" to reveal skeletons before stopping.
+            lockTimeout = setTimeout(() => {
+                const scrollContainer = document.getElementById('main-content');
+                if (scrollContainer && isFetchingRef.current) {
+                    scrollContainer.style.overflow = 'hidden';
+                }
+            }, 150);
 
             lastFetchTime.current = Date.now();
 
@@ -91,12 +97,16 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
             console.error("Fetch error:", err);
             setError(err.message);
         } finally {
+            // Clear the lock timer if fetch finished fast
+            if (lockTimeout) clearTimeout(lockTimeout);
+
             setIsLoading(false);
-            // UNLOCK: Restore scrolling on the container
+            // UNLOCK: Restore scrolling
             const scrollContainer = document.getElementById('main-content');
             if (scrollContainer) {
-                scrollContainer.style.overflow = ''; // Resets to CSS default (overflow-y-auto)
+                scrollContainer.style.overflow = '';
             }
+
             // Only release lock AFTER everything is done
             isFetchingRef.current = false;
         }
@@ -104,13 +114,30 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
 
     // ✅ Load initial page
     useEffect(() => {
+        // Sync background color to prevent "black flicker" in scrollbar gutter
+        const scrollContainer = document.getElementById('main-content');
+        if (scrollContainer) {
+            scrollContainer.style.backgroundColor = '#f5f2fa';
+        }
+
         setRestaurants([]);
         setOffset(0);
         setHasMore(true);
         // Reset locks for fresh load
         isFetchingRef.current = false;
         lastFetchTime.current = 0;
+        // Ensure scroll is unlocked if component remounts quickly
+        if (scrollContainer) {
+            scrollContainer.style.overflow = '';
+        }
         fetchRestaurants(0);
+
+        return () => {
+            // Reset background on unmount so it doesn't affect other pages
+            if (scrollContainer) {
+                scrollContainer.style.backgroundColor = '';
+            }
+        };
     }, [endpoint, extraParams, fetchRestaurants]);
 
     // ✅ Fetch next page on scroll
@@ -126,7 +153,7 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
                 fetchRestaurants(nextOffset);
             }
         }, {
-            rootMargin: '400px', // Fetch earlier for smoother normal scrolling
+            rootMargin: '100px', // REDUCED: Fetch later for smoother stop
         });
 
         if (node) observerRef.current.observe(node);
@@ -144,19 +171,7 @@ export default function DynamicRestaurantPage({ title, endpoint, extraParams, hi
                     </div>
                 )}
 
-                <RestaurantList restaurants={restaurants} />
-
-                {isLoading && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 justify-items-center">
-                        {[...Array(12)].map((_, i) => (
-                            <div key={i} className="w-full max-w-[320px] flex justify-center">
-                                <div className="w-full h-full origin-top-left">
-                                    <SkeletonCard />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                <RestaurantList restaurants={restaurants} isLoading={isLoading} />
 
                 {error && (
                     <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mt-6 text-center">

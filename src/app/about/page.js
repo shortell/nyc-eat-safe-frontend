@@ -1,4 +1,5 @@
 import ScoreHistogram from "@/components/ScoreHistogram";
+import InspectionExplanation from "@/components/InspectionExplanation";
 
 export const revalidate = 3600; // Revalidate the page every 1 hour
 
@@ -76,7 +77,7 @@ export default async function AboutPage() {
                         description="of A-grade restaurants have at least one critical violation."
                     />
                     <StatCard
-                        value="~10%"
+                        value="10%"
                         description="of A-grade restaurants are cited for rats, mice, or roaches."
                     />
                     <StatCard
@@ -87,26 +88,7 @@ export default async function AboutPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* How Inspections Work */}
-                    <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
-                        <h2 className="text-xl font-bold text-slate-900 mb-4">How Inspections Work</h2>
-                        <p className="text-slate-600 mb-4 text-sm leading-relaxed">
-                            Restaurants begin each inspection with <strong>0 points</strong>. Violations add points depending on severity—the more points, the lower the grade.
-                        </p>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-700 font-bold rounded-full text-sm">A</span>
-                                <span className="text-slate-700 text-sm font-medium">0 - 13 points</span>
-                            </div>
-                            <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-green-100 text-green-700 font-bold rounded-full text-sm">B</span>
-                                <span className="text-slate-700 text-sm font-medium">14 - 27 points</span>
-                            </div>
-                            <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-orange-100 text-orange-700 font-bold rounded-full text-sm">C</span>
-                                <span className="text-slate-700 text-sm font-medium">28+ points</span>
-                            </div>
-                        </div>
-                    </div>
+                    <InspectionExplanation />
 
                     {/* N Restaurants */}
                     <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">

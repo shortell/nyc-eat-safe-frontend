@@ -4,6 +4,9 @@ import GradeLetter from "@/components/GradeLetter";
 import ScoreBox from "@/components/ScoreBox";
 import ViolationsTable from "@/components/ViolationsTable";
 import ShareButtons from "@/components/ShareButtons";
+import InspectionExplanation from "@/components/InspectionExplanation";
+import NGradeExplanation from "@/components/NGradeExplanation";
+import ScoreGauge from "@/components/ScoreGauge";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -99,6 +102,14 @@ export default async function RestaurantPage({ params }) {
               Critical violations are those most likely to contribute to food-borne illness
             </p>
           </div>
+        </div>
+
+        {/* How Inspections Work */}
+        <div className="mb-8 space-y-4">
+          <InspectionExplanation collapsible />
+          {(profile[0]?.grade === 'N' || !profile[0]?.grade) && (
+            <NGradeExplanation />
+          )}
         </div>
 
         {/* Inspections */}
@@ -210,7 +221,7 @@ function InspectionCard({ inspection }) {
           - Modeled after the reference image (silver/steel standard clip)
           - Centered top
         */}
-        <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 w-32 h-16 flex justify-center">
+        <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-[5] w-32 h-16 flex justify-center">
           {/* Back plate of the clip */}
           <div className="absolute top-6 w-28 h-8 bg-gradient-to-b from-slate-300 to-slate-400 rounded-sm shadow-sm" />
 
@@ -285,6 +296,11 @@ function InspectionCard({ inspection }) {
                 </div>
               </>
             )}
+          </div>
+
+          {/* Score Gauge */}
+          <div className="w-full px-4 mb-8">
+            <ScoreGauge score={inspection.score} />
           </div>
 
           {/* Violations Mobile Scroll Wrapper */}
