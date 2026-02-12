@@ -64,7 +64,7 @@ export default async function AboutPage() {
                         </p>
                         <div className="mt-4 pt-4 border-t border-slate-100">
                             <p className="text-slate-500 text-sm italic">
-                                <strong>Disclaimer:</strong> This is an independent project and is not affiliated with the NYC Department of Health and Mental Hygiene (DOHMH). We use the <a href="https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j/about_data" target="_blank" rel="noopener noreferrer" className="text-[#1655A0] hover:underline">publicly available data they publish</a>.
+                                <strong>Disclaimer:</strong> This is an independent project and is not affiliated with the NYC Department of Health and Mental Hygiene (DOHMH). We use the <a href="https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j/about_data" target="_blank" rel="noopener noreferrer" className="text-[#016CCE] underline hover:text-[#1655A0]">publicly available data they publish</a>.
                             </p>
                         </div>
                     </div>

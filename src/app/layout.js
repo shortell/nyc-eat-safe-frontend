@@ -11,15 +11,15 @@ const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"] });
 
 export const metadata = {
   // Use full origin so all relative asset URLs (OG/Twitter images) resolve correctly
-  metadataBase: new URL("https://www.nyceatsafe.com"),
+  metadataBase: new URL("https://nyceatsafe.com"),
 
   // Clean defaults + page-specific override support
   title: {
-    default: "NYC Eat Safe",
+    default: "NYC Eat Safe - An A isn't always an A",
     template: "%s | NYC Eat Safe",
   },
   description:
-    "Explore NYC restaurant health inspection grades, scores, and violations. Public records from the NYC Dept. of Health.",
+    "An A isn't always an A. Explore NYC restaurant health inspection grades, scores, and violations.",
 
   keywords: [
     "NYC restaurants",
@@ -36,11 +36,11 @@ export const metadata = {
 
   openGraph: {
     type: "website",
-    url: "https://www.nyceatsafe.com/",
+    url: "https://nyceatsafe.com/",
     siteName: "NYC Eat Safe",
-    title: "NYC Eat Safe – Restaurant Health Inspection Records",
+    title: "NYC Eat Safe - An A isn't always an A",
     description:
-      "Find inspection grades, scores, and violations for NYC restaurants.",
+      "An A isn't always an A. Explore NYC restaurant health inspection grades, scores, and violations.",
     images: [
       {
         url: "/opengraph-image.png",
@@ -54,9 +54,9 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "NYC Eat Safe – Restaurant Health Inspection Records",
+    title: "NYC Eat Safe - An A isn't always an A",
     description:
-      "Find inspection grades, scores, and violations for NYC restaurants.",
+      "An A isn't always an A. Explore NYC restaurant health inspection grades, scores, and violations.",
     images: ["/opengraph-image.png"],
   },
 

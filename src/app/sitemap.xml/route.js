@@ -1,13 +1,13 @@
 export const revalidate = 3600;
 
 export async function GET() {
-  const baseUrl = 'https://www.nyceatsafe.com';
+  const baseUrl = 'https://nyceatsafe.com';
   const today = new Date().toISOString().split('T')[0];
 
   let restaurants = [];
   try {
     const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/sitemap-ids`, {
-      headers: { 'User-Agent': 'SitemapGenerator/1.0 (+https://www.nyceatsafe.com)' },
+      headers: { 'User-Agent': 'SitemapGenerator/1.0 (+https://nyceatsafe.com)' },
     });
 
     if (!resp.ok) {

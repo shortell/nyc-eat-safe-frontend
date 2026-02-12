@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import CategoryPreview from "@/components/CategoryPreview";
+import Link from "next/link";
 
 export default function HomeClient({ initialData }) {
     const [categoriesData, setCategoriesData] = useState(initialData);
@@ -50,7 +51,11 @@ export default function HomeClient({ initialData }) {
             {/* Header */}
             <div className="w-full max-w-5xl mx-auto px-4 mt-2 mb-1">
                 <p className="text-sm text-center text-gray-500">
-                    Public data from the NYC Dept. of Health.
+                    Public data from the NYC Dept. of Health.{" "}
+                    <Link href="/about" className="text-[#016CCE] underline hover:text-[#1655A0]">
+                        Learn More
+                    </Link>
+                    .
                 </p>
             </div>
 

@@ -37,16 +37,16 @@ export async function generateMetadata({ params }) {
   const displayBorough = header.borough?.toLowerCase() === 'bronx' ? 'THE Bronx' : header.borough;
   const street = toTitleCase(header.street);
   const address = `${header.building} ${street}, ${displayBorough} ${header.zipcode}`;
-  const canonical = `https://www.nyceatsafe.com/restaurant/${camis}`;
-  const description = `See NYC health inspection details for ${name} at ${address}. Grade: ${grade}${score != null ? `, Score: ${score}` : ""}.`;
+  const canonical = `https://nyceatsafe.com/restaurant/${camis}`;
+  const description = `${name} in ${displayBorough}: Grade ${grade}${score != null ? `, Score: ${score}` : ""}. An A isn't always an A.`;
 
   return {
-    title: `${name} | NYC Health Grade | NYC Eat Safe`,
+    title: `${name} - NYC Eat Safe`,
     description,
     alternates: { canonical },
     keywords: [name, "NYC Eat Safe", "NYC health inspection", header.borough, header.zipcode, grade, String(score ?? "")].filter(Boolean),
     openGraph: {
-      title: `${name} | NYC Health Grade`,
+      title: `${name} - NYC Eat Safe`,
       description,
       url: canonical,
       type: "website",
@@ -75,7 +75,7 @@ export default async function RestaurantPage({ params }) {
             </p>
           </div>
           <ShareButtons
-            url={`https://www.nyceatsafe.com/restaurant/${camis}`}
+            url={`https://nyceatsafe.com/restaurant/${camis}`}
             title={`Check out ${restaurantName}'s health inspection results on NYC Eat Safe!`}
           />
         </div>
@@ -136,7 +136,7 @@ export default async function RestaurantPage({ params }) {
               postalCode: header.zipcode,
               addressCountry: "US",
             },
-            url: `https://www.nyceatsafe.com/restaurant/${camis}`,
+            url: `https://nyceatsafe.com/restaurant/${camis}`,
             description: `NYC health inspection information for ${header.dba} at ${header.building} ${header.street}, ${header.borough} ${header.zipcode}.`,
             ...(profile?.[0] && (profile[0].grade || profile[0].score != null)
               ? {

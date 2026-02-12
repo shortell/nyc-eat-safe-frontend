@@ -16,10 +16,13 @@ export default function ScoreGauge({ score }) {
     const getPercentage = (s) => {
         if (s == null) return 0;
         const clamped = Math.max(0, s);
-        const maxScore = 42; // The top of our "C" range for visualization (Dark Red)
+        const maxScore = 41; // The top of our "C" range for visualization (Dark Red)
 
-        // Linear interpolation based on the 3 segments (0-14, 14-28, 28-42)
-        // Each segment is 14 points wide and takes up 33.33% of width
+        // Linear interpolation based on the 3 segments (0-14, 14-28, 28-41)
+        // A: 0-13 (14 pts), B: 14-27 (14 pts), C: 28-41 (14 pts? No, 28 to 41 is 14 numbers inclusively? 41-28=13. 14 steps? No.
+        // 0 to 14 is 14 units distance. 14 to 28 is 14 units.
+        // 28 to 41 is 13 units distance.
+        // For visual balance we map them to equal thirds.
 
         let p = 0;
         if (clamped <= 14) {
@@ -28,8 +31,8 @@ export default function ScoreGauge({ score }) {
             p = 33.33 + ((clamped - 14) / 14) * 33.33;
         } else {
             // 28+
-            // Cap at 42 for the graph calculation to keep it 100% at the end
-            const local = Math.min((clamped - 28) / 14, 1);
+            // Cap at 41 for the graph calculation to keep it 100% at the end
+            const local = Math.min((clamped - 28) / 13, 1);
             p = 66.66 + (local * 33.34);
         }
         return Math.min(Math.max(p, 0), 100);
@@ -58,7 +61,7 @@ export default function ScoreGauge({ score }) {
 
                 {/* Indicator (MUI Arrow) */}
                 <div
-                    className="absolute z-20 transition-all duration-700 ease-out"
+                    className="absolute transition-all duration-700 ease-out"
                     style={{
                         left: `${percentage}%`,
                         top: '50%',
