@@ -1,52 +1,93 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useLocation } from '@/context/LocationContext';
 import DynamicRestaurantPage from '../../components/DynamicRestaurantPage';
-import TextField from '@mui/material/TextField';
-import Slider from '@mui/material/Slider';
+import FilterDashboard from '@/components/FilterDashboard';
 import Chip from '@mui/material/Chip';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
-import Button from '@mui/material/Button';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
+
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 export default function NearMePage() {
-  const [coords, setCoords] = useState({ latitude: null, longitude: null });
-  const [locationStatus, setLocationStatus] = useState('idle'); // idle, finding, found, error
-  const [zipcode, setZipcode] = useState('');
-  const [submittedZipcode, setSubmittedZipcode] = useState(null);
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <NearMeContent />
+    </React.Suspense>
+  );
+}
 
-  // New state for NearMeRequest
-  const [radius, setRadius] = useState(null); // radius in miles, default null (Citywide)
-  const [debouncedRadius, setDebouncedRadius] = useState(null); // Debounced radius for API calls
-  const [primarySort, setPrimarySort] = useState('distance'); // 'distance' or 'score'
-  const [distanceDir, setDistanceDir] = useState('ASC'); // 'ASC' or 'DESC'
-  const [scoreDir, setScoreDir] = useState('ASC'); // 'ASC' or 'DESC'
+function NearMeContent() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const shouldReset = searchParams.get('should_reset') === 'true';
 
-  const handleUseLocation = () => {
-    setLocationStatus('finding');
-    if (typeof window !== 'undefined' && "geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCoords({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
-          setLocationStatus('found');
-          setSubmittedZipcode(null);
-        },
-        (error) => {
-          console.error("Geolocation error:", error.message);
-          setLocationStatus('error');
-        },
-        { timeout: 10000 }
-      );
-    } else {
-      setLocationStatus('error');
+  const { location, status: locationStatus, errorMsg, requestLocation } = useLocation();
+
+  // Initialize state from URL Params or Defaults
+  const [zipcode, setZipcode] = useState(searchParams.get('zipcode') || '');
+  const [submittedZipcode, setSubmittedZipcode] = useState(searchParams.get('zipcode') || null);
+
+  const initialRadius = searchParams.get('radius') ? Number(searchParams.get('radius')) : null;
+  const [radius, setRadius] = useState(initialRadius);
+  const [debouncedRadius, setDebouncedRadius] = useState(initialRadius);
+
+  const [primarySort, setPrimarySort] = useState(searchParams.get('primary_sort') || 'distance');
+  const [distanceDir, setDistanceDir] = useState(searchParams.get('distance_dir') || 'ASC');
+  const [scoreDir, setScoreDir] = useState(searchParams.get('score_dir') || 'ASC');
+
+  // Sync Params -> State (Handle Back Button)
+  useEffect(() => {
+    const pZip = searchParams.get('zipcode') || '';
+    if (pZip !== zipcode) {
+      setZipcode(pZip);
+      setSubmittedZipcode(pZip || null);
     }
-  };
 
-  // Debounce radius changes
+    const pRadius = searchParams.get('radius') ? Number(searchParams.get('radius')) : null;
+    if (pRadius !== radius) {
+      setRadius(pRadius);
+      setDebouncedRadius(pRadius);
+    }
+
+    const pSort = searchParams.get('primary_sort') || 'distance';
+    if (pSort !== primarySort) setPrimarySort(pSort);
+
+    const pDistDir = searchParams.get('distance_dir') || 'ASC';
+    if (pDistDir !== distanceDir) setDistanceDir(pDistDir);
+
+    const pScoreDir = searchParams.get('score_dir') || 'ASC';
+    if (pScoreDir !== scoreDir) setScoreDir(pScoreDir);
+
+  }, [searchParams]);
+
+  // Sync State -> URL
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    // Zipcode
+    if (submittedZipcode) params.set('zipcode', submittedZipcode);
+    else params.delete('zipcode');
+
+    // Radius (Using debounced)
+    if (debouncedRadius) params.set('radius', debouncedRadius);
+    else params.delete('radius');
+
+    // Sort
+    params.set('primary_sort', primarySort);
+    params.set('distance_dir', distanceDir);
+    params.set('score_dir', scoreDir);
+
+    // Update URL without scroll
+    const newSearch = params.toString();
+    if (newSearch !== searchParams.toString()) {
+      router.replace(`${pathname}?${newSearch}`, { scroll: false });
+    }
+  }, [submittedZipcode, debouncedRadius, primarySort, distanceDir, scoreDir, pathname, router, searchParams]);
+
+  // Debounce radius changes (Local UI -> Debounced State)
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedRadius(radius);
@@ -57,28 +98,29 @@ export default function NearMePage() {
     };
   }, [radius]);
 
+
   const handleZipcodeChange = (e) => {
     const val = e.target.value.replace(/\D/g, '').slice(0, 5);
     setZipcode(val);
 
     if (val.length === 5) {
-      if (val !== submittedZipcode) {
-        setSubmittedZipcode(val);
-        // Reset location status to avoid conflict if user manually enters zipcode while location is active
-        setLocationStatus('user_override');
+      setSubmittedZipcode(val);
+    } else {
+      if (val.length === 0 && submittedZipcode) {
+        setSubmittedZipcode(null);
       }
     }
   };
 
   const handleSortClick = (sortType) => {
-    // Always toggle direction for the clicked sort type
+    if (submittedZipcode) return;
+
     if (sortType === 'distance') {
       setDistanceDir((prev) => (prev === 'ASC' ? 'DESC' : 'ASC'));
     } else {
       setScoreDir((prev) => (prev === 'ASC' ? 'DESC' : 'ASC'));
     }
 
-    // Switch primary sort if it's different
     if (primarySort !== sortType) {
       setPrimarySort(sortType);
     }
@@ -102,25 +144,29 @@ export default function NearMePage() {
         endpoint: `/zipcode/${submittedZipcode}`,
         extraParams: params
       };
-    } else if (locationStatus === 'found' && coords.latitude && coords.longitude) {
+    } else if (locationStatus === 'found' && location) {
       return {
         endpoint: '/near-me',
         extraParams: {
           ...params,
-          latitude: coords.latitude,
-          longitude: coords.longitude
+          latitude: location.latitude,
+          longitude: location.longitude
         }
       };
     }
     return { endpoint: null, extraParams: {} };
-  }, [submittedZipcode, locationStatus, coords.latitude, coords.longitude, debouncedRadius, primarySort, distanceDir, scoreDir]);
+  }, [submittedZipcode, locationStatus, location, debouncedRadius, primarySort, distanceDir, scoreDir]);
+
+  // Show controls if we have location found (even if overridden by zip, we want to show disabled controls)
+  const showLocationControls = locationStatus === 'found' && location;
+  const controlsDisabled = !!submittedZipcode;
 
   return (
     <div className="min-h-screen bg-[#f5f2fa]">
       <div className="max-w-[1600px] mx-auto px-4 py-4 md:py-8">
         {/* Persistent Header */}
         <div className="flex flex-col gap-4 md:gap-6 mb-4 md:mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
                 Near Me
@@ -128,112 +174,77 @@ export default function NearMePage() {
               <div className="h-1 w-20 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full"></div>
             </div>
 
-            {locationStatus !== 'found' && (
-              <div className="flex flex-col sm:flex-row gap-4 items-center w-full md:w-auto">
-                <TextField
-                  id="zipcode-input"
-                  label="Zipcode"
-                  variant="outlined"
-                  size="small"
-                  value={zipcode}
-                  onChange={handleZipcodeChange}
-                  sx={{ backgroundColor: 'white', width: { xs: '100%', md: '200px' } }}
-                  placeholder="Enter Zipcode"
-                />
-                <span className="text-gray-500 font-medium">OR</span>
-                <Button
-                  variant="contained"
-                  onClick={handleUseLocation}
-                  startIcon={<MyLocationIcon />}
-                  sx={{
-                    backgroundColor: '#2563eb',
-                    textTransform: 'none',
-                    whiteSpace: 'nowrap',
-                    '&:hover': {
-                      backgroundColor: '#1d4ed8'
-                    }
-                  }}
-                >
-                  Use My Location
-                </Button>
-              </div>
-            )}
+            {/* Dashboard / Controls Area */}
+            <FilterDashboard
+              zipcode={zipcode}
+              onZipcodeChange={handleZipcodeChange}
+              locationStatus={locationStatus}
+              requestLocation={requestLocation}
+              showLocationControls={showLocationControls}
+              radius={radius}
+              setRadius={setRadius}
+              controlsDisabled={controlsDisabled}
+              sortChildren={
+                <>
+                  <Chip
+                    label="Nearest"
+                    onClick={() => handleSortClick('distance')}
+                    color={primarySort === 'distance' ? "primary" : "default"}
+                    variant={primarySort === 'distance' ? "filled" : "outlined"}
+                    icon={distanceDir === 'ASC' ? <NorthIcon /> : <SouthIcon />}
+                    clickable={!controlsDisabled}
+                    disabled={controlsDisabled}
+                  />
+                  <Chip
+                    label="Cleanest"
+                    onClick={() => handleSortClick('score')}
+                    color={primarySort === 'score' ? "primary" : "default"}
+                    variant={primarySort === 'score' ? "filled" : "outlined"}
+                    icon={scoreDir === 'ASC' ? <NorthIcon /> : <SouthIcon />}
+                    clickable={!controlsDisabled}
+                    disabled={controlsDisabled}
+                  />
+                </>
+              }
+            />
           </div>
+        </div>
 
-          {/* Controls Area (Radius & Sorting) */}
-          {/* Show when we have a valid endpoint, but HIDE if in zipcode mode */}
-          {(endpoint && !submittedZipcode) && (
-            <div className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
-
-              {/* Radius Slider */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full md:w-auto min-w-[300px]">
-                <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">
-                  Search Radius (Miles)
-                </span>
-                <Slider
-                  value={radius || 11}
-                  onChange={(e, val) => setRadius(val === 11 ? null : val)}
-                  min={1}
-                  max={11}
-                  step={1}
-                  marks={[
-                    { value: 1, label: '1 Mile' },
-                    { value: 11, label: <span className="mr-3">Citywide</span> }
-                  ]}
-                  valueLabelDisplay="auto"
-                  valueLabelFormat={(val) => val === 11 ? 'Citywide' : val}
-                  sx={{ width: '92%', mx: 'auto' }}
-                />
-              </div>
-
-              <div className="h-8 w-px bg-gray-200 hidden md:block"></div>
-
-              {/* Sorting Chips */}
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-sm font-semibold text-gray-700">Sort by:</span>
-
-                <Chip
-                  label="Nearest"
-                  onClick={() => handleSortClick('distance')}
-                  color={primarySort === 'distance' ? "primary" : "default"}
-                  variant={primarySort === 'distance' ? "filled" : "outlined"}
-                  icon={distanceDir === 'ASC' ? <NorthIcon /> : <SouthIcon />}
-                  clickable
-                />
-
-                <Chip
-                  label="Cleanest"
-                  onClick={() => handleSortClick('score')}
-                  color={primarySort === 'score' ? "primary" : "default"}
-                  variant={primarySort === 'score' ? "filled" : "outlined"}
-                  icon={scoreDir === 'ASC' ? <NorthIcon /> : <SouthIcon />}
-                  clickable
-                />
-              </div>
-
+        {/* Status Messages for Location */}
+        <div className="pl-1">
+          {locationStatus === 'finding' && (
+            <div className="flex items-center gap-2 text-gray-600">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+              <p>Locating...</p>
             </div>
+          )}
+          {locationStatus === 'error' && (
+            <p className="text-red-500">
+              Unable to retrieve location. {errorMsg && `(${errorMsg})`} Please try zipcode.
+            </p>
+          )}
+          {locationStatus === 'denied' && (
+            <p className="text-red-500">
+              Location permission denied. Please enable it or use zipcode.
+            </p>
           )}
         </div>
 
         {/* Content Area */}
         {endpoint ? (
           <DynamicRestaurantPage
-            key={endpoint}
+            key={endpoint + JSON.stringify(extraParams)}
             title="Near Me Results"
             endpoint={endpoint}
             extraParams={extraParams}
             hideTitle={true}
+            shouldReset={shouldReset}
           />
         ) : (
           <div className="mt-8 text-gray-600 pl-2">
-            {locationStatus === 'finding' ? (
-              <div className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                <p>Locating...</p>
-              </div>
-            ) : (
+            <div>
               <p>Enter a zipcode or use your location to find restaurants.</p>
-            )}
+            </div>
           </div>
         )}
       </div>

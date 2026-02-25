@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
-import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function FeedbackPage() {
   const [email, setEmail] = useState('');
@@ -15,17 +15,6 @@ export default function FeedbackPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [comments, setComments] = useState([]);
   const [selectedComment, setSelectedComment] = useState(null);
-  const [showInfoAlert, setShowInfoAlert] = useState(false);
-
-  useEffect(() => {
-    // Check if user has seen the new comments info
-    const hasSeenInfo = sessionStorage.getItem('hasSeenCommentsInfo');
-    if (!hasSeenInfo) {
-      setShowInfoAlert(true);
-      sessionStorage.setItem('hasSeenCommentsInfo', 'true');
-    }
-  }, []);
-
 
 
   const handleSubmit = async (e) => {
@@ -71,14 +60,6 @@ export default function FeedbackPage() {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center bg-[#f6f3fa] px-4 py-6">
-      {showInfoAlert && (
-        <div className="w-full max-w-7xl mb-4">
-          <Alert severity="info" onClose={() => setShowInfoAlert(false)}>
-            <span className="md:hidden">Welcome to the new Comments section! You can now see answered feedback below. Feel free to leave your own comments or feedback below.</span>
-            <span className="hidden md:inline">Welcome to the new Comments section! You can now see answered feedback on the right. Feel free to leave your own comments or feedback below.</span>
-          </Alert>
-        </div>
-      )}
       <div className="w-full max-w-7xl flex flex-col md:flex-row gap-8 items-start">
         <div className="w-full md:w-[420px] shrink-0 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-8 md:p-10 md:sticky md:top-8 order-last md:order-first">
           <h1 className="text-3xl md:text-4xl font-bold text-[#2A3E83] text-center mb-6">
@@ -160,7 +141,7 @@ export default function FeedbackPage() {
           {comments.map((comment) => (
             <div
               key={comment.comment_id}
-              className="bg-white rounded-xl shadow-sm p-6 cursor-pointer hover:shadow-md transition-shadow"
+              className="bg-white rounded-xl shadow-sm px-6 pt-6 pb-3 cursor-pointer hover:shadow-md transition-shadow"
               onClick={() => setSelectedComment(comment)}
             >
               <p className="text-xs text-gray-600 mb-1">
@@ -172,13 +153,17 @@ export default function FeedbackPage() {
                   label={comment.status}
                   variant="outlined"
                   className="shrink-0"
-                  icon={comment.status === 'Fixed' ? <CheckIcon /> : undefined}
+                  icon={
+                    comment.status === 'Fixed' ? <CheckIcon /> :
+                      comment.status === 'Added' ? <AddIcon /> :
+                        undefined
+                  }
                   color={comment.status === 'Fixed' ? 'success' : 'default'}
                   sx={{
-                    color: comment.status === 'Fixed' ? 'green' : undefined,
-                    borderColor: comment.status === 'Fixed' ? 'green' : undefined,
+                    color: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : undefined,
+                    borderColor: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : undefined,
                     '& .MuiChip-icon': {
-                      color: comment.status === 'Fixed' ? 'green' : undefined,
+                      color: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : undefined,
                     }
                   }}
                 />
@@ -189,6 +174,10 @@ export default function FeedbackPage() {
                   <span className="font-medium text-gray-800">Response:</span> {comment.response}
                 </p>
               )}
+
+              <div className="mt-1 flex justify-end">
+                <span className="text-[#2A3E83] text-sm font-bold">View more</span>
+              </div>
             </div>
           ))}
         </div>
@@ -220,13 +209,17 @@ export default function FeedbackPage() {
                 label={selectedComment.status}
                 variant="outlined"
                 className="shrink-0"
-                icon={selectedComment.status === 'Fixed' ? <CheckIcon /> : undefined}
+                icon={
+                  selectedComment.status === 'Fixed' ? <CheckIcon /> :
+                    selectedComment.status === 'Added' ? <AddIcon /> :
+                      undefined
+                }
                 color={selectedComment.status === 'Fixed' ? 'success' : 'default'}
                 sx={{
-                  color: selectedComment.status === 'Fixed' ? 'green' : undefined,
-                  borderColor: selectedComment.status === 'Fixed' ? 'green' : undefined,
+                  color: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : undefined,
+                  borderColor: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : undefined,
                   '& .MuiChip-icon': {
-                    color: selectedComment.status === 'Fixed' ? 'green' : undefined,
+                    color: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : undefined,
                   }
                 }}
               />

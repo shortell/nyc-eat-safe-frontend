@@ -1,10 +1,9 @@
 // src/utils/scoreUtils.js
 
 const anchors = [
-  { score: 0, hex: '#22c55e' },
-  { score: 14, hex: '#eab308' },
-  { score: 28, hex: '#ef4444' },
-  { score: 42, hex: '#991b1b' },
+  { score: 0, hex: '#22c55e' },   // Green
+  { score: 14, hex: '#eab308' },  // Yellow (Middle)
+  { score: 28, hex: '#ef4444' },  // Red (End)
 ];
 
 function hexToRgb(hex) {
@@ -24,7 +23,11 @@ function mixRgb(a, b, t) {
 
 export function getScoreColor(score) {
   if (score == null) return '#9ca3af'; // Gray for null/undefined
-  const clamped = Math.max(0, score);
+
+  // Cap score at 28 for color calculation
+  // Anything 28 or higher gets the last color (Red)
+  const clamped = Math.min(Math.max(0, score), 28);
+
   let lower = anchors[0];
   let upper = anchors[anchors.length - 1];
 
@@ -50,8 +53,8 @@ export function getScoreColor(score) {
 }
 
 export function convertScoreToPercentage(score) {
-  if (score >= 42) return 0;
-  const percentage = (1 - score / 41) * 100;
+  if (score >= 28) return 0;
+  const percentage = (1 - score / 28) * 100;
   return Math.round(percentage);
 }
 

@@ -10,6 +10,7 @@ export default function CategoryPreview({ title, endpoint, restaurants = [], cou
     new URLSearchParams({
       category_name: title,
       category_endpoint: endpoint,
+      should_reset: 'true',
     }).toString();
 
   const containerRef = React.useRef(null);
@@ -22,22 +23,18 @@ export default function CategoryPreview({ title, endpoint, restaurants = [], cou
       if (!containerRef.current) return;
       const width = containerRef.current.offsetWidth;
 
-      // Calculate items per page based on specific breakpoints
-      // Requirements:
-      // Small: 1 card
-      // Wider: 2 cards
-      // Medium: 3 cards
-      // Max: 4 cards
-      // Constants: Card Min Width ~320px, Gap 40px
-      // 2 cards: 640 + 40 = 680
-      // 3 cards: 960 + 80 = 1040
-      // 4 cards: 1280 + 120 = 1400
+      // Each card looks best at ~310px with a 40px gap between them.
+      // Thresholds = (cards * 310) + ((cards - 1) * 40)
+      // 2 cards: 620 + 40  = 660
+      // 3 cards: 930 + 80  = 1010
+      // 4 cards: 1240 + 120 = 1360
+      // Using slightly higher values (+30px) as a comfort buffer.
 
-      if (width >= 1400) {
+      if (width >= 1390) {
         setItemsPerPage(4);
       } else if (width >= 1040) {
         setItemsPerPage(3);
-      } else if (width >= 680) {
+      } else if (width >= 690) {
         setItemsPerPage(2);
       } else {
         setItemsPerPage(1);
@@ -90,12 +87,17 @@ export default function CategoryPreview({ title, endpoint, restaurants = [], cou
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
           {title}
         </h2>
-        <Link
-          href={href}
-          className="text-xs font-semibold text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full transition-colors shadow-sm border border-gray-200"
-        >
-          See all
-        </Link>
+        <span className="relative flex-none">
+          <Link
+            href={href}
+            className="text-xs font-semibold text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full transition-colors shadow-sm border border-gray-200"
+          >
+            See all
+          </Link>
+          {count > 0 && (
+            <span className="absolute -top-1 right-0 w-2.5 h-2.5 bg-red-500 rounded-full shadow-sm pointer-events-none" />
+          )}
+        </span>
       </div>
 
       {/* Desktop Carousel (Hidden on mobile) */}
@@ -130,7 +132,7 @@ export default function CategoryPreview({ title, endpoint, restaurants = [], cou
           <div
             ref={containerRef}
             className="grid gap-10 flex-1"
-            style={{ gridTemplateColumns: `repeat(${itemsPerPage}, minmax(0, 1fr))` }}
+            style={{ gridTemplateColumns: `repeat(${itemsPerPage}, minmax(280px, 1fr))` }}
           >
             {currentItems.map((item) => (
               item.type === 'view-more' ? (

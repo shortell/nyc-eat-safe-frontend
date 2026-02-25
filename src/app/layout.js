@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import Headbar2 from "@/components/Headbar2";
 import Bottombar from "@/components/Bottombar";
+import { Providers } from "@/context/Providers";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -87,29 +88,31 @@ export default function RootLayout({ children }) {
       <body
         className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}
       >
-        <div id="hide-grow-widget"></div>
-        {/* Google tag (gtag.js) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
-          strategy="lazyOnload"
-        />
-        <Script id="google-analytics" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+        <Providers>
+          <div id="hide-grow-widget"></div>
+          {/* Google tag (gtag.js) */}
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
+            strategy="lazyOnload"
+          />
+          <Script id="google-analytics" strategy="lazyOnload">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
 
-            gtag('config', 'G-NL8KLQVYEH');
-          `}
-        </Script>
-        <Script id="mediavine-journey" strategy="lazyOnload">
-          {`
-            !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
-          `}
-        </Script>
-        <Headbar2 />
-        <main id="main-content" className="flex-1 overflow-y-auto">{children}</main>
-        <Bottombar />
+              gtag('config', 'G-NL8KLQVYEH');
+            `}
+          </Script>
+          <Script id="mediavine-journey" strategy="lazyOnload">
+            {`
+              !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
+            `}
+          </Script>
+          <Headbar2 />
+          <main id="main-content" className="flex-1 overflow-y-auto">{children}</main>
+          <Bottombar />
+        </Providers>
       </body>
     </html>
   );

@@ -6,7 +6,7 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Badge from '@mui/material/Badge';
-import Tooltip from '@mui/material/Tooltip';
+import ListSubheader from '@mui/material/ListSubheader';
 
 const boroughs = [
     { label: 'Manhattan', value: 'Manhattan' },
@@ -44,24 +44,22 @@ const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs, onClose }) => {
 
     return (
         <>
-            <Tooltip title="Filter by Borough">
-                <IconButton
-                    onClick={handleClick}
-                    sx={{
-                        backgroundColor: '#FFFFFF',
-                        width: '56px',
-                        height: '56px',
-                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                        '&:hover': {
-                            backgroundColor: '#f5f5f5',
-                        },
-                    }}
-                >
-                    <Badge badgeContent={selectedBoroughs.length} color="primary">
-                        <FilterAltIcon sx={{ color: '#1655A0', fontSize: '32px' }} />
-                    </Badge>
-                </IconButton>
-            </Tooltip>
+            <IconButton
+                onClick={handleClick}
+                sx={{
+                    backgroundColor: '#FFFFFF',
+                    width: '56px',
+                    height: '56px',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                    '&:hover': {
+                        backgroundColor: '#f5f5f5',
+                    },
+                }}
+            >
+                <Badge badgeContent={selectedBoroughs.length} color="primary">
+                    <FilterAltIcon sx={{ color: '#1655A0', fontSize: '32px' }} />
+                </Badge>
+            </IconButton>
             <Menu
                 anchorEl={anchorEl}
                 open={open}
@@ -75,6 +73,9 @@ const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs, onClose }) => {
                     },
                 }}
             >
+                <ListSubheader sx={{ fontWeight: 700, lineHeight: '36px', color: '#1655A0', letterSpacing: '0.05em', fontSize: '0.75rem', textTransform: 'uppercase' }}>
+                    Search Filter
+                </ListSubheader>
                 {boroughs.map((borough) => (
                     <MenuItem key={borough.value} onClick={() => handleToggle(borough.value)}>
                         <Checkbox checked={selectedBoroughs.indexOf(borough.value) > -1} />

@@ -7,6 +7,7 @@ import { getScoreColor } from '../utils/scoreUtils';
 
 export default function ScoreBox({ score }) {
   const backgroundColor = getScoreColor(score);
+  const isTripleDigit = score >= 100;
 
   return (
     <div
@@ -15,7 +16,10 @@ export default function ScoreBox({ score }) {
       aria-label={`Inspection score ${score ?? 'N/A'}`}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none" />
-      <span className="text-5xl font-extrabold text-white drop-shadow-sm relative z-10 leading-none">
+      <span
+        className={`${isTripleDigit ? 'text-3xl' : 'text-5xl'
+          } font-extrabold text-white drop-shadow-sm relative z-10 leading-none`}
+      >
         {score ?? '—'}
       </span>
     </div>

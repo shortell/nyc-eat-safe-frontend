@@ -7,6 +7,8 @@ import ShareButtons from "@/components/ShareButtons";
 import InspectionExplanation from "@/components/InspectionExplanation";
 import NGradeExplanation from "@/components/NGradeExplanation";
 import ScoreGauge from "@/components/ScoreGauge";
+import SmartBackButton from "@/components/SmartBackButton";
+import Divider from '@mui/material/Divider';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -64,10 +66,11 @@ export default async function RestaurantPage({ params }) {
   const streetName = toTitleCase(header.street);
 
   return (
-    <div className="w-full min-h-screen bg-[#f5f2fa] py-8 px-2">
-      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-3 sm:p-8">
+    <div className="w-full min-h-screen bg-[#f5f2fa] pt-6 pb-8 px-2 relative">
+      <SmartBackButton />
+      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-3 sm:p-8 mt-4">
         {/* Header */}
-        <div className="mb-6 border-b pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div className="mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-[#1a1a1a]">{restaurantName}</h1>
             <p className="text-gray-700 mt-1 font-medium">
@@ -79,6 +82,7 @@ export default async function RestaurantPage({ params }) {
             title={`Check out ${restaurantName}'s health inspection results on NYC Eat Safe!`}
           />
         </div>
+        <Divider sx={{ mb: 4, borderColor: 'rgba(0,0,0,0.18)' }} />
 
         {/* Disclaimer */}
         <div className="mb-8">
@@ -108,7 +112,7 @@ export default async function RestaurantPage({ params }) {
         <div className="mb-8 space-y-4">
           <InspectionExplanation collapsible />
           {(profile[0]?.grade === 'N' || !profile[0]?.grade) && (
-            <NGradeExplanation />
+            <NGradeExplanation collapsible />
           )}
         </div>
 
@@ -263,13 +267,13 @@ function InspectionCard({ inspection }) {
         >
           {/* Header Area */}
           <div className="flex flex-col items-center border-b-2 border-slate-100 pb-6 mb-6">
-            <h2 className="text-sm font-bold tracking-widest text-slate-400 uppercase mb-2">Inspection Results</h2>
+            <h2 className="text-sm font-bold tracking-widest text-slate-400 uppercase mb-2">Latest Inspection</h2>
             <div className={`font-mono font-bold text-slate-800 ${isPlaceholderDate ? "text-lg text-center leading-tight" : "text-2xl"}`}>{date}</div>
           </div>
 
           {/* Grades - Unified Horizontal Design */}
           <div className="flex flex-wrap sm:flex-nowrap justify-center items-center gap-4 w-full mb-8 py-6 border-y border-dashed border-slate-200">
-            <div className="flex flex-col items-center sm:flex-1 sm:basis-0">
+            <div className="flex flex-col items-center flex-1">
               <span className="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-widest mb-2 whitespace-nowrap text-center">City Grade</span>
               <div className="scale-110">
                 <GradeLetter grade={currentGrade} />
@@ -278,7 +282,7 @@ function InspectionCard({ inspection }) {
 
             <div className="w-px h-12 bg-slate-200 flex-none" />
 
-            <div className="flex flex-col items-center sm:flex-1 sm:basis-0">
+            <div className="flex flex-col items-center flex-1">
               <span className="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-widest mb-2 whitespace-nowrap text-center">Violation Score</span>
               <div className="scale-110">
                 <ScoreBox score={inspection.score} />
@@ -299,9 +303,12 @@ function InspectionCard({ inspection }) {
           </div>
 
           {/* Score Gauge */}
-          <div className="w-full px-4 mb-8">
-            <ScoreGauge score={inspection.score} />
-          </div>
+
+          {inspection.score != null && (
+            <div className="w-full px-4 mb-8">
+              <ScoreGauge score={inspection.score} />
+            </div>
+          )}
 
           {/* Violations Mobile Scroll Wrapper */}
           <div className="w-full overflow-x-auto">

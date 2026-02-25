@@ -1,5 +1,7 @@
 import ScoreHistogram from "@/components/ScoreHistogram";
+import GradePieChart from "@/components/GradePieChart";
 import InspectionExplanation from "@/components/InspectionExplanation";
+import NGradeExplanation from "@/components/NGradeExplanation";
 
 export const revalidate = 3600; // Revalidate the page every 1 hour
 
@@ -78,30 +80,12 @@ export default async function AboutPage() {
                     />
                     <StatCard
                         value="10%"
-                        description="of A-grade restaurants are cited for rats, mice, or roaches."
+                        description="of A-grade restaurants have rats, mice, or roaches."
                     />
                     <StatCard
                         value="40%"
-                        description="of A-grade restaurants sit at exactly 12-13 points."
+                        description="of A-grade restaurants have exactly 12-13 points."
                     />
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* How Inspections Work */}
-                    <InspectionExplanation />
-
-                    {/* N Restaurants */}
-                    <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
-                        <h2 className="text-xl font-bold text-slate-900 mb-4">What is Grade &quot;N&quot;?</h2>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                            An <strong>N</strong> grade means a letter grade hasn&apos;t been issued yet (e.g. pending). Over <strong>20%</strong> of restaurants fall into this category.
-                        </p>
-                        <div className="bg-amber-50 border border-amber-100 rounded-lg p-4">
-                            <p className="text-amber-800 text-sm font-medium">
-                                More than <strong>80%</strong> of &quot;N&quot; restaurants have too many violations to earn an A.
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
                 {/* Chart Section */}
@@ -124,10 +108,25 @@ export default async function AboutPage() {
                         <p className="font-semibold text-slate-800">Observation:</p>
                         <p>
                             Restaurants heavily cluster towards the bottom of the &apos;A&apos; range.
-                            There’s a sharp drop from <strong>13 points</strong> ({count13.toLocaleString()} restaurants)
+                            There's a sharp drop from <strong>13 points</strong> ({count13.toLocaleString()} restaurants)
                             to <strong>14 points</strong> ({count14.toLocaleString()} restaurants).
                         </p>
                     </div>
+                </div>
+
+                {/* Grade Distribution Pie Chart */}
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+                    <div className="mb-4">
+                        <h2 className="text-xl font-bold text-slate-900">Grade Distribution</h2>
+                        <p className="text-slate-500 text-sm">Breakdown of grades from each restaurant&apos;s most recent inspection</p>
+                    </div>
+                    <GradePieChart />
+                </div>
+
+                {/* How Inspections Work + N Grade */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <InspectionExplanation />
+                    <NGradeExplanation />
                 </div>
 
                 {/* Special Categories */}

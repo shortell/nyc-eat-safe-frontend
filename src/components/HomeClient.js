@@ -60,7 +60,7 @@ export default function HomeClient({ initialData }) {
             </div>
 
             {/* Category Previews */}
-            <section className="w-full max-w-[1600px] mx-auto flex flex-col gap-y-1 px-4 md:px-8 lg:px-12">
+            <section className="w-full max-w-[1600px] mx-auto flex flex-col gap-y-4 px-4 md:px-8 lg:px-12 mt-2 md:mt-0">
                 {/* Risky A */}
                 <div className="w-full">
                     <CategoryPreview
