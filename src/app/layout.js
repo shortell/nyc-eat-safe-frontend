@@ -90,6 +90,7 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <div id="hide-grow-widget"></div>
+          <div id="ad-management-config-settings" data-blocklist-adhesion-mobile="1" data-blocklist-adhesion-tablet="1" data-blocklist-adhesion-desktop="1" data-blocklist-recipe="1" data-blocklist-auto-insert-sticky="1" data-blocklist-in-image="1" data-blocklist-chicory="1" data-blocklist-zergnet="1" data-blocklist-interstitial-mobile="1" data-blocklist-interstitial-desktop="1" data-blocklist-gumgum-skins="1" ></div>
           {/* Google tag (gtag.js) */}
           {process.env.NODE_ENV === "production" && (
             <>
