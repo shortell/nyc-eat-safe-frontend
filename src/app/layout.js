@@ -109,6 +109,12 @@ export default function RootLayout({ children }) {
               !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
             `}
           </Script>
+          <Script
+            src="//scripts.scriptwrapper.com/tags/938c5eab-e24b-4f04-b863-57295fec006b.js"
+            strategy="afterInteractive"
+            data-noptimize="1"
+            data-cfasync="false"
+          />
           <Headbar2 />
           <main id="main-content" className="flex-1 overflow-y-auto">{children}</main>
           <Bottombar />
