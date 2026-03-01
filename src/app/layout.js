@@ -91,32 +91,45 @@ export default function RootLayout({ children }) {
         <Providers>
           <div id="hide-grow-widget"></div>
           {/* Google tag (gtag.js) */}
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
-            strategy="lazyOnload"
-          />
-          <Script id="google-analytics" strategy="lazyOnload">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-
-              gtag('config', 'G-NL8KLQVYEH');
-            `}
-          </Script>
-          <Script id="mediavine-journey" strategy="lazyOnload">
-            {`
-              !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
-            `}
-          </Script>
-          <Script
-            src="//scripts.scriptwrapper.com/tags/938c5eab-e24b-4f04-b863-57295fec006b.js"
-            strategy="afterInteractive"
-            data-noptimize="1"
-            data-cfasync="false"
-          />
+          {process.env.NODE_ENV === "production" && (
+            <>
+              <Script
+                src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
+                strategy="lazyOnload"
+              />
+              <Script id="google-analytics" strategy="lazyOnload">
+                {`
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+    
+                  gtag('config', 'G-NL8KLQVYEH');
+                `}
+              </Script>
+              <Script id="mediavine-journey" strategy="lazyOnload">
+                {`
+                  !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
+                `}
+              </Script>
+              <Script
+                src="//scripts.scriptwrapper.com/tags/938c5eab-e24b-4f04-b863-57295fec006b.js"
+                strategy="afterInteractive"
+                data-noptimize="1"
+                data-cfasync="false"
+              />
+            </>
+          )}
           <Headbar2 />
-          <main id="main-content" className="flex-1 overflow-y-auto">{children}</main>
+          <main id="main-content" className="flex-1 overflow-y-auto flex flex-col">
+            <div className="flex-1">
+              {children}
+            </div>
+            <footer className="w-full py-8 pb-24 text-center text-xs text-gray-500 mt-auto flex items-center justify-center space-x-2">
+              <span>&copy; {new Date().getFullYear()} NYC Eat Safe</span>
+              <span>&bull;</span>
+              <a href="/privacy" className="hover:text-gray-700 hover:underline transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 outline-none rounded px-1 py-1">Privacy Policy</a>
+            </footer>
+          </main>
           <Bottombar />
         </Providers>
       </body>
