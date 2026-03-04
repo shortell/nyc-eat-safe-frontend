@@ -95,7 +95,7 @@ export default function RootLayout({ children }) {
             <>
               <Script
                 src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
-                strategy="afterInteractive"
+                strategy="beforeInteractive"
               />
               <Script id="google-analytics" strategy="afterInteractive">
                 {`
@@ -113,7 +113,7 @@ export default function RootLayout({ children }) {
               </Script>
               <Script
                 src="//scripts.scriptwrapper.com/tags/938c5eab-e24b-4f04-b863-57295fec006b.js"
-                strategy="afterInteractive"
+                strategy="beforeInteractive"
                 data-noptimize="1"
                 data-cfasync="false"
               />

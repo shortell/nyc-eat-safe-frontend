@@ -54,11 +54,42 @@ body {
   font-family: 'Brush Script MT', 'Bradley Hand', 'Chalkboard SE', cursive;
 }
 
-/* Hide Mediavine Privacy Policy on non-privacy pages */
 body:not(.is-privacy-page) [id*="mediavine-settings"],
 body:not(.is-privacy-page) [id*="mv-privacy"],
 body:not(.is-privacy-page) [class*="mv-privacy"],
 body:not(.is-privacy-page) [class*="mediavine-privacy"],
 body:not(.is-privacy-page) .mediavine-journey-privacy {
   display: none !important;
+}
+
+/* ── Mediavine sticky banner fix ── */
+
+/* Prevent ad containers from reserving whitespace above them */
+[id^="mv_"],
+[id^="mediavine-"] {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+/* Force sticky banner to sit fixed at the very bottom */
+[id*="mv_"][class*="sticky"],
+[id*="mediavine"][class*="sticky"],
+.mv-sticky-footer,
+#mv-sticky-footer {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  z-index: 9999 !important;
+}
+
+/* Ensure main content has enough bottom clearance for the banner */
+#main-content {
+  padding-bottom: 100px;
+}
+
+@media (max-width: 768px) {
+  #main-content {
+    padding-bottom: 60px;
+  }
 }
