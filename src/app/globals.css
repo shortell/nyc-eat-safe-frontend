@@ -66,11 +66,4 @@ div[id^="mediavine"][style*="height"],
 /* Ensure main content has enough bottom clearance for the banner */
 #main-content {
   scrollbar-gutter: stable;
-  padding-bottom: 100px;
-}
-
-@media (max-width: 768px) {
-  #main-content {
-    padding-bottom: 70px;
-  }
 }
