@@ -53,3 +53,12 @@ body {
 .font-handwriting {
   font-family: 'Brush Script MT', 'Bradley Hand', 'Chalkboard SE', cursive;
 }
+
+/* Hide Mediavine Privacy Policy on non-privacy pages */
+body:not(.is-privacy-page) [id*="mediavine-settings"],
+body:not(.is-privacy-page) [id*="mv-privacy"],
+body:not(.is-privacy-page) [class*="mv-privacy"],
+body:not(.is-privacy-page) [class*="mediavine-privacy"],
+body:not(.is-privacy-page) .mediavine-journey-privacy {
+  display: none !important;
+}
