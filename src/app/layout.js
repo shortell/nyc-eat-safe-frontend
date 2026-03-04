@@ -4,7 +4,6 @@ import "./globals.css";
 import Script from "next/script";
 import Headbar2 from "@/components/Headbar2";
 import Bottombar from "@/components/Bottombar";
-import RouteObserver from "@/components/RouteObserver";
 import { Providers } from "@/context/Providers";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -89,7 +88,6 @@ export default function RootLayout({ children }) {
       <body
         className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}
       >
-        <RouteObserver />
         <Providers>
           <div id="hide-grow-widget"></div>
           <div id="ad-management-config-settings" data-blocklist-adhesion-mobile="1" data-blocklist-adhesion-tablet="1" data-blocklist-adhesion-desktop="1" data-blocklist-recipe="1" data-blocklist-auto-insert-sticky="1" data-blocklist-in-image="1" data-blocklist-chicory="1" data-blocklist-zergnet="1" data-blocklist-interstitial-mobile="1" data-blocklist-interstitial-desktop="1" data-blocklist-gumgum-skins="1" ></div>

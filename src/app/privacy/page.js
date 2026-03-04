@@ -1,3 +1,5 @@
+import PrivacyCleanup from '@/components/PrivacyCleanup';
+
 export const metadata = {
     title: 'Privacy Policy',
 };
@@ -5,6 +7,7 @@ export const metadata = {
 export default function PrivacyPolicy() {
     return (
         <div className="container mx-auto px-4 py-8 max-w-3xl pb-24">
+            <PrivacyCleanup />
             <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
             <p className="mb-4 text-gray-600">
                 Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
