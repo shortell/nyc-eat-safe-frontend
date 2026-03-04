@@ -7,8 +7,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/navigation';
+import BoroughSelect from './BoroughSelect';
 
-const HeadBar = ({ selectedBoroughs }) => {
+const HeadBar = ({ selectedBoroughs, setSelectedBoroughs, onBoroughClose }) => {
     const [results, setResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [inputValue, setInputValue] = useState('');
@@ -168,7 +169,7 @@ const HeadBar = ({ selectedBoroughs }) => {
                             endAdornment: (
                                 <React.Fragment>
                                     {params.InputProps.endAdornment}
-                                    <InputAdornment position="end">
+                                    <InputAdornment position="end" sx={{ gap: 1 }}>
                                         <IconButton
                                             type="submit"
                                             edge="end"
@@ -188,6 +189,12 @@ const HeadBar = ({ selectedBoroughs }) => {
                                         >
                                             <SearchIcon />
                                         </IconButton>
+                                        <BoroughSelect
+                                            selectedBoroughs={selectedBoroughs}
+                                            setSelectedBoroughs={setSelectedBoroughs}
+                                            onClose={onBoroughClose}
+                                            inSearchBar
+                                        />
                                     </InputAdornment>
                                 </React.Fragment>
                             ),

@@ -2,8 +2,7 @@
 import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
-import Headbar2 from "@/components/Headbar2";
-import Bottombar from "@/components/Bottombar";
+import Headbar from "@/components/Headbar";
 import { Providers } from "@/context/Providers";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -90,7 +89,7 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <div id="hide-grow-widget"></div>
-          <div id="ad-management-config-settings" data-blocklist-adhesion-mobile="1" data-blocklist-adhesion-tablet="1" data-blocklist-adhesion-desktop="1" data-blocklist-recipe="1" data-blocklist-auto-insert-sticky="1" data-blocklist-in-image="1" data-blocklist-chicory="1" data-blocklist-zergnet="1" data-blocklist-interstitial-mobile="1" data-blocklist-interstitial-desktop="1" data-blocklist-gumgum-skins="1" ></div>
+          <div id="ad-management-config-settings" data-blocklist-recipe="1" data-blocklist-auto-insert-sticky="1" data-blocklist-in-image="1" data-blocklist-chicory="1" data-blocklist-zergnet="1" data-blocklist-interstitial-mobile="1" data-blocklist-interstitial-desktop="1" data-blocklist-gumgum-skins="1" ></div>
           {/* Google tag (gtag.js) */}
           {process.env.NODE_ENV === "production" && (
             <>
@@ -120,18 +119,18 @@ export default function RootLayout({ children }) {
               />
             </>
           )}
-          <Headbar2 />
+          <Headbar />
           <main id="main-content" className="flex-1 overflow-y-auto flex flex-col">
             <div className="flex-1">
               {children}
             </div>
-            <footer className="w-full py-8 pb-24 text-center text-xs text-gray-500 mt-auto flex items-center justify-center space-x-2">
+            <footer className="w-full py-8 pb-20 text-center text-xs text-gray-500 mt-auto flex items-center justify-center space-x-2">
               <span>&copy; {new Date().getFullYear()} NYC Eat Safe</span>
               <span>&bull;</span>
               <a href="/privacy" className="hover:text-gray-700 hover:underline transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 outline-none rounded px-1 py-1">Privacy Policy</a>
             </footer>
           </main>
-          <Bottombar />
+
         </Providers>
       </body>
     </html>

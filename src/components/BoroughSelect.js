@@ -16,7 +16,7 @@ const boroughs = [
     { label: 'Staten Island', value: 'Staten Island' },
 ];
 
-const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs, onClose }) => {
+const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs, onClose, inSearchBar = false }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -46,7 +46,18 @@ const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs, onClose }) => {
         <>
             <IconButton
                 onClick={handleClick}
-                sx={{
+                sx={inSearchBar ? {
+                    backgroundColor: '#1655A0',
+                    color: 'white',
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
+                    padding: '8px',
+                    transition: 'background-color 0.2s ease',
+                    '&:hover': {
+                        backgroundColor: '#134685',
+                    },
+                } : {
                     backgroundColor: '#FFFFFF',
                     width: '56px',
                     height: '56px',
@@ -56,8 +67,11 @@ const BoroughSelect = ({ selectedBoroughs, setSelectedBoroughs, onClose }) => {
                     },
                 }}
             >
-                <Badge badgeContent={selectedBoroughs.length} color="primary">
-                    <FilterAltIcon sx={{ color: '#1655A0', fontSize: '32px' }} />
+                <Badge badgeContent={selectedBoroughs.length} color={inSearchBar ? "warning" : "primary"}>
+                    <FilterAltIcon sx={inSearchBar
+                        ? { color: 'white', fontSize: '24px' }
+                        : { color: '#1655A0', fontSize: '32px' }
+                    } />
                 </Badge>
             </IconButton>
             <Menu
