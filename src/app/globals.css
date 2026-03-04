@@ -17,9 +17,7 @@ html {
   scrollbar-gutter: stable;
 }
 
-#main-content {
-  scrollbar-gutter: stable;
-}
+
 
 body {
   background: var(--background);
@@ -29,26 +27,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.headbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid #e2e8f0;
-}
 
-.bottombar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: white;
-  border-top: 1px solid #e2e8f0;
-}
 
 .font-handwriting {
   font-family: 'Brush Script MT', 'Bradley Hand', 'Chalkboard SE', cursive;
@@ -64,18 +43,12 @@ body:not(.is-privacy-page) .mediavine-journey-privacy {
 
 /* ── Mediavine sticky banner fix ── */
 
-/* Prevent ad containers from reserving whitespace above them */
-[id^="mv_"],
-[id^="mediavine-"] {
-  min-height: 0 !important;
-  height: auto !important;
-}
-
-/* Force sticky banner to sit fixed at the very bottom */
-[id*="mv_"][class*="sticky"],
+/* Force sticky/adhesion banner to sit fixed at the very bottom */
+[id*="mv"][class*="sticky"],
 [id*="mediavine"][class*="sticky"],
 .mv-sticky-footer,
-#mv-sticky-footer {
+#mv-sticky-footer,
+div[data-adhesion] {
   position: fixed !important;
   bottom: 0 !important;
   left: 0 !important;
@@ -83,13 +56,21 @@ body:not(.is-privacy-page) .mediavine-journey-privacy {
   z-index: 9999 !important;
 }
 
+/* Prevent ad spacer divs from reserving extra whitespace */
+div[id^="mv_"][style*="height"],
+div[id^="mediavine"][style*="height"],
+.mv-ad-box[style*="height"] {
+  min-height: 0 !important;
+}
+
 /* Ensure main content has enough bottom clearance for the banner */
 #main-content {
+  scrollbar-gutter: stable;
   padding-bottom: 100px;
 }
 
 @media (max-width: 768px) {
   #main-content {
-    padding-bottom: 60px;
+    padding-bottom: 70px;
   }
 }
