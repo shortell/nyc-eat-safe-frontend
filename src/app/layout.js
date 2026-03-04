@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import Headbar from "@/components/Headbar";
+import AdSpacerKiller from "@/components/AdSpacerKiller";
 import { Providers } from "@/context/Providers";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -88,6 +89,7 @@ export default function RootLayout({ children }) {
         className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}
       >
         <Providers>
+          <AdSpacerKiller />
           <div id="hide-grow-widget"></div>
           <div id="ad-management-config-settings" data-blocklist-recipe="1" data-blocklist-auto-insert-sticky="1" data-blocklist-in-image="1" data-blocklist-chicory="1" data-blocklist-zergnet="1" data-blocklist-interstitial-mobile="1" data-blocklist-interstitial-desktop="1" data-blocklist-gumgum-skins="1" ></div>
           {/* Google tag (gtag.js) */}

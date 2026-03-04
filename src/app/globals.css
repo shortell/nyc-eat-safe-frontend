@@ -63,6 +63,13 @@ div[id^="mediavine"][style*="height"],
   min-height: 0 !important;
 }
 
+/* Kill the identified Mediavine spacer div */
+#fixed_container_bottom {
+  height: 0 !important;
+  min-height: 0 !important;
+  display: none !important;
+}
+
 /* Ensure main content has enough bottom clearance for the banner */
 #main-content {
   scrollbar-gutter: stable;
