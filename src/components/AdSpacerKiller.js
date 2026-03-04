@@ -6,9 +6,8 @@ export default function AdSpacerKiller() {
         const kill = () => {
             const spacer = document.getElementById('fixed_container_bottom');
             if (spacer) {
-                spacer.style.setProperty('height', '0', 'important');
+                spacer.style.removeProperty('height');
                 spacer.style.setProperty('min-height', '0', 'important');
-                spacer.style.setProperty('display', 'none', 'important');
             }
         };
 

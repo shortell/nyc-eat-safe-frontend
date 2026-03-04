@@ -63,11 +63,10 @@ div[id^="mediavine"][style*="height"],
   min-height: 0 !important;
 }
 
-/* Kill the identified Mediavine spacer div */
+/* Collapse spacer height but keep the ad visible */
 #fixed_container_bottom {
-  height: 0 !important;
+  height: auto !important;
   min-height: 0 !important;
-  display: none !important;
 }
 
 /* Ensure main content has enough bottom clearance for the banner */
