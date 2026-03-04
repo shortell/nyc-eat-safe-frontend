@@ -1,18 +1,30 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function AdSpacerKiller() {
+    const [mounted, setMounted] = useState(false);
+
     useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
+
         const kill = () => {
-            const spacer = document.getElementById('fixed_container_bottom');
-            if (spacer) {
-                spacer.style.setProperty('height', '0', 'important');
-                spacer.style.setProperty('min-height', '0', 'important');
-                spacer.style.setProperty('max-height', '0', 'important');
-                spacer.style.setProperty('overflow', 'hidden', 'important');
-                spacer.style.setProperty('padding', '0', 'important');
-                spacer.style.setProperty('margin', '0', 'important');
-            }
+            // Target empty divs in body that exist only to reserve space
+            // Leave #fixed_container_bottom alone since it holds the actual ad
+            document.querySelectorAll('body > div').forEach(el => {
+                if (el.id === 'fixed_container_bottom') return; // skip the ad
+                const isEmpty = el.children.length === 0 && el.innerText.trim() === '';
+                const height = el.getBoundingClientRect().height;
+                if (isEmpty && height > 20) {
+                    el.style.setProperty('height', '0', 'important');
+                    el.style.setProperty('min-height', '0', 'important');
+                    el.style.setProperty('max-height', '0', 'important');
+                    el.style.setProperty('overflow', 'hidden', 'important');
+                }
+            });
         };
 
         const observer = new MutationObserver(kill);
@@ -30,7 +42,7 @@ export default function AdSpacerKiller() {
             observer.disconnect();
             clearInterval(interval);
         };
-    }, []);
+    }, [mounted]);
 
     return null;
 }
