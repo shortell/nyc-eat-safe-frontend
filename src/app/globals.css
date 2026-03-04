@@ -65,8 +65,12 @@ div[id^="mediavine"][style*="height"],
 
 /* Collapse spacer height but keep the ad visible */
 #fixed_container_bottom {
-  height: auto !important;
+  height: 0 !important;
   min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 /* Ensure main content has enough bottom clearance for the banner */
