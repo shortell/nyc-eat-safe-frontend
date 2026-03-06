@@ -7,6 +7,7 @@ import Chip from '@mui/material/Chip';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 export default function FeedbackPage() {
   const [email, setEmail] = useState('');
@@ -156,14 +157,15 @@ export default function FeedbackPage() {
                   icon={
                     comment.status === 'Fixed' ? <CheckIcon /> :
                       comment.status === 'Added' ? <AddIcon /> :
-                        undefined
+                        comment.status === 'Answered' ? <DriveFileRenameOutlineIcon /> :
+                          undefined
                   }
                   color={comment.status === 'Fixed' ? 'success' : 'default'}
                   sx={{
-                    color: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : undefined,
-                    borderColor: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : undefined,
+                    color: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : comment.status === 'Answered' ? '#555' : undefined,
+                    borderColor: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : comment.status === 'Answered' ? '#555' : undefined,
                     '& .MuiChip-icon': {
-                      color: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : undefined,
+                      color: comment.status === 'Fixed' ? 'green' : comment.status === 'Added' ? '#1976d2' : comment.status === 'Answered' ? '#555' : undefined,
                     }
                   }}
                 />
@@ -212,14 +214,15 @@ export default function FeedbackPage() {
                 icon={
                   selectedComment.status === 'Fixed' ? <CheckIcon /> :
                     selectedComment.status === 'Added' ? <AddIcon /> :
-                      undefined
+                      selectedComment.status === 'Answered' ? <DriveFileRenameOutlineIcon /> :
+                        undefined
                 }
                 color={selectedComment.status === 'Fixed' ? 'success' : 'default'}
                 sx={{
-                  color: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : undefined,
-                  borderColor: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : undefined,
+                  color: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : selectedComment.status === 'Answered' ? '#555' : undefined,
+                  borderColor: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : selectedComment.status === 'Answered' ? '#555' : undefined,
                   '& .MuiChip-icon': {
-                    color: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : undefined,
+                    color: selectedComment.status === 'Fixed' ? 'green' : selectedComment.status === 'Added' ? '#1976d2' : selectedComment.status === 'Answered' ? '#555' : undefined,
                   }
                 }}
               />

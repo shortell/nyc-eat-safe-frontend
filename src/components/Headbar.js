@@ -15,7 +15,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -49,10 +49,7 @@ const Headbar = () => {
     };
 
     const handleNavigation = () => {
-        const mainContent = document.getElementById('main-content');
-        if (mainContent) {
-            mainContent.scrollTop = 0;
-        }
+        window.scrollTo(0, 0);
         setDrawerOpen(false);
     };
 
@@ -63,6 +60,7 @@ const Headbar = () => {
                 elevation={4}
                 sx={{
                     background: 'linear-gradient(to bottom, #2A3E83 0%, #1655A0 90%, #016CCE 98%)',
+                    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.55)',
                 }}
             >
                 <Toolbar
@@ -86,7 +84,7 @@ const Headbar = () => {
                             onClick={toggleDrawer(true)}
                             sx={{ flexShrink: 0 }}
                         >
-                            <MenuIcon />
+                            <MenuIcon sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }} />
                         </IconButton>
 
                         {/* Mobile title */}
@@ -139,7 +137,7 @@ const Headbar = () => {
                                 width: '550px',
                             }}
                         >
-                            <Box sx={{ flexGrow: 1, backgroundColor: '#F0F8FF', borderRadius: '50px', p: 1, minWidth: 0 }}>
+                            <Box sx={{ flexGrow: 1, backgroundColor: '#F0F8FF', borderRadius: '50px', p: 1, minWidth: 0, boxShadow: '0 4px 16px rgba(0,0,0,0.35)' }}>
                                 <Searchbar
                                     selectedBoroughs={selectedBoroughs}
                                     setSelectedBoroughs={setSelectedBoroughs}
@@ -153,20 +151,37 @@ const Headbar = () => {
                             {navigationItems
                                 .filter((item) => item.label !== 'Home')
                                 .map((item) => (
-                                    <Tooltip key={item.label} title={item.label} arrow>
-                                        <IconButton
-                                            component={Link}
-                                            href={item.href}
-                                            onClick={handleNavigation}
-                                            color="inherit"
+                                    <IconButton
+                                        key={item.label}
+                                        component={Link}
+                                        href={item.href}
+                                        onClick={handleNavigation}
+                                        color="inherit"
+                                        sx={{
+                                            flexDirection: 'column',
+                                            borderRadius: '10px',
+                                            px: 1.5,
+                                            py: 0.75,
+                                            opacity: pathname === item.path ? 1 : 0.75,
+                                            '&:hover': { opacity: 1, backgroundColor: 'rgba(255,255,255,0.12)' },
+                                            '& .MuiSvgIcon-root': { fontSize: '1.75rem' },
+                                        }}
+                                    >
+                                        {item.icon}
+                                        <Typography
                                             sx={{
-                                                opacity: pathname === item.path ? 1 : 0.75,
-                                                '&:hover': { opacity: 1, backgroundColor: 'rgba(255,255,255,0.12)' },
+                                                fontSize: '0.65rem',
+                                                fontFamily: "'Manrope', sans-serif",
+                                                fontWeight: pathname === item.path ? 700 : 500,
+                                                lineHeight: 1,
+                                                mt: 0.4,
+                                                letterSpacing: '0.03em',
+                                                color: 'inherit',
                                             }}
                                         >
-                                            {item.icon}
-                                        </IconButton>
-                                    </Tooltip>
+                                            {item.label}
+                                        </Typography>
+                                    </IconButton>
                                 ))}
                         </Box>
                     </Box>
@@ -179,7 +194,7 @@ const Headbar = () => {
                             pb: 1,
                         }}
                     >
-                        <Box sx={{ flexGrow: 1, backgroundColor: '#F0F8FF', borderRadius: '50px', p: 1, minWidth: 0 }}>
+                        <Box sx={{ flexGrow: 1, backgroundColor: '#F0F8FF', borderRadius: '50px', p: 1, minWidth: 0, boxShadow: '0 4px 16px rgba(0,0,0,0.35)' }}>
                             <Searchbar
                                 selectedBoroughs={selectedBoroughs}
                                 setSelectedBoroughs={setSelectedBoroughs}

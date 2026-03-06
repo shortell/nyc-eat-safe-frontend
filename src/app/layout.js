@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import Headbar from "@/components/Headbar";
 import { Providers } from "@/context/Providers";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -83,55 +84,57 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full" style={{ scrollBehavior: 'smooth' }} data-scroll-behavior="smooth">
+    <html lang="en" style={{ scrollBehavior: 'smooth' }}>
       <body
-        className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}
+        className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          <div id="hide-grow-widget"></div>
-          <div id="ad-management-config-settings" data-blocklist-recipe="1" data-blocklist-auto-insert-sticky="1" data-blocklist-in-image="1" data-blocklist-chicory="1" data-blocklist-zergnet="1" data-blocklist-interstitial-mobile="1" data-blocklist-interstitial-desktop="1" data-blocklist-gumgum-skins="1" data-blocklist-universal-player-desktop="1" data-blocklist-universal-player-mobile="1" ></div>
-          {/* Google tag (gtag.js) */}
-          {process.env.NODE_ENV === "production" && (
-            <>
-              <Script
-                src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
-                strategy="lazyOnload"
-              />
-              <Script id="google-analytics" strategy="lazyOnload">
-                {`
+        <AppRouterCacheProvider>
+          <Providers>
+            <div id="hide-grow-widget"></div>
+            <div id="ad-management-config-settings" data-blocklist-recipe="1" data-blocklist-auto-insert-sticky="1" data-blocklist-in-image="1" data-blocklist-chicory="1" data-blocklist-zergnet="1" data-blocklist-interstitial-mobile="1" data-blocklist-interstitial-desktop="1" data-blocklist-gumgum-skins="1" data-blocklist-universal-player-desktop="1" data-blocklist-universal-player-mobile="1" ></div>
+            {/* Google tag (gtag.js) */}
+            {process.env.NODE_ENV === "production" && (
+              <>
+                <Script
+                  src="https://www.googletagmanager.com/gtag/js?id=G-NL8KLQVYEH"
+                  strategy="lazyOnload"
+                />
+                <Script id="google-analytics" strategy="lazyOnload">
+                  {`
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
     
                   gtag('config', 'G-NL8KLQVYEH');
                 `}
-              </Script>
-              <Script id="mediavine-journey" strategy="lazyOnload">
-                {`
+                </Script>
+                <Script id="mediavine-journey" strategy="lazyOnload">
+                  {`
                   !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
                 `}
-              </Script>
-              <Script
-                src="//scripts.scriptwrapper.com/tags/938c5eab-e24b-4f04-b863-57295fec006b.js"
-                strategy="lazyOnload"
-                data-noptimize="1"
-                data-cfasync="false"
-              />
-            </>
-          )}
-          <Headbar />
-          <main id="main-content" className="flex-1 overflow-y-auto flex flex-col" style={{ minHeight: 'calc(100vh - 160px)', paddingBottom: '90px' }}>
-            <div className="flex-1">
-              {children}
-            </div>
-            <footer className="w-full py-8 pb-20 text-center text-xs text-gray-500 mt-auto flex items-center justify-center space-x-2">
-              <span>&copy; {new Date().getFullYear()} NYC Eat Safe</span>
-              <span>&bull;</span>
-              <a href="/privacy" className="hover:text-gray-700 hover:underline transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 outline-none rounded px-1 py-1">Privacy Policy</a>
-            </footer>
-          </main>
+                </Script>
+                <Script
+                  src="//scripts.scriptwrapper.com/tags/938c5eab-e24b-4f04-b863-57295fec006b.js"
+                  strategy="lazyOnload"
+                  data-noptimize="1"
+                  data-cfasync="false"
+                />
+              </>
+            )}
+            <Headbar />
+            <main id="main-content" className="flex-1 flex flex-col" style={{ paddingBottom: '90px' }}>
+              <div className="flex-1">
+                {children}
+              </div>
+              <footer className="w-full py-8 pb-20 text-center text-xs text-gray-500 mt-auto flex items-center justify-center space-x-2">
+                <span>&copy; {new Date().getFullYear()} NYC Eat Safe</span>
+                <span>&bull;</span>
+                <a href="/privacy" className="hover:text-gray-700 hover:underline transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 outline-none rounded px-1 py-1">Privacy Policy</a>
+              </footer>
+            </main>
 
-        </Providers>
+          </Providers>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

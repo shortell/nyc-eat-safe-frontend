@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import Paper from '@mui/material/Paper';
 import GradeLetter from "@/components/GradeLetter";
 import ScoreBox from "@/components/ScoreBox";
@@ -7,8 +8,10 @@ import ShareButtons from "@/components/ShareButtons";
 import InspectionExplanation from "@/components/InspectionExplanation";
 import NGradeExplanation from "@/components/NGradeExplanation";
 import ScoreGauge from "@/components/ScoreGauge";
-import SmartBackButton from "@/components/SmartBackButton";
+import BackButton from '@/components/BackButton';
+import HistoryBanner from '@/components/HistoryBanner';
 import Divider from '@mui/material/Divider';
+import FreeCancellationIcon from '@mui/icons-material/FreeCancellation';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -66,9 +69,10 @@ export default async function RestaurantPage({ params }) {
   const streetName = toTitleCase(header.street);
 
   return (
-    <div className="w-full min-h-screen bg-[#f5f2fa] pt-6 pb-8 px-2 relative">
-      <SmartBackButton />
-      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-3 sm:p-8 mt-4">
+    <div className="w-full min-h-screen bg-[#f5f2fa] pt-4 pb-8 px-2 relative">
+      <BackButton />
+      <HistoryBanner />
+      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-3 sm:p-8 mt-2">
         {/* Header */}
         <div className="mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
@@ -122,6 +126,32 @@ export default async function RestaurantPage({ params }) {
             <InspectionCard key={idx} inspection={insp} />
           ))}
         </div>
+      </div>
+
+      {/* Ad placement space — outside the card, Mediavine will inject here */}
+      <div className="max-w-3xl mx-auto my-8 min-h-[250px] flex items-center justify-center">
+      </div>
+
+      {/* View Inspection History Button — outside the card */}
+      <div className="max-w-3xl mx-auto flex justify-center pb-4">
+        <Link
+          href={`/restaurant/${camis}/history`}
+          className="
+            inline-flex items-center gap-2
+            px-6 py-3.5
+            bg-[#2850B7] hover:bg-[#1A52BC]
+            text-white font-bold text-base
+            rounded-xl
+            shadow-[0_4px_12px_rgba(40,80,183,0.35)]
+            hover:shadow-[0_6px_16px_rgba(40,80,183,0.45)]
+            hover:-translate-y-0.5
+            transition-all duration-200
+            focus:outline-none focus:ring-2 focus:ring-[#2850B7]/50 focus:ring-offset-2
+          "
+        >
+          <FreeCancellationIcon className="w-5 h-5" />
+          View Inspection History
+        </Link>
       </div>
 
       {/* Structured data (no AggregateRating) */}
