@@ -33,7 +33,6 @@ export default function HistoryChart({ inspections }) {
     );
 
     const latestScore = scores[scores.length - 1] ?? 0;
-    const primaryColor = gradeColor(latestScore);
 
     const options = {
         chart: {
@@ -44,7 +43,7 @@ export default function HistoryChart({ inspections }) {
             fontFamily: 'Manrope, sans-serif',
             background: 'transparent',
         },
-        colors: [primaryColor],
+        colors: ['#2850B7'],
         dataLabels: { enabled: false },
         stroke: {
             curve: 'smooth',
@@ -55,8 +54,8 @@ export default function HistoryChart({ inspections }) {
             gradient: {
                 shadeIntensity: 1,
                 colorStops: [
-                    { offset: 0, color: primaryColor, opacity: 0.45 },
-                    { offset: 100, color: primaryColor, opacity: 0.04 },
+                    { offset: 0, color: '#2850B7', opacity: 0.45 },
+                    { offset: 100, color: '#2850B7', opacity: 0.04 },
                 ],
             },
         },
@@ -86,6 +85,7 @@ export default function HistoryChart({ inspections }) {
             labels: {
                 rotate: -45,
                 rotateAlways: true,
+                offsetY: 8,
                 style: {
                     colors: '#374151',
                     fontSize: '12px',
@@ -101,6 +101,7 @@ export default function HistoryChart({ inspections }) {
             tickAmount: 4,
             title: {
                 text: 'Score',
+                offsetX: -5,
                 style: {
                     color: '#64748b',
                     fontSize: '13px',
@@ -110,6 +111,7 @@ export default function HistoryChart({ inspections }) {
             },
             labels: {
                 formatter: (val) => Math.round(val),
+                offsetX: -5,
                 style: {
                     colors: '#374151',
                     fontSize: '12px',
@@ -121,7 +123,7 @@ export default function HistoryChart({ inspections }) {
             borderColor: '#e2e8f0',
             strokeDashArray: 4,
             xaxis: { lines: { show: false } },
-            padding: { right: 60 },
+            padding: { right: 60, left: 15, bottom: 10 },
         },
         legend: { show: false },
         tooltip: {
@@ -142,6 +144,25 @@ export default function HistoryChart({ inspections }) {
         },
         annotations: {
             yaxis: [
+                {
+                    y: 0,
+                    borderColor: 'transparent',
+                    borderWidth: 0,
+                    label: {
+                        text: 'A',
+                        position: 'right',
+                        offsetX: 24,
+                        offsetY: 2,
+                        style: {
+                            color: '#1e3a8a',
+                            background: '#dbeafe',
+                            fontSize: '13px',
+                            fontWeight: 800,
+                            fontFamily: 'Manrope, sans-serif',
+                            padding: { left: 7, right: 7, top: 3, bottom: 3 },
+                        },
+                    },
+                },
                 {
                     y: 14,
                     borderColor: '#16a34a',

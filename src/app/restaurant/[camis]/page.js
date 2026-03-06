@@ -129,7 +129,10 @@ export default async function RestaurantPage({ params }) {
       </div>
 
       {/* Ad placement space — outside the card, Mediavine will inject here */}
-      <div className="max-w-3xl mx-auto my-8 min-h-[250px] flex items-center justify-center">
+      <div
+        id="mediavine-restaurant-profile-ad"
+        className="max-w-3xl mx-auto my-8 min-h-[250px] text-center"
+      >
       </div>
 
       {/* View Inspection History Button — outside the card */}
