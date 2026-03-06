@@ -19,7 +19,7 @@ export async function GET() {
     console.error('Error generating sitemap:', error);
   }
 
-  const staticRoutes = ['/', '/about', '/near-me', '/feedback'];
+  const staticRoutes = ['/', '/about', '/near-me', '/feedback', '/privacy'];
   const staticUrls = staticRoutes.map(
     (p) => `<url><loc>${baseUrl}${p}</loc><lastmod>${today}</lastmod></url>`
   );
