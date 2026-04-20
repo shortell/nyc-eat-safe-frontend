@@ -67,11 +67,12 @@ export default async function RestaurantPage({ params }) {
 
   const restaurantName = toTitleCase(header.dba);
   const streetName = toTitleCase(header.street);
+  const isPlaceholderDate = profile[0]?.inspection_date && String(profile[0].inspection_date).startsWith('1900-01-01');
 
   return (
     <div className="w-full min-h-screen bg-[#f5f2fa] pt-4 pb-8 px-2 relative">
       <BackButton />
-      <HistoryBanner />
+      {!isPlaceholderDate && <HistoryBanner />}
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-3 sm:p-8 mt-2">
         {/* Header */}
         <div className="mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -135,26 +136,28 @@ export default async function RestaurantPage({ params }) {
       />
 
       {/* View Inspection History Button — outside the card */}
-      <div className="max-w-3xl mx-auto flex justify-center pb-4">
-        <Link
-          href={`/restaurant/${camis}/history`}
-          className="
-            inline-flex items-center gap-2
-            px-6 py-3.5
-            bg-[#2850B7] hover:bg-[#1A52BC]
-            text-white font-bold text-base
-            rounded-xl
-            shadow-[0_4px_12px_rgba(40,80,183,0.35)]
-            hover:shadow-[0_6px_16px_rgba(40,80,183,0.45)]
-            hover:-translate-y-0.5
-            transition-all duration-200
-            focus:outline-none focus:ring-2 focus:ring-[#2850B7]/50 focus:ring-offset-2
-          "
-        >
-          <FreeCancellationIcon className="w-5 h-5" />
-          View Inspection History
-        </Link>
-      </div>
+      {!isPlaceholderDate && (
+        <div className="max-w-3xl mx-auto flex justify-center pb-4">
+          <Link
+            href={`/restaurant/${camis}/history`}
+            className="
+              inline-flex items-center gap-2
+              px-6 py-3.5
+              bg-[#2850B7] hover:bg-[#1A52BC]
+              text-white font-bold text-base
+              rounded-xl
+              shadow-[0_4px_12px_rgba(40,80,183,0.35)]
+              hover:shadow-[0_6px_16px_rgba(40,80,183,0.45)]
+              hover:-translate-y-0.5
+              transition-all duration-200
+              focus:outline-none focus:ring-2 focus:ring-[#2850B7]/50 focus:ring-offset-2
+            "
+          >
+            <FreeCancellationIcon className="w-5 h-5" />
+            View Inspection History
+          </Link>
+        </div>
+      )}
 
       {/* Structured data (no AggregateRating) */}
       <script
@@ -218,6 +221,7 @@ function InspectionCard({ inspection }) {
   const date = isPlaceholderDate
     ? "Restaurant Has Never Been Inspected"
     : new Date(inspection.inspection_date).toLocaleDateString("en-US", {
+      timeZone: "UTC",
       month: "long",
       day: "numeric",
       year: "numeric",

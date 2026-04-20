@@ -90,8 +90,6 @@ export default function RootLayout({ children }) {
       >
         <AppRouterCacheProvider>
           <Providers>
-            <div id="hide-grow-widget"></div>
-            <div id="ad-management-config-settings" data-blocklist-auto-insert-sticky="1" data-blocklist-in-image="1" data-blocklist-chicory="1" data-blocklist-zergnet="1" data-blocklist-interstitial-mobile="1" data-blocklist-interstitial-desktop="1" data-blocklist-gumgum-skins="1" data-blocklist-universal-player-desktop="1" data-blocklist-universal-player-mobile="1" ></div>
             {/* Google tag (gtag.js) */}
             {process.env.NODE_ENV === "production" && (
               <>
@@ -108,17 +106,6 @@ export default function RootLayout({ children }) {
                   gtag('config', 'G-NL8KLQVYEH');
                 `}
                 </Script>
-                <Script id="mediavine-journey" strategy="lazyOnload">
-                  {`
-                  !(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTo5MzhjNWVhYi1lMjRiLTRmMDQtYjg2My01NzI5NWZlYzAwNmI=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();
-                `}
-                </Script>
-                <Script
-                  src="//scripts.scriptwrapper.com/tags/938c5eab-e24b-4f04-b863-57295fec006b.js"
-                  strategy="lazyOnload"
-                  data-noptimize="1"
-                  data-cfasync="false"
-                />
               </>
             )}
             <Headbar />

@@ -27,6 +27,7 @@ export default function HistoryChart({ inspections }) {
     const scores = sorted.map((insp) => insp.score ?? 0);
     const categories = sorted.map((insp) =>
         new Date(insp.inspection_date).toLocaleDateString('en-US', {
+            timeZone: 'UTC',
             month: 'short',
             year: 'numeric',
         })

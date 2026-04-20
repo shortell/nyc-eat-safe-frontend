@@ -94,9 +94,6 @@ export default function CategoryPreview({ title, endpoint, restaurants = [], cou
           >
             See all
           </Link>
-          {count > 0 && (
-            <span className="absolute -top-1 right-0 w-2.5 h-2.5 bg-red-500 rounded-full shadow-sm pointer-events-none" />
-          )}
         </span>
       </div>
 

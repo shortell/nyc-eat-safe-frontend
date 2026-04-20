@@ -37,6 +37,7 @@ export default function HistoryAccordions({ inspections }) {
                 });
 
                 const date = new Date(insp.inspection_date).toLocaleDateString('en-US', {
+                    timeZone: 'UTC',
                     month: 'long',
                     day: 'numeric',
                     year: 'numeric',
